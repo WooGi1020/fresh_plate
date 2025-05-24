@@ -1,0 +1,58 @@
+export const speechBubbles = [
+  {
+    id: 1,
+    left: "25%",
+    top: "35%",
+    width: "200px",
+    height: "150px",
+  },
+  {
+    id: 2,
+    left: "38%",
+    top: "10%",
+    width: "539px",
+    height: "407px",
+  },
+  {
+    id: 3,
+    left: "72%",
+    top: "18%",
+    width: "236px",
+    height: "200px",
+  },
+  {
+    id: 4,
+    left: "6%",
+    top: "75%",
+    width: "236px",
+    height: "200px",
+  },
+  {
+    id: 5,
+    left: "65%",
+    top: "70%",
+    width: "539px",
+    height: "407px",
+  },
+  {
+    id: 6,
+    left: "100%",
+    top: "50%",
+    width: "197px",
+    height: "149px",
+  },
+  {
+    id: 7,
+    left: "30%",
+    top: "40%",
+    width: "300px",
+    height: "200px",
+  },
+  {
+    id: 8,
+    left: "5%",
+    top: "15%",
+    width: "236px",
+    height: "200px",
+  },
+];
