@@ -7,7 +7,7 @@ const Section_first = () => {
         {/* 상단 문구 */}
         <div className="px-2">
           <h2 className="font-normal text-lg sm:text-xl lg:text-[32px] mb-2 sm:mb-3">
-            " 비건도, 알러지도, 글루텐도 걱정없는 외식이 가능할까요? "
+            &quot; 비건도, 알러지도, 글루텐도 걱정없는 외식이 가능할까요? &quot;
           </h2>
           <h2 className="font-semibold text-lg sm:text-xl lg:text-[32px]">
             우리 서비스는 사용자에게 맞춘 외식 장소를 찾아드립니다.
@@ -28,7 +28,7 @@ const Section_first = () => {
         {/* 하단 문구 */}
         <div className="px-2">
           <h3 className="font-normal text-base sm:text-lg lg:text-[28px] mb-2 sm:mb-3">
-            " 당신의 건강과 입맛을 맞춘 식당을 찾아보세요. "
+            &quot; 당신의 건강과 입맛을 맞춘 식당을 찾아보세요. &quot;
           </h3>
           <h3 className="font-semibold text-base sm:text-lg lg:text-[28px]">지금, 당신 주변에서 찾을 수 있어요.</h3>
         </div>

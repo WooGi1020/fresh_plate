@@ -32,9 +32,11 @@ const Section_second = () => {
         {/* 텍스트 그룹 */}
         <div className="text-center flex flex-col gap-4 sm:gap-6 lg:gap-10">
           <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal">
-            “ 이 식당, 비건 메뉴는 있는데... 땅콩이 들어간다구요? ”
+            &quot; 이 식당, 비건 메뉴는 있는데... 땅콩이 들어간다구요? &quot;
           </h3>
-          <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal">“ 글루텐 프리 메뉴는 어디 있는 거죠? ”</h3>
+          <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal">
+            &quot; 글루텐 프리 메뉴는 어디 있는 거죠? &quot;
+          </h3>
           <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal mb-2 sm:mb-4">이제는 검색만으로 걱정 끝!</h3>
           <h2 className="text-xl sm:text-3xl lg:text-[36px] font-semibold space-y-2 leading-relaxed flex flex-col">
             <span>걱정 없이, 당신의 기준에 딱 맞는 식당만</span>

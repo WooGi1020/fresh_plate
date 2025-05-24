@@ -36,7 +36,7 @@ const Section_fourth = () => {
                 sizes="(max-width: 768px) 100vw, 820px"
               />
             </div>
-            <p className="text-[20px] sm:text-[24px] md:text-[36px] font-medium mt-4">" 추천 식당 7곳 "</p>
+            <p className="text-[20px] sm:text-[24px] md:text-[36px] font-medium mt-4">&quot; 추천 식당 7곳 &quot;</p>
           </div>
         </div>
       </div>
