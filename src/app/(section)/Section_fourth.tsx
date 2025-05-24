@@ -7,7 +7,7 @@ const Section_fourth = () => {
       <SpeechBubbles />
 
       <div className="z-10 flex flex-col items-center">
-        <p className="text-[24px] sm:text-[28px] md:text-[40px] font-normal text-center">
+        <p className="text-[24px] sm:text-[28px] md:text-[40px] font-normal text-center xl:mr-auto">
           서울에서 <span className="font-semibold">견과류, 계란, 갑각류 알러지 제외</span>한 식당 검색
         </p>
 
