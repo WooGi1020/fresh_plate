@@ -2,12 +2,12 @@ import Image from "next/image";
 
 const Section_second = () => {
   return (
-    <div className="min-h-screen h-full sm:py-4 flex items-center justify-center bg-[#CBD2A9] px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-[1280px] flex flex-col lg:flex-row items-center justify-center gap-10 sm:gap-5">
+    <div className="min-h-screen h-full py-10 sm:py-4 flex items-center justify-center bg-[#CBD2A9] px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1280px] flex flex-col lg:flex-row items-center justify-center sm:gap-5">
         {/* 이미지 그룹 */}
         <div className="flex flex-col items-center gap-6">
           {/* 필터 이미지 */}
-          <div className="w-full max-w-[500px] h-[300px] aspect-[10/7] relative">
+          <div className="w-full max-w-[500px] h-[250px] aspect-[10/7] relative">
             <Image
               src="/images/home/section2_filter.png"
               alt="2번째 섹션 필터링 이미지"
