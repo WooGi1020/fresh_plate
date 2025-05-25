@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Section_fourth = () => {
   return (
-    <div className="relative w-full px-4 py-10 xl:p-20 xl:min-h-screen xl:max-h-screen overflow-hidden">
+    <div className="relative w-full h-fit px-4 py-10 xl:p-20 xl:min-h-screen xl:max-h-screen overflow-hidden">
       <SpeechBubbles />
 
       <div className="z-10 flex flex-col items-center">
@@ -36,7 +36,9 @@ const Section_fourth = () => {
                 sizes="(max-width: 768px) 100vw, 820px"
               />
             </div>
-            <p className="text-[20px] sm:text-[24px] md:text-[36px] font-medium mt-4">&quot; 추천 식당 7곳 &quot;</p>
+            <p className="text-[20px] ml-auto sm:text-[24px] md:text-[36px] font-medium mt-4">
+              &quot; 추천 식당 7곳 &quot;
+            </p>
           </div>
         </div>
       </div>
