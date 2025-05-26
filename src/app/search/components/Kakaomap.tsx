@@ -27,8 +27,6 @@ export default function KakaoMap() {
       onClick={() => setSelectedId(null)}
     >
       {data.map((restaurant: Restaurant) => {
-        const lat = Number(restaurant.lat);
-        const lng = Number(restaurant.lng);
         return (
           <MapMarkerWithPan
             key={restaurant.id}
