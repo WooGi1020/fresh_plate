@@ -22,6 +22,7 @@ function MapMarkerWithPan({
       position={position}
       onClick={() => {
         map.panTo(new kakao.maps.LatLng(lat, lng));
+        setSelectedId(restaurant.id);
       }}
     >
       {selectedId === restaurant.id && <div style={{ padding: "4px 8px", fontWeight: 600 }}>{restaurant.name}</div>}
