@@ -23,7 +23,7 @@ const Header = () => {
       </Link>
       <div className="flex justify-evenly items-center max-w-[600px] w-full min-w-[200px]">
         <Link href="/search" className="flex items-center gap-1 p-1 hover:bg-[#504840]/10 rounded-md">
-          <SearchIcon />
+          <SearchIcon width={24} height={24} />
           <span className="text-[20px] sm:text-[20px] hidden sm:inline ">식당 찾기</span>
         </Link>
         <Link href="/search" className="flex items-center gap-1 p-1 hover:bg-[#504840]/10 rounded-md">

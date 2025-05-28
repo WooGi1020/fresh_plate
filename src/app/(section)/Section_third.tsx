@@ -49,7 +49,7 @@ const Section_third = () => {
 };
 
 const TextCard = ({ text }: { text: string }) => (
-  <div className="bg-[#FFFDF4] rounded-md px-6 sm:px-10 py-5 sm:py-6 shadow-md w-full flex items-center min-h-[155px]">
+  <div className="bg-[#FFFDF4] rounded-md px-6 sm:px-10 py-5 sm:py-6 shadow-md w-full flex items-center h-fit lg:min-h-[155px]">
     <p className="text-lg sm:text-xl lg:text-[28px] font-normal">{text}</p>
   </div>
 );
