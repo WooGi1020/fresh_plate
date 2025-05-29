@@ -18,7 +18,7 @@ export default function MapWrapper() {
   const query = searchParams.get("q");
   const restaurants = useFilteredRestaurants();
 
-  const [loading, error] = useKakaoLoader({
+  const [error] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY!,
     libraries: ["services", "clusterer"],
   });
