@@ -34,7 +34,7 @@ const parseSearchParams = (searchParams: ReturnType<typeof useSearchParams>): Fi
   return parsed;
 };
 
-const CustomSideBar = ({}: {}) => {
+const CustomSideBar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();

@@ -51,14 +51,21 @@ const CustomBalloon = ({
           photo
         </div>
         <div className="flex-1">
-          <a
-            href={`${placeUrl}`}
-            target="_blank"
-            className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
-            title={restaurant.name}
-          >
-            {restaurant.name}
-          </a>
+          {placeUrl ? (
+            <a
+              href={placeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
+              title={restaurant.name}
+            >
+              {restaurant.name}
+            </a>
+          ) : (
+            <h2 className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px]" title={restaurant.name}>
+              {restaurant.name}
+            </h2>
+          )}
 
           <div className="flex items-center gap-2 mb-1">
             <StarRating rating={3.5} />
