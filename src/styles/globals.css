@@ -61,3 +61,33 @@ body {
   background: #fffdf4;
   z-index: 2;
 }
+
+.fade-in {
+  animation: fade-in 0.3s ease-in-out;
+}
+
+.fade-out {
+  animation: fade-out 0.5s ease-in-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0.7;
+    transform: translateX(-200px) translateY(-50%);
+  }
+  to {
+    opacity: 0.9;
+    transform: translateX(0) translateY(-50%);
+  }
+}
+
+@keyframs fade-out {
+  from {
+    opacity: 0.9;
+    transform: translateX(0) translateY(-50%);
+  }
+  to {
+    opacity: 0.7;
+    transform: translateX(-200px) translateY(-50%);
+  }
+}
