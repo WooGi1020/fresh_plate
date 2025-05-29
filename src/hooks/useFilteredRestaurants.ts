@@ -15,8 +15,12 @@ export default function useFilteredRestaurants(): Restaurant[] {
     const query = searchParams.get("q") || "";
     const normalizedQuery = normalize(query);
 
+    const isGlutenFreeFilter = searchParams.get("glutenfree") === "true";
+
     const shouldExclude = (menu: string): boolean => {
       for (const [key, ingredients] of Object.entries(allergenIngredientsMap)) {
+        if (key === "glutenfree") continue;
+
         if (searchParams.get(key) === "true") {
           if (ingredients.some((ingredient) => menu.includes(ingredient))) {
             return true;
@@ -34,7 +38,14 @@ export default function useFilteredRestaurants(): Restaurant[] {
       const matchesQuery =
         normalizedQuery === "" || name.includes(normalizedQuery) || address.includes(normalizedQuery);
 
-      return matchesQuery && !shouldExclude(menu);
+      if (!matchesQuery) return false;
+
+      if (isGlutenFreeFilter) {
+        return menu.includes("글루텐프리");
+      } else {
+        // 그 외에는 기존 제외 필터만 적용
+        return !shouldExclude(menu);
+      }
     });
 
     setFiltered(result);

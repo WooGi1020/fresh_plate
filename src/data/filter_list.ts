@@ -1,6 +1,6 @@
 const allergenIngredientsMap: Record<string, string[]> = {
   no_nuts: ["아몬드", "호두", "피스타치오", "캐슈넛", "땅콩", "잣", "마카다미아", "견과류"],
-  no_milk: ["우유", "치즈", "버터", "크림", "요거트", "연유", "유제품"],
+  no_milk: ["우유", "치즈", "버터", "크림", "요거트", "연유", "유제품, 라떼"],
   no_seafood: [
     "새우",
     "오징어",
@@ -15,6 +15,7 @@ const allergenIngredientsMap: Record<string, string[]> = {
     "참치",
     "문어",
     "전복",
+    "해산물",
   ],
   glutenfree: [
     "밀가루",
