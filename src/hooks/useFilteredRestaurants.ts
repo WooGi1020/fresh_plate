@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import rawData from "@/data/merged_vegan_restaurants.json";
 import { Restaurant } from "vegan";
 import normalize from "@/utils/normalize";
-import allergenIngredientsMap from "@/data/filter_list";
+import allergenIngredientsMap from "@/constants/filter_list";
 
 const rawdata = rawData as Restaurant[];
 

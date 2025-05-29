@@ -6,6 +6,9 @@ import { Restaurant } from "vegan";
 import StarRating from "@/app/search/components/customBalloon/StarRating";
 import { useEffect, useState } from "react";
 
+import imageRenderList from "@/constants/image_render_list";
+import Image from "next/image";
+
 const CustomBalloon = ({
   restaurant,
   onClose,
@@ -16,6 +19,7 @@ const CustomBalloon = ({
   map: kakao.maps.Map;
 }) => {
   const [placeUrl, setPlaceUrl] = useState<string | null>(null);
+  const number = Math.floor(Math.random() * 4);
 
   useEffect(() => {
     if (!map) return;
@@ -47,8 +51,8 @@ const CustomBalloon = ({
 
       {/* 상단: 이미지 + 식당 정보 */}
       <div className="flex gap-4">
-        <div className="w-24 h-24 bg-gray-300 flex items-center justify-center rounded-md text-[#6b4f3b] text-xl">
-          photo
+        <div className="w-24 h-24 bg-gray-300 flex items-center justify-center rounded-md text-[#6b4f3b] text-xl relative overflow-hidden">
+          <Image src={`${imageRenderList[number]}`} alt="식당 개별 이미지" fill className="object-cover" />
         </div>
         <div className="flex-1">
           {placeUrl ? (
