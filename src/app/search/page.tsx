@@ -1,9 +1,12 @@
+import { Suspense } from "react";
 import MapWrapper from "@/app/search/components/kakaomap/MapWrapper";
 
 export default function Search() {
   return (
     <section className="w-full h-full">
-      <MapWrapper />
+      <Suspense fallback={<div>Loading map...</div>}>
+        <MapWrapper />
+      </Suspense>
     </section>
   );
 }
