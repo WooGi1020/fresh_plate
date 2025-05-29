@@ -33,6 +33,7 @@ export default function RootLayout({
         />
         <Header />
         <main className="w-full h-full">{children}</main>
+        <div id="modal-container"></div>
       </body>
     </html>
   );

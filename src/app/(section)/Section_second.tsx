@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Section_second = () => {
   return (
-    <div className="min-h-screen h-full py-10 sm:py-4 flex items-center justify-center bg-[#CBD2A9] px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen h-full py-10 sm:py-4 flex items-center justify-center bg-secondary-default px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-[1280px] flex flex-col lg:flex-row items-center justify-center sm:gap-5">
         {/* 이미지 그룹 */}
         <div className="flex flex-col items-center gap-6">
