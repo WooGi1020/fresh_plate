@@ -1,9 +1,9 @@
-import KakaoMap from "@/app/search/components/Kakaomap";
+import MapWrapper from "@/app/search/components/kakaomap/MapWrapper";
 
 export default function Search() {
   return (
     <section className="w-full h-full">
-      <KakaoMap />
+      <MapWrapper />
     </section>
   );
 }
