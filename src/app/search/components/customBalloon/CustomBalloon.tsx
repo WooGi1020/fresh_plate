@@ -82,7 +82,7 @@ const CustomBalloon = ({
             <div title="비건 표시">
               <VeganIcon width={30} height={30} />
             </div>
-            {restaurant.menu.includes("글루텐프리".trim()) && (
+            {restaurant.vegan_flags.includes("글루텐프리".trim()) && (
               <div title="글루텐프리 표시">
                 <GlutenIcon width={30} height={30} />
               </div>
