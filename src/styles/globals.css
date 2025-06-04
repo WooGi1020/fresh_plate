@@ -91,3 +91,37 @@ body {
     transform: translateX(-200px) translateY(-50%);
   }
 }
+
+.scroll-box {
+  scrollbar-width: thin; /* Firefox용 얇은 스크롤바 */
+  scrollbar-color: #888 transparent; /* Firefox용: thumb, track */
+  overflow: auto; /* 스크롤 활성화 */
+}
+
+/* WebKit 기반 브라우저용 */
+.scroll-box::-webkit-scrollbar {
+  width: 8px; /* 얇게 설정 */
+}
+
+.scroll-box::-webkit-scrollbar-track {
+  background: transparent; /* 트랙 투명 처리 */
+}
+
+.scroll-box::-webkit-scrollbar-thumb {
+  background-color: #888; /* thumb 색상 */
+  border-radius: 5px;
+}
+
+.scroll-box::-webkit-scrollbar-button:single-button {
+  display: none;
+  background: transparent;
+  height: 0;
+  width: 0;
+}
+
+.scroll-box::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+  background: transparent;
+}
