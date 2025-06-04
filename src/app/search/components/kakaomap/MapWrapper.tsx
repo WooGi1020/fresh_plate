@@ -8,17 +8,18 @@ import CustomSideBar from "@/app/search/components/CustomSideBar";
 import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
 import SidebarToggleButton from "@/app/search/components/kakaomap/SidebarToggleButton";
 import { useSearchParams } from "next/navigation";
+import { Restaurant } from "vegan";
 
-export default function MapWrapper() {
+export default function MapWrapper({ initialData }: { initialData: Restaurant[] }) {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
-  const restaurants = useFilteredRestaurants();
+  const restaurants = useFilteredRestaurants(initialData);
 
-  const [error] = useKakaoLoader({
+  const [loading] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY!,
     libraries: ["services", "clusterer"],
   });
@@ -31,7 +32,7 @@ export default function MapWrapper() {
     }
   }, [restaurants, map]);
 
-  if (error) return <div className="w-screen h-screen flex justify-center items-center">Error loading map</div>;
+  if (loading) return <div className="w-screen h-screen flex justify-center items-center">loading map</div>;
 
   return (
     <Map
