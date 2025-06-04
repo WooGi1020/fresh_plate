@@ -45,7 +45,7 @@ export default function MapWrapper({ initialData }: { initialData: Restaurant[] 
     >
       <SidebarToggleButton showSidebar={showSidebar} toggleSidebar={() => setShowSidebar((prev) => !prev)} />
       {showSidebar ? (
-        <CustomSideBar setShowSidebar={setShowSidebar} />
+        <CustomSideBar />
       ) : (
         <CustomSideList initialData={restaurants} setSelectedId={setSelectedId} map={map!} />
       )}

@@ -24,7 +24,7 @@ const parseSearchParams = (searchParams: ReturnType<typeof useSearchParams>): Fi
   return parsed;
 };
 
-const CustomSideBar = ({ setShowSidebar }: { setShowSidebar: (value: boolean) => void }) => {
+const CustomSideBar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
