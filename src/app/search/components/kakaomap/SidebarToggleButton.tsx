@@ -1,5 +1,4 @@
 import ArrowIcon from "@/icons/arrow_icon.svg";
-import ArrowLeftIcon from "@/icons/arrow_left_icon.svg";
 
 interface Props {
   showSidebar: boolean;
