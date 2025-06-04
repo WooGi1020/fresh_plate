@@ -9,6 +9,7 @@ import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
 import SidebarToggleButton from "@/app/search/components/kakaomap/SidebarToggleButton";
 import { useSearchParams } from "next/navigation";
 import { Restaurant } from "vegan";
+import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
 
 export default function MapWrapper({ initialData }: { initialData: Restaurant[] }) {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
@@ -43,7 +44,11 @@ export default function MapWrapper({ initialData }: { initialData: Restaurant[] 
       onCreate={setMap}
     >
       <SidebarToggleButton showSidebar={showSidebar} toggleSidebar={() => setShowSidebar((prev) => !prev)} />
-      {showSidebar && <CustomSideBar />}
+      {showSidebar ? (
+        <CustomSideBar />
+      ) : (
+        <CustomSideList initialData={restaurants} setSelectedId={setSelectedId} map={map!} />
+      )}
       {restaurants.length > 0 ? (
         <MarkerLayer restaurants={restaurants} selectedId={selectedId} setSelectedId={setSelectedId} />
       ) : (

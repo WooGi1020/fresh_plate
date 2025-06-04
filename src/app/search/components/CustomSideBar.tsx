@@ -8,20 +8,8 @@ import SearchIcon from "@/icons/search_icon.svg";
 import AllegyIcon from "@/icons/allegy_icon.svg";
 import FoodIcon from "@/icons/food_icon.svg";
 import ReturnIcon from "@/icons/return_icon.svg";
-
-const allergyKeys = Object.keys(allergyFilterMap) as (keyof typeof allergyFilterMap)[];
-
-const defaultFilters: Record<string, string | boolean> = {
-  q: "",
-  location: false,
-  lacto: false,
-  ovo: false,
-  glutenfree: false,
-  ...Object.fromEntries(allergyKeys.map((key) => [key, false])),
-};
-
-type Filters = typeof defaultFilters;
-type FilterKey = keyof Filters;
+import { FilterKey, Filters } from "vegan";
+import { defaultFilters, allergyKeys } from "@/constants/defaultFilters";
 
 const parseSearchParams = (searchParams: ReturnType<typeof useSearchParams>): Filters => {
   const parsed: Filters = { ...defaultFilters };
