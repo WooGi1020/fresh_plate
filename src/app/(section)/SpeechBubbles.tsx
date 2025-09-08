@@ -1,4 +1,4 @@
-import { speechBubbles } from "@/app/(section)/position";
+import { speechBubbles } from "@/constants/position";
 import Image from "next/image";
 
 const SpeechBubbles = () => {

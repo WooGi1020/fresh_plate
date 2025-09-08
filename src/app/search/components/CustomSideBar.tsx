@@ -9,15 +9,18 @@ import AllegyIcon from "@/icons/allegy_icon.svg";
 import FoodIcon from "@/icons/food_icon.svg";
 import ReturnIcon from "@/icons/return_icon.svg";
 import { FilterKey, Filters } from "vegan";
-import { defaultFilters, allergyKeys } from "@/constants/defaultFilters";
+import { defaultFilters, allergyKeys } from "@/utils/defaultFilters";
 
-const parseSearchParams = (searchParams: ReturnType<typeof useSearchParams>): Filters => {
+const parseSearchParams = (
+  searchParams: ReturnType<typeof useSearchParams>
+): Filters => {
   const parsed: Filters = { ...defaultFilters };
 
   for (const key in defaultFilters) {
     const val = searchParams.get(key);
     if (val !== null) {
-      parsed[key as FilterKey] = val === "true" ? true : val === "false" ? false : val;
+      parsed[key as FilterKey] =
+        val === "true" ? true : val === "false" ? false : val;
     }
   }
 
@@ -29,7 +32,9 @@ const CustomSideBar = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState<Filters>(() => parseSearchParams(searchParams));
+  const [filters, setFilters] = useState<Filters>(() =>
+    parseSearchParams(searchParams)
+  );
   const [searchInput, setSearchInput] = useState(filters.q as string);
 
   useEffect(() => {
@@ -50,7 +55,11 @@ const CustomSideBar = () => {
     router.replace(`${pathname}?${params.toString()}`);
   };
 
-  const renderCheckbox = (key: FilterKey, label: string, colorClass?: string) => (
+  const renderCheckbox = (
+    key: FilterKey,
+    label: string,
+    colorClass?: string
+  ) => (
     <label className="flex items-center gap-2 text-gray-700" key={key}>
       <input
         type="checkbox"
@@ -73,7 +82,7 @@ const CustomSideBar = () => {
           <button
             title="지도 초기화"
             onClick={() => router.replace(`${pathname}`)}
-            className="border-transparent hover:bg-neutral-900/10 rounded-md p-1"
+            className="cursor-pointer border-transparent hover:bg-neutral-900/10 rounded-md p-1"
           >
             <ReturnIcon fill="#504840" />
           </button>
@@ -91,7 +100,7 @@ const CustomSideBar = () => {
             }
           }}
           placeholder="장소, 주소 검색"
-          className="w-full px-3 py-1.5 rounded-md border border-gray-300 text-[13px] placeholder-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900"
+          className="w-full px-3 py-1.5 rounded-md border border-gray-500 text-[13px] placeholder-neutral-900 focus:outline-hidden focus:ring-1 focus:ring-neutral-900"
         />
       </div>
 
@@ -116,7 +125,9 @@ const CustomSideBar = () => {
           <AllegyIcon width={20} height={20} fill="#dc2626" />
           알레르기 필터
         </div>
-        {allergyKeys.map((key) => renderCheckbox(key, `${allergyFilterMap[key]} 제외`, "accent-red-400"))}
+        {allergyKeys.map((key) =>
+          renderCheckbox(key, `${allergyFilterMap[key]} 제외`, "accent-red-400")
+        )}
       </div>
     </div>
   );

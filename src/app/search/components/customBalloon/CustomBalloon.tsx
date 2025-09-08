@@ -96,9 +96,9 @@ const CustomBalloon = ({
 
       {/* 구분선 */}
       <div className="flex items-center w-full gap-4 my-2">
-        <hr className="flex-grow border-[1.5px] border-neutral-900" />
+        <hr className="grow border-[1.5px] border-neutral-900" />
         <p className="whitespace-nowrap text-neutral-900 font-semibold">Review</p>
-        <hr className="flex-grow border-[1.5px] border-neutral-900" />
+        <hr className="grow border-[1.5px] border-neutral-900" />
       </div>
       {/* 알러지 반응 구분 */}
       <div className="flex justify-between mb-3 gap-4 w-full text-center">

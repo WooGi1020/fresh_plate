@@ -7,7 +7,7 @@ const Section_third = () => {
         {/* 상단 섹션 */}
         <div className="flex flex-col lg:flex-row items-center gap-10">
           {/* 첫 번째 이미지 */}
-          <div className="relative w-full max-w-[415px] aspect-[4/3] lg:aspect-auto lg:h-[345px]">
+          <div className="relative w-full max-w-[415px] aspect-4/3 lg:aspect-auto lg:h-[345px]">
             <Image
               src="/images/home/section3_first.png"
               alt="섹션3 첫번째 이미지"
@@ -33,7 +33,7 @@ const Section_third = () => {
           </div>
 
           {/* 두 번째 이미지 */}
-          <div className="relative w-full max-w-[550px] aspect-[4/3] lg:aspect-auto lg:h-[345px]">
+          <div className="relative w-full max-w-[550px] aspect-4/3 lg:aspect-auto lg:h-[345px]">
             <Image
               src="/images/home/section3_second.png"
               alt="섹션3 두번째 이미지"

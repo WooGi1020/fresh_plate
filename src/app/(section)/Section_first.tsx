@@ -15,7 +15,7 @@ const Section_first = () => {
         </div>
 
         {/* 로고 이미지 */}
-        <div className="w-full max-w-[586px] aspect-[586/434] relative mx-auto md:min-h-[300px]">
+        <div className="w-full max-w-[586px] aspect-586/434 relative mx-auto md:min-h-[300px]">
           <Image
             src="/images/home/section1_big_logo.png"
             alt="첫번째 섹션 서비스 로고"

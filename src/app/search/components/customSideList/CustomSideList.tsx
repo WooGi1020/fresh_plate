@@ -17,18 +17,18 @@ const CustomSideList = ({
       {initialData == null ? (
         <>
           <div className="flex items-center w-full gap-2 my-2">
-            <hr className="flex-grow border-[1.5px] border-neutral-900" />
+            <hr className="grow border-[1.5px] border-neutral-900" />
             <p className="whitespace-nowrap text-neutral-900 font-semibold">No List</p>
-            <hr className="flex-grow border-[1.5px] border-neutral-900" />
+            <hr className="grow border-[1.5px] border-neutral-900" />
           </div>
           <p className="text-center text-neutral-600 mt-10">로딩 중...</p>
         </>
       ) : (
         <>
           <div className="flex items-center w-full gap-2 my-2">
-            <hr className="flex-grow border-[1.5px] border-neutral-900" />
+            <hr className="grow border-[1.5px] border-neutral-900" />
             <p className="whitespace-nowrap text-neutral-900 font-semibold">List</p>
-            <hr className="flex-grow border-[1.5px] border-neutral-900" />
+            <hr className="grow border-[1.5px] border-neutral-900" />
           </div>
 
           {initialData.length === 0 ? (
