@@ -22,15 +22,15 @@ const Header = () => {
         <Image src="/images/home/small_logo.png" alt="홈 로고 링크 이미지" fill className="object-contain" />
       </Link>
       <div className="flex justify-evenly items-center max-w-[600px] w-full min-w-[200px]">
-        <Link href="/search" className="flex items-center gap-1 p-1 hover:bg-[#504840]/10 rounded-md">
+        <Link href="/search" className="flex items-center gap-1 p-1 hover:bg-neutral-900/10 rounded-md">
           <SearchIcon width={24} height={24} />
           <span className="text-[20px] sm:text-[20px] hidden sm:inline ">식당 찾기</span>
         </Link>
-        <Link href="/search" className="flex items-center gap-1 p-1 hover:bg-[#504840]/10 rounded-md">
+        <Link href="/search" className="flex items-center gap-1 p-1 hover:bg-neutral-900/10 rounded-md">
           <EventIcon />
           <span className="text-[20px] sm:text-[20px] hidden sm:inline ">My 혜택</span>
         </Link>
-        <Link href="/search" className="flex items-center p-1 gap-1 hover:bg-[#504840]/10 rounded-md">
+        <Link href="/search" className="flex items-center p-1 gap-1 hover:bg-neutral-900/10 rounded-md">
           <CenterIcon />
           <span className="text-[20px] sm:text-[20px] hidden sm:inline ">고객 센터</span>
         </Link>

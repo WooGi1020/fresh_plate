@@ -14,7 +14,7 @@ const Section_fourth = () => {
         {/* 이미지 섹션 */}
         <div className="flex flex-col xl:flex-row justify-center xl:justify-between items-center gap-8 mt-10 w-full max-w-[1640px]">
           {/* 첫 번째 이미지 */}
-          <div className="w-full max-w-[820px] aspect-[820/610] relative">
+          <div className="w-full max-w-[820px] aspect-820/610 relative">
             <Image
               src="/images/home/section4_first.png"
               alt="검색 식당 이미지1"
@@ -27,7 +27,7 @@ const Section_fourth = () => {
 
           {/* 두 번째 이미지 + 텍스트 */}
           <div className="flex flex-col items-center w-full max-w-[820px]">
-            <div className="w-full aspect-[820/610] relative">
+            <div className="w-full aspect-820/610 relative">
               <Image
                 src="/images/home/section4_second.png"
                 alt="검색 식당 이미지2"

@@ -7,7 +7,7 @@ const Section_second = () => {
         {/* 이미지 그룹 */}
         <div className="flex flex-col items-center gap-6">
           {/* 필터 이미지 */}
-          <div className="w-full max-w-[500px] h-[250px] aspect-[10/7] relative">
+          <div className="w-full max-w-[500px] h-[250px] aspect-10/7 relative">
             <Image
               src="/images/home/section2_filter.png"
               alt="2번째 섹션 필터링 이미지"
@@ -18,7 +18,7 @@ const Section_second = () => {
           </div>
 
           {/* 사람 이미지 */}
-          <div className="w-full max-w-[500px] h-[300px] aspect-[10/9] relative bottom-14">
+          <div className="w-full max-w-[500px] h-[300px] aspect-10/9 relative bottom-14">
             <Image
               src="/images/home/section2_person.png"
               alt="2번째 섹션 사람 이미지"

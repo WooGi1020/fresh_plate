@@ -1,4 +1,4 @@
-import { defaultFilters } from "@/constants/defaultFilters";
+import { defaultFilters } from "@/utils/defaultFilters";
 
 declare module "vegan" {
   type Filters = typeof defaultFilters;

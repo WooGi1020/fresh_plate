@@ -11,7 +11,11 @@ import { useSearchParams } from "next/navigation";
 import { Restaurant } from "vegan";
 import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
 
-export default function MapWrapper({ initialData }: { initialData: Restaurant[] }) {
+export default function MapWrapper({
+  initialData,
+}: {
+  initialData: Restaurant[];
+}) {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -33,7 +37,12 @@ export default function MapWrapper({ initialData }: { initialData: Restaurant[] 
     }
   }, [restaurants, map]);
 
-  if (loading) return <div className="w-screen h-screen flex justify-center items-center">loading map</div>;
+  if (loading)
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        loading map
+      </div>
+    );
 
   return (
     <Map
@@ -43,14 +52,25 @@ export default function MapWrapper({ initialData }: { initialData: Restaurant[] 
       onClick={() => setSelectedId(null)}
       onCreate={setMap}
     >
-      <SidebarToggleButton showSidebar={showSidebar} toggleSidebar={() => setShowSidebar((prev) => !prev)} />
+      <SidebarToggleButton
+        showSidebar={showSidebar}
+        toggleSidebar={() => setShowSidebar((prev) => !prev)}
+      />
       {showSidebar ? (
         <CustomSideBar />
       ) : (
-        <CustomSideList initialData={restaurants} setSelectedId={setSelectedId} map={map!} />
+        <CustomSideList
+          initialData={restaurants}
+          setSelectedId={setSelectedId}
+          map={map!}
+        />
       )}
       {restaurants.length > 0 ? (
-        <MarkerLayer restaurants={restaurants} selectedId={selectedId} setSelectedId={setSelectedId} />
+        <MarkerLayer
+          restaurants={restaurants}
+          selectedId={selectedId}
+          setSelectedId={setSelectedId}
+        />
       ) : (
         query !== null && <NoResultsModal key={query} />
       )}
