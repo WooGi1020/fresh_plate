@@ -97,12 +97,14 @@ const Header = () => {
         )}
       </div>
 
-      <Link href="/login" className="flex items-center gap-1">
-        <LoginIcon />
-        <span className="text-[16px] sm:text-[16px] hidden sm:inline">
-          로그인
-        </span>
-      </Link>
+      {pathname !== "/auth" && (
+        <Link href="/auth" className="flex items-center gap-1">
+          <LoginIcon />
+          <span className="text-[16px] sm:text-[16px] hidden sm:inline">
+            로그인
+          </span>
+        </Link>
+      )}
     </header>
   );
 };
