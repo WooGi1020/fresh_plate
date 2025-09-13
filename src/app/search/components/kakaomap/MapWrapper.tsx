@@ -8,6 +8,7 @@ import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
 import { useSearchParams } from "next/navigation";
 import { Restaurant } from "vegan";
 import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
+import LoadingIcon from "@/icons/loading_icon.svg";
 
 export default function MapWrapper({
   initialData,
@@ -37,7 +38,11 @@ export default function MapWrapper({
   if (loading)
     return (
       <div className="w-screen h-screen flex justify-center items-center">
-        loading map
+        <LoadingIcon
+          className="animate-spin fill-[#3E5329]"
+          width={50}
+          height={50}
+        />
       </div>
     );
 
