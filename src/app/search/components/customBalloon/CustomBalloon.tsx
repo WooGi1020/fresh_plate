@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 
 import imageRenderList from "@/constants/image_render_list";
 import Image from "next/image";
+import TrustScore from "@/components/common/TrustScore";
+// import { hash } from "crypto";
 
 const CustomBalloon = ({
   restaurant,
@@ -19,7 +21,11 @@ const CustomBalloon = ({
   map: kakao.maps.Map;
 }) => {
   const [placeUrl, setPlaceUrl] = useState<string | null>(null);
-  const number = Math.floor(Math.random() * 4);
+  const number =
+    Array.from(restaurant.id).reduce(
+      (acc, char) => acc + char.charCodeAt(0),
+      0
+    ) % 4;
 
   useEffect(() => {
     if (!map) return;
@@ -32,7 +38,7 @@ const CustomBalloon = ({
         setPlaceUrl(null);
       }
     });
-  }, [map]);
+  }, [map, restaurant.name]);
 
   return (
     <div
@@ -43,7 +49,7 @@ const CustomBalloon = ({
     >
       {/* 닫기 버튼 */}
       <button
-        className="absolute top-2 right-2 text-2xl font-bold text-neutral-900 border-2 border-transparent hover:border-neutral-900/50 rounded-md p-1"
+        className="absolute top-2 right-2 text-2xl font-bold text-neutral-900 border-2 border-transparent hover:bg-neutral-300 cursor-pointer rounded-md p-1"
         onClick={onClose}
       >
         <CloseIcon width={20} height={20} />
@@ -52,24 +58,37 @@ const CustomBalloon = ({
       {/* 상단: 이미지 + 식당 정보 */}
       <div className="flex gap-4">
         <div className="w-24 h-24 bg-gray-300 flex items-center justify-center rounded-md text-[#6b4f3b] text-xl relative overflow-hidden">
-          <Image src={`${imageRenderList[number]}`} alt="식당 개별 이미지" fill className="object-cover" />
+          <Image
+            src={`${imageRenderList[number]}`}
+            alt="식당 개별 이미지"
+            fill
+            className="object-cover"
+          />
         </div>
         <div className="flex-1">
-          {placeUrl ? (
-            <a
-              href={placeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
-              title={restaurant.name}
-            >
-              {restaurant.name}
-            </a>
-          ) : (
-            <h2 className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px]" title={restaurant.name}>
-              {restaurant.name}
-            </h2>
-          )}
+          <div className="flex items-center">
+            {placeUrl ? (
+              <a
+                href={placeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
+                title={restaurant.name}
+              >
+                {restaurant.name}
+              </a>
+            ) : (
+              <h2
+                className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px]"
+                title={restaurant.name}
+              >
+                {restaurant.name}
+              </h2>
+            )}
+            <div className="mb-1">
+              <TrustScore data={restaurant} />
+            </div>
+          </div>
 
           <div className="flex items-center gap-2 mb-1">
             <StarRating rating={3.5} />
@@ -97,7 +116,9 @@ const CustomBalloon = ({
       {/* 구분선 */}
       <div className="flex items-center w-full gap-4 my-2">
         <hr className="grow border-[1.5px] border-neutral-900" />
-        <p className="whitespace-nowrap text-neutral-900 font-semibold">Review</p>
+        <p className="whitespace-nowrap text-neutral-900 font-semibold">
+          Review
+        </p>
         <hr className="grow border-[1.5px] border-neutral-900" />
       </div>
       {/* 알러지 반응 구분 */}
