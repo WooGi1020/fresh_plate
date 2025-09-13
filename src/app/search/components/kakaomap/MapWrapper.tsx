@@ -4,12 +4,11 @@ import { Map, useKakaoLoader } from "react-kakao-maps-sdk";
 import { useState, useEffect } from "react";
 import useFilteredRestaurants from "@/hooks/useFilteredRestaurants";
 import NoResultsModal from "@/app/search/components/emptyData/EmptyDataModal";
-import CustomSideBar from "@/app/search/components/CustomSideBar";
 import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
-import SidebarToggleButton from "@/app/search/components/kakaomap/SidebarToggleButton";
 import { useSearchParams } from "next/navigation";
 import { Restaurant } from "vegan";
 import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
+import Modal from "@/components/common/Modal";
 
 export default function MapWrapper({
   initialData,
@@ -18,7 +17,6 @@ export default function MapWrapper({
 }) {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [showSidebar, setShowSidebar] = useState<boolean>(true);
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
@@ -52,19 +50,15 @@ export default function MapWrapper({
       onClick={() => setSelectedId(null)}
       onCreate={setMap}
     >
-      <SidebarToggleButton
-        showSidebar={showSidebar}
-        toggleSidebar={() => setShowSidebar((prev) => !prev)}
-      />
-      {showSidebar ? (
-        <CustomSideBar />
-      ) : (
+      {/* 리스트는 항상 고정 표시 */}
+      {map && (
         <CustomSideList
           initialData={restaurants}
           setSelectedId={setSelectedId}
-          map={map!}
+          map={map}
         />
       )}
+
       {restaurants.length > 0 ? (
         <MarkerLayer
           restaurants={restaurants}
