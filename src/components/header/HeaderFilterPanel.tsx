@@ -1,66 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FilterKey, Filters } from "vegan";
+import { useEffect, useRef } from "react";
+import { FilterKey } from "vegan";
 
 import allergyFilterMap from "@/constants/allergyFilterMap";
-import { defaultFilters, allergyKeys } from "@/utils/defaultFilters";
+import { allergyKeys } from "@/utils/defaultFilters";
 
 import AllegyIcon from "@/icons/allegy_icon.svg";
 import FoodIcon from "@/icons/food_icon.svg";
+import { useSearchFilters } from "@/hooks/useSearchFilters";
 
 type Props = {
   onClose?: () => void;
   className?: string;
 };
 
-const parseSearchParams = (
-  searchParams: ReturnType<typeof useSearchParams>
-): Filters => {
-  const parsed: Filters = { ...defaultFilters };
-  for (const key in defaultFilters) {
-    const val = searchParams.get(key);
-    if (val !== null) {
-      parsed[key as FilterKey] =
-        val === "true" ? true : val === "false" ? false : val;
-    }
-  }
-  return parsed;
-};
-
 export default function HeaderFilterPanel({ onClose, className }: Props) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const [filters, setFilters] = useState<Filters>(() =>
-    parseSearchParams(searchParams)
-  );
-  const [searchInput, setSearchInput] = useState(filters.q as string);
-
+  const { filters, updateFilters, resetFilters } = useSearchFilters();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const next = parseSearchParams(searchParams);
-    setFilters(next);
-    setSearchInput((prev) =>
-      prev !== (next.q as string) ? (next.q as string) : prev
-    );
-  }, [searchParams]);
-
-  const updateFilters = (key: FilterKey, value: string | boolean) => {
-    const updated = { ...filters, [key]: value };
-    setFilters(updated);
-
-    const params = new URLSearchParams();
-    for (const [k, v] of Object.entries(updated)) {
-      if (v !== false && v !== "") params.set(k, String(v));
-    }
-    router.replace(`${pathname}?${params.toString()}`);
-  };
-
-  // 바깥 클릭으로 닫기
+  // 바깥 클릭/ESC로 닫기
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!containerRef.current) return;
@@ -87,7 +46,7 @@ export default function HeaderFilterPanel({ onClose, className }: Props) {
     <label className="flex items-center gap-2 text-[#3b3b3b]" key={key}>
       <input
         type="checkbox"
-        checked={filters[key] as boolean}
+        checked={Boolean(filters[key])}
         onChange={(e) => updateFilters(key, e.target.checked)}
         className={colorClass ?? "accent-[#3b3b3b]"}
       />
@@ -138,7 +97,7 @@ export default function HeaderFilterPanel({ onClose, className }: Props) {
         <div className="flex justify-end gap-2 pt-1">
           <button
             onClick={() => {
-              router.replace(`${pathname}`);
+              resetFilters();
               onClose?.();
             }}
             className="text-sm px-3 py-1.5 rounded-md border border-neutral-300 hover:bg-neutral-50"
