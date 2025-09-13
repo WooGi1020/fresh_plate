@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import SigninForm from "./components/SigninForm";
 import { Mode } from "@/types/auth.schema";

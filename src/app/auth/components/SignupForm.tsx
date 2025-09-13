@@ -23,10 +23,12 @@ function SignupForm({
       // TODO: 회원가입 API 연동
       await new Promise((r) => setTimeout(r, 800));
       // 회원가입 완료 후 로그인 탭으로
+      console.log(values);
       setMode("signin");
       signupMethods.reset();
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가
+      console.log(err);
     }
   });
 

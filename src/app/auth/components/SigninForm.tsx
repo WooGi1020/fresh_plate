@@ -31,6 +31,7 @@ function SigninForm({
       router.replace("/");
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가
+      console.log(err);
     }
   });
 
