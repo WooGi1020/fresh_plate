@@ -6,10 +6,13 @@ const StarRating = ({ rating }: { rating: number }) => {
     const fill = Math.min(Math.max(rating - i, 0), 1); // 0 ~ 1
     return (
       <div key={i} className="relative w-6 h-6">
-        {/* 빈 별 */}
-        <EmptyStarIcon fill="none" stroke="#CBD2A9" strokeWidth={1.5} className="absolute top-0 left-0 w-full h-full" />
+        <EmptyStarIcon
+          fill="none"
+          stroke="#CBD2A9"
+          strokeWidth={1.5}
+          className="absolute top-0 left-0 w-full h-full"
+        />
 
-        {/* 채워진 별 */}
         <FilledStarIcon
           fill="#CBD2A9"
           className="absolute top-0 left-0 h-full"
