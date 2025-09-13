@@ -5,7 +5,7 @@ import { Mode } from "@/types/auth.schema";
 function SlideBanner({ mode }: { mode: Mode }) {
   return (
     <div
-      className={`absolute top-0 w-1/2 h-full flex items-center justify-center bg-[#3E5329] transition-transform duration-400 z-20 rounded-[30px] ${
+      className={`absolute top-0 w-1/2 h-full flex items-center justify-center bg-[#3E5329] transition-transform duration-400 z-20 rounded-[30px] max-md:hidden ${
         mode === "signin" ? "translate-x-0 left-0" : "translate-x-full left-0"
       }`}
     >

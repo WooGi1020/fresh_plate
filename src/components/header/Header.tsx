@@ -52,7 +52,7 @@ const Header = () => {
             <span className="text-[14px] text-neutral-500 group-hover:text-neutral-700">
               지금 바로 찾아보세요!
             </span>
-            <span className="ml-auto text-[12px] text-neutral-400 group-hover:text-neutral-600">
+            <span className="ml-auto text-[12px] text-neutral-400 group-hover:text-neutral-600 max-md:hidden">
               검색하러 가기
             </span>
           </Link>
