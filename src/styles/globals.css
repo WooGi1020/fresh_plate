@@ -15,6 +15,30 @@
   --color-neutral-200: #ffffff;
   --color-neutral-700: #927f71;
   --color-neutral-900: #504840;
+
+  --animate-fade-in: fade-in 0.2s ease-in-out;
+  @keyframes fade-in {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  --animate-fade-down: fade-down 0.1s ease-in-out;
+  @keyframes fade-down {
+    0% {
+      transform: translateY(-10px);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 }
 
 /*
@@ -93,36 +117,6 @@ body {
   height: 1px;
   background: #fffdf4;
   z-index: 2;
-}
-
-.fade-in {
-  animation: fade-in 0.3s ease-in-out;
-}
-
-.fade-out {
-  animation: fade-out 0.5s ease-in-out;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0.7;
-    transform: translateX(-200px);
-  }
-  to {
-    opacity: 0.9;
-    transform: translateX(0);
-  }
-}
-
-@keyframs fade-out {
-  from {
-    opacity: 0.9;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0.7;
-    transform: translateX(-200px);
-  }
 }
 
 .scroll-box {
