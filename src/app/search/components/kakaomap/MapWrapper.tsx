@@ -8,7 +8,6 @@ import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
 import { useSearchParams } from "next/navigation";
 import { Restaurant } from "vegan";
 import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
-import Modal from "@/components/common/Modal";
 
 export default function MapWrapper({
   initialData,
@@ -33,7 +32,7 @@ export default function MapWrapper({
       setSelectedId(first.id);
       map.panTo(new kakao.maps.LatLng(Number(first.lat), Number(first.lng)));
     }
-  }, [restaurants, map]);
+  }, [restaurants, map, query]);
 
   if (loading)
     return (

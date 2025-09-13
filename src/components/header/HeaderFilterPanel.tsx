@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterKey, Filters } from "vegan";
 
 import allergyFilterMap from "@/constants/allergyFilterMap";
 import { defaultFilters, allergyKeys } from "@/utils/defaultFilters";
 
-import SearchIcon from "@/icons/search_icon.svg";
 import AllegyIcon from "@/icons/allegy_icon.svg";
 import FoodIcon from "@/icons/food_icon.svg";
-import ReturnIcon from "@/icons/return_icon.svg";
 
 type Props = {
   onClose?: () => void;

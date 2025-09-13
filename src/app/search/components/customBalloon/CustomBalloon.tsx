@@ -38,7 +38,7 @@ const CustomBalloon = ({
         setPlaceUrl(null);
       }
     });
-  }, [map]);
+  }, [map, restaurant.name]);
 
   return (
     <div
