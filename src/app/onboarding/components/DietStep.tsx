@@ -1,4 +1,5 @@
 "use client";
+import { dietTypeArr } from "@/constants/dietType";
 import { DietType } from "@/types/onBoard.schema";
 import { UseFormSetValue, FieldErrors } from "react-hook-form";
 
@@ -7,13 +8,6 @@ interface Props {
   setValue: UseFormSetValue<any>;
   errors: FieldErrors<any>;
 }
-
-const dietTypeArr: ReadonlyArray<{ key: DietType; label: string }> = [
-  { key: "glutenfree", label: "글루텐프리" },
-  { key: "lacto", label: "락토" },
-  { key: "ovo", label: "오보" },
-  { key: "omnivore", label: "일반식" },
-];
 
 export default function DietStep({ dietTypes, setValue, errors }: Props) {
   const toggleDiet = (key: DietType) => {

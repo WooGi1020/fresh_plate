@@ -74,14 +74,18 @@ const Header = () => {
             />
             <button
               aria-label="필터 열기"
-              aria-expanded={showFilters}
-              onClick={() => setShowFilters((v) => !v)}
+              title="필터 열기"
+              onMouseDown={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                setShowFilters((v) => !v);
+              }}
               className="absolute right-8 rounded-full hover:bg-gray-200 p-2 cursor-pointer outline-none"
             >
               <FilterIcon width={16} height={16} className="text-neutral-600" />
             </button>
             <Link
               href="/search"
+              title="검색어 초기화"
               aria-label="초기화"
               className="absolute right-2 rounded-full hover:bg-gray-200 p-2 cursor-pointer outline-none"
             >
@@ -89,9 +93,7 @@ const Header = () => {
             </Link>
 
             {showFilters && (
-              <HeaderFilterPanel
-                onClose={() => setShowFilters((prev) => !prev)}
-              />
+              <HeaderFilterPanel onClose={() => setShowFilters(false)} />
             )}
           </div>
         )}

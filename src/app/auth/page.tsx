@@ -34,7 +34,7 @@ export default function AuthPage() {
   }, []);
 
   return (
-    <section className="w-full min-h-screen flex items-center justify-center bg-[#f0f0f0] px-4 py-10 bg-[url('/images/bg.png')] bg-cover ">
+    <section className="w-full min-h-screen flex items-center justify-center bg-[#f0f0f0] px-4 py-10 bg-[url('/images/bg2.png')] bg-cover ">
       <div className="w-full min-h-[550px] max-w-3xl grid grid-cols-1 md:grid-cols-2 rounded-4xl overflow-hidden shadow-md relative">
         {/* backgrounds */}
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[100px] h-1/2 bg-[#3E5329] z-0"></div>

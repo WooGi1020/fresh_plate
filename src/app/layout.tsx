@@ -1,21 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_KR } from "next/font/google";
 import "../styles/globals.css";
 import Header from "@/components/header/Header";
 import { Suspense } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const notoSans = Noto_Sans_KR({
+  variable: "--font-noto-sans",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "VeganFree",
+  title: "Fresh Plate",
   description: "알레르기 필터링으로 맞춤 비건 음식점을 찾아보세요!",
   icons: {
     icon: "/favicon.ico",
@@ -29,9 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${notoSans.variable} antialiased`}>
         <Suspense fallback={<div />}>
           <Header />
         </Suspense>

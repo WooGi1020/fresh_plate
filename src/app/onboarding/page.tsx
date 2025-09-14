@@ -75,7 +75,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <section className="min-h-screen w-full flex items-center justify-center bg-[#FBF8EF] px-4 py-10 bg-[url('/images/bg.png')] bg-cover">
+    <section className="min-h-screen w-full flex items-center justify-center bg-[#FBF8EF] px-4 py-10 bg-[url('/images/bg2.png')] bg-cover">
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -84,7 +84,7 @@ export default function OnboardingPage() {
           {/* Progress Bar */}
           <div className="mb-6">
             <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-              <span>새로운 사용자를 위한 설정 단계에요!</span>
+              <span>반가워요😊 새로운 사용자를 위한 설정 단계입니다!</span>
               <span>
                 {step + 1}/{totalSteps}
               </span>
