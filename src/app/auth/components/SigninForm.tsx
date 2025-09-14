@@ -4,7 +4,7 @@ import AuthInput from "./AuthInput";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SigninSchema, SigninValues } from "@/types/auth.schema";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 function SigninForm({
   mode,
@@ -18,6 +18,7 @@ function SigninForm({
     defaultValues: { id: "", password: "" },
     mode: "onSubmit",
   });
+  const router = useRouter();
 
   const [rememberId, setRememberId] = useState(true);
   const [autoLogin, setAutoLogin] = useState(false);

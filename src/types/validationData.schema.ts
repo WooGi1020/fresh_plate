@@ -8,7 +8,7 @@ export const MenuSchema = z.object({
 export const RestaurantSchema = z.object({
   name: z.string().min(1),
   address: z.string().min(1).nullable().optional(),
-  category: z.string().min(1),
+  category: z.array(z.string().min(1)).default([]),
   menu_type: z.string().min(1),
   certification: z.string().nullable().optional(),
   tel: z.string().nullable().optional(),

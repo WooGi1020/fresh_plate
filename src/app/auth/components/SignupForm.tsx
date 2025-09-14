@@ -4,6 +4,7 @@ import { SignupValues, SignupSchema } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import AuthInput from "./AuthInput";
+import { useRouter } from "next/navigation";
 
 function SignupForm({
   mode,
@@ -17,6 +18,7 @@ function SignupForm({
     defaultValues: { id: "", nickname: "", password: "", password2: "" },
     mode: "onSubmit",
   });
+  const router = useRouter();
 
   const onSubmitSignup = signupMethods.handleSubmit(async (values) => {
     try {
@@ -24,7 +26,7 @@ function SignupForm({
       await new Promise((r) => setTimeout(r, 800));
       // 회원가입 완료 후 로그인 탭으로
       console.log(values);
-      setMode("signin");
+      router.push("/onboarding");
       signupMethods.reset();
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가

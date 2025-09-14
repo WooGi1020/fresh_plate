@@ -7,7 +7,7 @@ declare module "vegan" {
   export interface Restaurant {
     name: string;
     address: string | null;
-    category: string;
+    category: string[];
     menu_type: string;
     certification: string;
     tel: string | null;
