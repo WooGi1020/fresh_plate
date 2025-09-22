@@ -54,7 +54,7 @@ function hasValidGeo(r: Restaurant) {
 }
 
 function categoryMenuConsistency(r: Restaurant) {
-  const nameJoin = r.menus.map((m) => m.menu_item).join(" ");
+  const nameJoin = r.menus.map((m) => m.menuItem).join(" ");
   const ingJoin = r.menus.flatMap((m) => m.ingredients).join(" ");
   const text = `${nameJoin} ${ingJoin}`;
   const isBakeryLike =
@@ -63,9 +63,9 @@ function categoryMenuConsistency(r: Restaurant) {
     text
   );
 
-  if (r.menu_type.includes("과자점"))
+  if (r.menuType!.includes("과자점"))
     return isBakeryLike ? 1 : isMealLike ? 0.4 : 0.7;
-  if (r.menu_type.includes("한식") || r.menu_type.includes("양식"))
+  if (r.menuType!.includes("한식") || r.menuType!.includes("양식"))
     return isMealLike ? 1 : isBakeryLike ? 0.6 : 0.7;
   return 0.7;
 }
@@ -97,7 +97,7 @@ export function computeSignals(r: Restaurant) {
       )
     )
   );
-  const allergyConsistency = jaccard(derivedAllergies, r.allergy_flags || []);
+  const allergyConsistency = jaccard(derivedAllergies, r.allergyFlags || []);
 
   return {
     schemaValid: 1,
