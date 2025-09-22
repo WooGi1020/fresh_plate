@@ -1,7 +1,8 @@
+// eslint-config.js (현재 파일)
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
-import unusedImports from "eslint-plugin-unused-imports"; // 추가
+import unusedImports from "eslint-plugin-unused-imports";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,14 +14,12 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  // eslint-disable 주석이 불필요할 때 경고
   { linterOptions: { reportUnusedDisableDirectives: true } },
 
-  // TS/JS 공통: 미사용 변수 경고
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     rules: {
-      "no-unused-vars": "off", // TS용 규칙으로 대체
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
@@ -35,7 +34,6 @@ const eslintConfig = [
     },
   },
 
-  // 미사용 import 경고 (자동 수정도 가능)
   {
     plugins: { "unused-imports": unusedImports },
     files: ["**/*.{js,jsx,ts,tsx}"],
@@ -49,6 +47,27 @@ const eslintConfig = [
           varsIgnorePattern: "^_",
         },
       ],
+    },
+  },
+
+  // ================================
+  // 타입 불일치 실시간 경고 추가
+  // ================================
+  {
+    files: ["**/*.{ts,tsx}"],
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+      project: "./tsconfig.json", // tsconfig 위치
+    },
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": "off", // 필요시
+      "@typescript-eslint/strict-boolean-expressions": "warn",
+      "@typescript-eslint/no-floating-promises": "warn",
+      "@typescript-eslint/no-misused-promises": "warn",
+      "@typescript-eslint/no-unsafe-assignment": "warn",
+      "@typescript-eslint/no-unsafe-call": "warn",
+      "@typescript-eslint/no-unsafe-member-access": "warn",
+      "@typescript-eslint/no-unsafe-return": "warn",
     },
   },
 ];
