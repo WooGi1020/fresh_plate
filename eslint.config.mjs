@@ -33,22 +33,6 @@ const eslintConfig = [
       "no-unreachable": "warn",
     },
   },
-
-  {
-    plugins: { "unused-imports": unusedImports },
-    files: ["**/*.{js,jsx,ts,tsx}"],
-    rules: {
-      "unused-imports/no-unused-imports": "warn",
-      "unused-imports/no-unused-vars": [
-        "warn",
-        {
-          args: "after-used",
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-        },
-      ],
-    },
-  },
 ];
 
 export default eslintConfig;

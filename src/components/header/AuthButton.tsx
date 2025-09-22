@@ -26,7 +26,7 @@ export default function AuthButton() {
 
   if (!isAuthed) {
     return (
-      <a href="/auth" className="flex items-center gap-1">
+      <a href="/sign" className="flex items-center gap-1">
         <LoginIcon />
         <span className="hidden sm:inline text-[16px]">로그인</span>
       </a>
