@@ -22,8 +22,7 @@ export default function filterRestaurants(
   return data.filter((r) => {
     const name = normalize(r.name);
     const address = normalize(r.address);
-    const menuText =
-      r.menus?.map((m) => normalize(m.menu_item)).join(",") ?? "";
+    const menuText = r.menus?.map((m) => normalize(m.menuItem)).join(",") ?? "";
 
     const matchesQuery =
       query === "" ||
