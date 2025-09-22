@@ -3,6 +3,8 @@ import { Noto_Sans_KR } from "next/font/google";
 import "../styles/globals.css";
 import Header from "@/components/header/Header";
 import { Suspense } from "react";
+import { Toaster } from "react-hot-toast";
+import ReactQueryProviders from "@/libs/providers/react-query-provider";
 
 const notoSans = Noto_Sans_KR({
   variable: "--font-noto-sans",
@@ -25,11 +27,14 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${notoSans.variable} antialiased`}>
+        <Toaster position="top-center" reverseOrder={false} />
         <Suspense fallback={<div />}>
           <Header />
         </Suspense>
 
-        <main className="w-full h-full">{children}</main>
+        <main className="w-full h-full">
+          <ReactQueryProviders>{children}</ReactQueryProviders>
+        </main>
         <div id="modal-container"></div>
       </body>
     </html>

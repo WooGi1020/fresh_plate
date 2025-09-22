@@ -6,12 +6,13 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import SearchIcon from "@/icons/search_icon.svg";
-import LoginIcon from "@/icons/login_icon.svg";
+
 import FilterIcon from "@/icons/filter_icon.svg";
 import HeaderFilterPanel from "./HeaderFilterPanel";
 import ResetIcon from "@/icons/return_icon.svg";
 
 import { useSearchFilters } from "@/hooks/useSearchFilters";
+import AuthButton from "./AuthButton";
 
 const Header = () => {
   const pathname = usePathname();
@@ -99,14 +100,7 @@ const Header = () => {
         )}
       </div>
 
-      {pathname !== "/auth" && (
-        <Link href="/auth" className="flex items-center gap-1">
-          <LoginIcon />
-          <span className="text-[16px] sm:text-[16px] hidden sm:inline">
-            로그인
-          </span>
-        </Link>
-      )}
+      {pathname !== "/auth" && <AuthButton />}
     </header>
   );
 };

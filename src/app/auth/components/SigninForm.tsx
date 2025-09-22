@@ -35,7 +35,7 @@ function SigninForm({
       else localStorage.removeItem("remembered_id");
       await login(values);
       toast.success("로그인에 성공했습니다.");
-      router.replace("/onboarding");
+      router.replace("/search");
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가
       if (err instanceof AxiosError) {

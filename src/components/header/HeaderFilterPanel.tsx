@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { FilterKey } from "vegan";
 
 import allergyFilterMap from "@/constants/allergyFilterMap";
 import { allergyKeys } from "@/utils/defaultFilters";
+import { FilterKey } from "@/types/data";
 
 import AllegyIcon from "@/icons/allegy_icon.svg";
 import FoodIcon from "@/icons/food_icon.svg";

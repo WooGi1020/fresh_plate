@@ -1,6 +1,6 @@
 import { IngredientDict } from "@/constants/ingredientDict";
 import { KnownAllergens } from "@/constants/knownAllegens";
-import { RestaurantSchema } from "@/types/validationData.schema";
+import { RestaurantSchema } from "@/types/restaurants.schema";
 import z from "zod";
 
 export type Restaurant = z.infer<typeof RestaurantSchema>;

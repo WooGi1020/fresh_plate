@@ -1,10 +1,10 @@
 import StarRating from "@/app/search/components/customBalloon/StarRating";
 import imageRenderList from "@/constants/image_render_list";
 import Image from "next/image";
-import { Restaurant } from "vegan";
+import { Restaurant } from "@/types/restaurants.schema";
 
-import VeganIcon from "@/icons/vegan_icon.svg";
-import AllegyIcon from "@/icons/allegy_icon.svg";
+import LacToIcon from "@/icons/lacto_icon.svg";
+import OvoIcon from "@/icons/ovo_icon.svg";
 import GlutenIcon from "@/icons/gluten_free_icon.svg";
 import TrustScore from "@/components/common/TrustScore";
 
@@ -15,7 +15,7 @@ const CustomSideListItem = ({
   index,
 }: {
   restaurant: Restaurant;
-  setSelectedId: (value: string | null) => void;
+  setSelectedId: (value: number | null) => void;
   map: kakao.maps.Map;
   index: number;
 }) => {
@@ -24,11 +24,13 @@ const CustomSideListItem = ({
   return (
     <button
       type="button"
-      className="group w-full text-left flex gap-3 items-start
+      className={`group w-full text-left flex gap-3 items-start
                  rounded-lg border border-neutral-200 bg-white/80
                  hover:bg-white focus-visible:outline-none
                  focus-visible:ring-2 focus-visible:ring-neutral-900/20
-                 shadow-sm hover:shadow-md transition-all p-3 cursor-pointer"
+                 shadow-sm hover:shadow-md transition-all p-3 cursor-pointer ${
+                   restaurant.recommended && "ring-2 ring-green-300/50"
+                 } ${restaurant.warning && "ring-2 ring-red-300/50"}`}
       onClick={() => {
         setSelectedId(restaurant.id);
         map.panTo(
@@ -60,24 +62,28 @@ const CustomSideListItem = ({
           {restaurant.address}
         </p>
 
-        <div className="flex items-center gap-1 mt-2">
-          <StarRating rating={3.5} />
+        <div className="flex items-center gap-1 mt-1">
+          <StarRating rating={3.5} size={16} />
           <span className="text-sm text-neutral-800">3.5</span>
           <span className="text-sm text-neutral-400">(4)</span>
         </div>
 
         <div className="flex items-center gap-2 mt-2">
-          <div className="text-neutral-700" title="비건 표시">
-            <VeganIcon width={18} height={18} />
-          </div>
-          {restaurant.vegan_flags?.includes("글루텐프리") && (
-            <div className="text-neutral-700" title="글루텐프리 표시">
+          {restaurant.veganFlags.includes("글루텐프리".trim()) && (
+            <div title="글루텐프리 표시">
               <GlutenIcon width={18} height={18} />
             </div>
           )}
-          <div className="text-[#85A947]" title="알러지 반응 표시">
-            <AllegyIcon width={18} height={18} />
-          </div>
+          {restaurant.veganFlags.includes("락토".trim()) && (
+            <div title="락토 표시">
+              <LacToIcon width={18} height={18} />
+            </div>
+          )}
+          {restaurant.veganFlags.includes("오보".trim()) && (
+            <div title="오보 표시">
+              <OvoIcon width={15} height={15} />
+            </div>
+          )}
         </div>
       </div>
     </button>

@@ -1,7 +1,7 @@
 "use client";
 
 import CustomSideListItem from "@/app/search/components/customSideList/CustomSideListItem";
-import { Restaurant } from "vegan";
+import { Restaurant } from "@/types/restaurants.schema";
 
 const LoadingSkeleton = () => {
   return (
@@ -27,7 +27,7 @@ const CustomSideList = ({
   onOpenFilter,
 }: {
   initialData: Restaurant[];
-  setSelectedId: (value: string | null) => void;
+  setSelectedId: (value: number | null) => void;
   map: kakao.maps.Map;
   onOpenFilter?: () => void;
 }) => {

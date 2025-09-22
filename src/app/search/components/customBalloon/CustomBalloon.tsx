@@ -1,28 +1,38 @@
-import VeganIcon from "@/icons/vegan_icon.svg";
-import AllegyIcon from "@/icons/allegy_icon.svg";
+import LacToIcon from "@/icons/lacto_icon.svg";
+import OvoIcon from "@/icons/ovo_icon.svg";
 import GlutenIcon from "@/icons/gluten_free_icon.svg";
 import CloseIcon from "@/icons/close_icon.svg";
-import { Restaurant } from "vegan";
+import { Restaurant } from "@/types/restaurants.schema";
 import StarRating from "@/app/search/components/customBalloon/StarRating";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import imageRenderList from "@/constants/image_render_list";
 import Image from "next/image";
 import TrustScore from "@/components/common/TrustScore";
-// import { hash } from "crypto";
+import Modal from "@/components/common/Modal";
+import ReviewsModalContent from "./ReviewList";
+import { ReviewInfo } from "@/types/review.schema";
+import ReviewWriteModalContent from "./Review";
+
+import SlidingReviewViewer from "./SlidingReviewViewer";
 
 const CustomBalloon = ({
   restaurant,
   onClose,
   map,
+  reviews = [],
 }: {
   restaurant: Restaurant;
   onClose: () => void;
   map: kakao.maps.Map;
+  reviews?: ReviewInfo[];
 }) => {
   const [placeUrl, setPlaceUrl] = useState<string | null>(null);
+  const [openReviewListModal, setOpenReviewListModal] = useState(false);
+  const [openReviewModal, setOpenReviewModal] = useState(false);
+
   const number =
-    Array.from(restaurant.id).reduce(
+    Array.from(String(restaurant.id)).reduce(
       (acc, char) => acc + char.charCodeAt(0),
       0
     ) % 4;
@@ -40,9 +50,16 @@ const CustomBalloon = ({
     });
   }, [map, restaurant.name]);
 
+  // 평균 평점
+  const averageRating = useMemo(() => {
+    if (!reviews.length) return null;
+    const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+    return Number((sum / reviews.length).toFixed(1));
+  }, [reviews]);
+
   return (
     <div
-      className="w-[350px] sm:w-[420px] shadow-lg  p-4 text-neutral-900 speech-bubble cursor-default opacity-90"
+      className="w-[350px] sm:w-[420px] shadow-lg p-4 text-neutral-900 speech-bubble cursor-default opacity-90"
       onWheel={(e) => {
         e.stopPropagation();
       }}
@@ -91,24 +108,31 @@ const CustomBalloon = ({
           </div>
 
           <div className="flex items-center gap-2 mb-1">
-            <StarRating rating={3.5} />
-            <span className="text-md text-neutral-900 mb-1">3.5</span>
-            <span className="text-md text-neutral-900 mb-1">(4)</span>
+            <StarRating rating={averageRating ?? 0} />
+            <span className="text-md text-neutral-900 mt-0.5">
+              {averageRating?.toFixed(1) ?? "-"}
+            </span>
+            <span className="text-md text-neutral-900 mt-0.5">
+              ({reviews.length})
+            </span>
           </div>
-          <div className="flex gap-2">
-            {/* 아이콘은 임시로 원으로 대체 */}
 
-            <div title="비건 표시">
-              <VeganIcon width={30} height={30} />
-            </div>
-            {restaurant.vegan_flags.includes("글루텐프리".trim()) && (
+          <div className="flex gap-2 mt-2">
+            {restaurant.veganFlags.includes("글루텐프리".trim()) && (
               <div title="글루텐프리 표시">
                 <GlutenIcon width={30} height={30} />
               </div>
             )}
-            <div title="알러지 반응 표시">
-              <AllegyIcon width={30} height={30} fill="#85A947" />
-            </div>
+            {restaurant.veganFlags.includes("락토".trim()) && (
+              <div title="락토 표시">
+                <LacToIcon width={30} height={30} />
+              </div>
+            )}
+            {restaurant.veganFlags.includes("오보".trim()) && (
+              <div title="오보 표시" className="mt-0.5">
+                <OvoIcon width={26} height={26} />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -121,29 +145,88 @@ const CustomBalloon = ({
         </p>
         <hr className="grow border-[1.5px] border-neutral-900" />
       </div>
-      {/* 알러지 반응 구분 */}
-      <div className="flex justify-between mb-3 gap-4 w-full text-center">
-        <div className="border border-neutral-900 px-3 py-1 rounded-lg text-sm">
-          <span>
-            알레르기 <br /> 반응 없음
-          </span>
-        </div>
-        <div className="border border-neutral-900 px-3 py-1 rounded-lg text-sm">
-          <span>
-            알레르기 <br /> 반응 주의
-          </span>
-        </div>
-        <div className="bg-secondary-default px-3 py-1 rounded-lg text-sm shadow-inner border border-neutral-900">
-          <span>
-            알레르기 <br /> 반응 있음
-          </span>
+
+      {/* 알러지 반응 구분 (간소화 칩 + 강조 상태) */}
+      <div className="flex items-center gap-2 mb-3 w-full">
+        {(() => {
+          const base =
+            "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px]";
+          const neutral = "border border-neutral-300 text-neutral-700 bg-white";
+          const active =
+            "border border-neutral-900 text-neutral-900 bg-secondary-default shadow-inner";
+          return (
+            <>
+              <span
+                className={`${base} ${restaurant.warning ? neutral : active}`}
+              >
+                <span
+                  className="w-2 h-2 rounded-full bg-green-500"
+                  aria-hidden
+                />
+                알러지 반응 없음
+              </span>
+              <span className={`${base} ${neutral}`}>
+                <span
+                  className="w-2 h-2 rounded-full bg-amber-400"
+                  aria-hidden
+                />
+                알러지 반응 주의
+              </span>
+              <span
+                className={`${base} ${restaurant.warning ? active : neutral}`}
+              >
+                <span className="w-2 h-2 rounded-full bg-red-500" aria-hidden />
+                알러지 반응 있음
+              </span>
+            </>
+          );
+        })()}
+      </div>
+
+      {/* 최신 리뷰 1건 (스크롤 없음) */}
+      <div className="text-sm w-full flex flex-col gap-2 ">
+        <SlidingReviewViewer reviews={reviews} />
+
+        {/* 전체보기 버튼 */}
+
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={() => setOpenReviewModal(true)}
+            className="text-xs px-3 py-1 rounded-md border border-neutral-300 bg-white hover:bg-neutral-100 cursor-pointer"
+          >
+            리뷰 작성하기
+          </button>
+          {reviews.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setOpenReviewListModal(true)}
+              className="text-xs px-3 py-1 rounded-md border border-neutral-300 bg-white hover:bg-neutral-100 cursor-pointer"
+            >
+              리뷰 더보기
+            </button>
+          )}
         </div>
       </div>
 
-      {/* 리뷰 */}
-      <div className="text-sm py-2 flex items-center justify-center flex-col h-[65px] overflow-y-scroll">
-        <p className="text-neutral-900/50">현재 리뷰가 없습니다.</p>
-      </div>
+      {/* 공통 모달에 자식으로 주입 */}
+      {openReviewListModal && (
+        <Modal setOpenFilter={setOpenReviewListModal}>
+          <ReviewsModalContent
+            restaurantId={Number(restaurant.id as unknown as number)}
+            initialReviews={reviews}
+            onClose={() => setOpenReviewListModal(false)}
+          />
+        </Modal>
+      )}
+      {openReviewModal && (
+        <Modal setOpenFilter={setOpenReviewModal}>
+          <ReviewWriteModalContent
+            restaurantId={1}
+            onClose={() => setOpenReviewModal(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

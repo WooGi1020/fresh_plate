@@ -3,10 +3,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type User = {
+interface User {
   nickname: string;
   memberId: string;
-};
+}
 
 type AuthState = {
   user: User | null;

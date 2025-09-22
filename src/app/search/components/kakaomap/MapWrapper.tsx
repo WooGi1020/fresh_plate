@@ -6,21 +6,18 @@ import useFilteredRestaurants from "@/hooks/useFilteredRestaurants";
 import NoResultsModal from "@/app/search/components/emptyData/EmptyDataModal";
 import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
 import { useSearchParams } from "next/navigation";
-import { Restaurant } from "vegan";
 import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
 import LoadingIcon from "@/icons/loading_icon.svg";
+import { useGetRestaurants } from "@/libs/query/getRestaurantQuery";
 
-export default function MapWrapper({
-  initialData,
-}: {
-  initialData: Restaurant[];
-}) {
+export default function MapWrapper() {
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { data } = useGetRestaurants();
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
-  const restaurants = useFilteredRestaurants(initialData);
+  const restaurants = useFilteredRestaurants(data ?? []);
 
   const [loading] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY!,

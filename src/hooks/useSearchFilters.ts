@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import type React from "react";
-import { FilterKey, Filters } from "vegan";
+import { FilterKey, Filters } from "@/types/data";
 import { defaultFilters } from "@/utils/defaultFilters";
 
 export const parseSearchParams = (
