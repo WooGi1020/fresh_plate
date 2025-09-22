@@ -4,7 +4,10 @@ import { SignupValues, SignupSchema } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from "react-hook-form";
 import AuthInput from "./AuthInput";
-import { useRouter } from "next/navigation";
+import { register } from "@/libs/api/auth.api";
+import z from "zod";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 function SignupForm({
   mode,
@@ -13,24 +16,24 @@ function SignupForm({
   mode: "signin" | "signup";
   setMode: React.Dispatch<React.SetStateAction<"signin" | "signup">>;
 }) {
-  const signupMethods = useForm<SignupValues>({
+  const signupMethods = useForm<z.infer<typeof SignupSchema>>({
     resolver: zodResolver(SignupSchema),
-    defaultValues: { id: "", nickname: "", password: "", password2: "" },
+    defaultValues: { memberId: "", nickname: "", password: "", password2: "" },
     mode: "onSubmit",
   });
-  const router = useRouter();
 
   const onSubmitSignup = signupMethods.handleSubmit(async (values) => {
     try {
-      // TODO: 회원가입 API 연동
-      await new Promise((r) => setTimeout(r, 800));
-      // 회원가입 완료 후 로그인 탭으로
-      console.log(values);
-      router.push("/onboarding");
+      const { memberId, nickname, password } = values;
+      const payload: SignupValues = { memberId, nickname, password };
+
+      await register(payload);
+      setMode("signin");
       signupMethods.reset();
     } catch (err) {
-      // 오류 처리 UI가 필요하면 추가
-      console.log(err);
+      if (err instanceof AxiosError) {
+        toast.error(err.response?.data.message || "회원가입에 실패했습니다.");
+      }
     }
   });
 
@@ -78,10 +81,10 @@ function SignupForm({
       <FormProvider {...signupMethods}>
         <form onSubmit={onSubmitSignup} className="space-y-4">
           <AuthInput
-            name="id"
+            name="memberId"
             label="아이디"
             placeholder="아이디"
-            autoComplete="username"
+            autoComplete="id"
           />
 
           <AuthInput
