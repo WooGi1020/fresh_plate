@@ -39,6 +39,27 @@
       opacity: 1;
     }
   }
+
+  --animate-slide: slide 4s ease-in-out forwards;
+
+  @keyframes slide {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    20% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
 }
 
 /*
@@ -99,7 +120,6 @@ body {
   transform: translateX(-50%);
   width: 35px;
   height: 35px;
-
   background: #fffdf4;
   border-left: 3px solid #504840;
   border-bottom: 3px solid #504840;
@@ -113,8 +133,8 @@ body {
   bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 25px;
-  height: 1px;
+  width: 35px;
+  height: 15px;
   background: #fffdf4;
   z-index: 2;
 }

@@ -1,25 +1,4 @@
-declare module "vegan" {
-  export interface MenuItem {
-    menu_item: string;
-    ingredients: string[];
-  }
+import { defaultFilters } from "@/utils/defaultFilters";
 
-  export interface Restaurant {
-    name: string;
-    address: string | null;
-    category: string[];
-    menu_type: string;
-    certification: string;
-    tel: string | null;
-    lat: string;
-    lng: string;
-    id: string;
-    menus: MenuItem[];
-    vegan_flags: string[];
-    allergy_flags: string[];
-  }
-
-  export interface RestaurantData {
-    restaurants: Restaurant[];
-  }
-}
+export type Filters = typeof defaultFilters;
+export type FilterKey = keyof Filters;

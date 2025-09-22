@@ -1,8 +1,9 @@
 "use client";
 
 import { MapMarker, CustomOverlayMap, useMap } from "react-kakao-maps-sdk";
-import { Restaurant } from "vegan";
+import { Restaurant } from "@/types/restaurants.schema";
 import CustomBalloon from "./customBalloon/CustomBalloon";
+import { mockReviews } from "@/data/review_mockdata";
 
 function MapMarkerWithPan({
   restaurant,
@@ -10,8 +11,8 @@ function MapMarkerWithPan({
   setSelectedId,
 }: {
   restaurant: Restaurant;
-  selectedId: string | null;
-  setSelectedId: (id: string | null) => void;
+  selectedId: number | null;
+  setSelectedId: (id: number | null) => void;
 }) {
   const map = useMap();
   const lat = Number(restaurant.lat || restaurant.lat);
@@ -43,13 +44,19 @@ function MapMarkerWithPan({
         }}
       />
       {isSelected && (
-        <CustomOverlayMap position={position} yAnchor={1.2} clickable zIndex={50}>
+        <CustomOverlayMap
+          position={position}
+          yAnchor={1.2}
+          clickable
+          zIndex={50}
+        >
           <CustomBalloon
             restaurant={restaurant}
             map={map}
             onClose={() => {
               setSelectedId(null);
             }}
+            reviews={mockReviews}
           />
         </CustomOverlayMap>
       )}

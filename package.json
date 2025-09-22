@@ -17,6 +17,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.4",
+    "react-hot-toast": "^2.6.0",
     "react-kakao-maps-sdk": "^1.1.27",
     "zod": "^3.25.30",
     "zustand": "^5.0.5"
@@ -30,6 +31,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.8",
+    "eslint-plugin-unused-imports": "^4.2.0",
     "kakao.maps.d.ts": "^0.1.40",
     "postcss": "^8",
     "tailwindcss": "^4.1.13",

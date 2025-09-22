@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import AuthInput from "./AuthInput";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SigninSchema, SigninValues } from "@/types/auth.schema";
 import { useRouter } from "next/navigation";
+import { login } from "@/libs/api/auth.api";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 function SigninForm({
   mode,
@@ -15,7 +20,10 @@ function SigninForm({
 }) {
   const signinMethods = useForm<SigninValues>({
     resolver: zodResolver(SigninSchema),
-    defaultValues: { id: "", password: "" },
+    defaultValues: {
+      memberId: "",
+      password: "",
+    },
     mode: "onSubmit",
   });
   const router = useRouter();
@@ -23,16 +31,33 @@ function SigninForm({
   const [rememberId, setRememberId] = useState(true);
   const [autoLogin, setAutoLogin] = useState(false);
 
+  // 안전하게 클라이언트 마운트 후 저장된 아이디 주입
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const remembered = localStorage.getItem("remembered_id") || "";
+      if (remembered) {
+        signinMethods.setValue("memberId", remembered, { shouldDirty: false });
+      }
+    } catch {
+      // ignore
+    }
+  }, [signinMethods]);
+
   const onSubmitSignin = signinMethods.handleSubmit(async (values) => {
     try {
-      if (rememberId) localStorage.setItem("remembered_id", values.id);
-      else localStorage.removeItem("remembered_id");
-      // TODO: 로그인 API 연동
-      await new Promise((r) => setTimeout(r, 600));
-      router.replace("/");
+      if (typeof window !== "undefined") {
+        if (rememberId) localStorage.setItem("remembered_id", values.memberId);
+        else localStorage.removeItem("remembered_id");
+      }
+      await login(values);
+      toast.success("로그인에 성공했습니다.");
+      router.replace("/search");
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가
-      console.log(err);
+      if (err instanceof AxiosError) {
+        toast.error(err.response?.data.message || "로그인에 실패했습니다.");
+      }
     }
   });
 
@@ -80,7 +105,7 @@ function SigninForm({
       <FormProvider {...signinMethods}>
         <form onSubmit={onSubmitSignin} className="space-y-4">
           <AuthInput
-            name="id"
+            name="memberId"
             label="아이디"
             placeholder="아이디"
             autoComplete="username"

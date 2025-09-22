@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { Restaurant } from "vegan";
+import { Restaurant } from "@/types/restaurants.schema";
 import filterRestaurants from "@/utils/filterRestaurants";
 
-export default function useFilteredRestaurants(data: Restaurant[]): Restaurant[] {
+export default function useFilteredRestaurants(
+  data: Restaurant[]
+): Restaurant[] {
   const searchParams = useSearchParams();
-  const [filtered, setFiltered] = useState<Restaurant[]>([]);
 
-  useEffect(() => {
-    const result = filterRestaurants(data, searchParams);
-    setFiltered(result);
+  const filtered = useMemo(() => {
+    return filterRestaurants(data, searchParams);
   }, [data, searchParams.toString()]);
 
   return filtered;

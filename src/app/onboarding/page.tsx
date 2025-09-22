@@ -9,6 +9,8 @@ import AllergyStep from "./components/AllegyStep";
 import DietStep from "./components/DietStep";
 import BlacklistStep from "./components/LikeStep";
 import { FormValues, onboardingSchema } from "@/types/onBoard.schema";
+import { setOnboarding } from "@/libs/api/onboarding.api";
+import toast from "react-hot-toast";
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -64,11 +66,11 @@ export default function OnboardingPage() {
   const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
     setSaving(true);
     try {
-      // api 연동 부분
-      console.log(data);
+      await setOnboarding(data);
+      toast.success("설정을 완료했어요!");
       router.replace("/search");
     } catch {
-      alert("저장 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
+      toast.error("저장 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
     } finally {
       setSaving(false);
     }
