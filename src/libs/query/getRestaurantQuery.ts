@@ -13,9 +13,7 @@ type RestaurantResponse = {
   message: string;
 };
 
-async function fetchRestaurants(): Promise<Restaurant[]> {
-  const isLoggedIn = useAuthStore.getState().isAuthed;
-
+async function fetchRestaurants(isLoggedIn: boolean): Promise<Restaurant[]> {
   // 로그인 여부에 따라 다른 API 호출
   const json: RestaurantResponse = isLoggedIn
     ? await getRestaurants()
@@ -27,14 +25,15 @@ async function fetchRestaurants(): Promise<Restaurant[]> {
   return merged.map((r) => RestaurantSchema.parse(r));
 }
 
-export const getRestaurantsQueryOptions = () => {
+export const getRestaurantsQueryOptions = (isLoggedIn: boolean) => {
   return queryOptions({
-    queryKey: ["restaurants"],
-    queryFn: fetchRestaurants,
+    queryKey: ["restaurants", isLoggedIn],
+    queryFn: () => fetchRestaurants(isLoggedIn),
   });
 };
 
 // 훅
 export function useGetRestaurants() {
-  return useQuery(getRestaurantsQueryOptions());
+  const isLoggedIn = useAuthStore.getState().isAuthed;
+  return useQuery(getRestaurantsQueryOptions(isLoggedIn));
 }
