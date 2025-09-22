@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import AuthInput from "./AuthInput";
 import Image from "next/image";
@@ -21,7 +21,7 @@ function SigninForm({
   const signinMethods = useForm<SigninValues>({
     resolver: zodResolver(SigninSchema),
     defaultValues: {
-      memberId: localStorage.getItem("remembered_id") || "",
+      memberId: "",
       password: "",
     },
     mode: "onSubmit",
@@ -31,10 +31,25 @@ function SigninForm({
   const [rememberId, setRememberId] = useState(true);
   const [autoLogin, setAutoLogin] = useState(false);
 
+  // 안전하게 클라이언트 마운트 후 저장된 아이디 주입
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const remembered = localStorage.getItem("remembered_id") || "";
+      if (remembered) {
+        signinMethods.setValue("memberId", remembered, { shouldDirty: false });
+      }
+    } catch {
+      // ignore
+    }
+  }, [signinMethods]);
+
   const onSubmitSignin = signinMethods.handleSubmit(async (values) => {
     try {
-      if (rememberId) localStorage.setItem("remembered_id", values.memberId);
-      else localStorage.removeItem("remembered_id");
+      if (typeof window !== "undefined") {
+        if (rememberId) localStorage.setItem("remembered_id", values.memberId);
+        else localStorage.removeItem("remembered_id");
+      }
       await login(values);
       toast.success("로그인에 성공했습니다.");
       router.replace("/search");
