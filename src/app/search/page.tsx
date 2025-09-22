@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import MapWrapper from "@/app/search/components/kakaomap/MapWrapper";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Fresh Plate | 검색",
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
 export default function Search() {
   return (
     <section className="w-full h-full">
-      <MapWrapper />
+      <Suspense fallback={<div>Loading...</div>}>
+        <MapWrapper />
+      </Suspense>
     </section>
   );
 }

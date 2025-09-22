@@ -31,6 +31,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.8",
+    "eslint-plugin-unused-imports": "^4.2.0",
     "kakao.maps.d.ts": "^0.1.40",
     "postcss": "^8",
     "tailwindcss": "^4.1.13",

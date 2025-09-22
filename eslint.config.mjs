@@ -33,6 +33,43 @@ const eslintConfig = [
       "no-unreachable": "warn",
     },
   },
+
+  {
+    plugins: { "unused-imports": unusedImports },
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          args: "after-used",
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+    },
+  },
+
+  // ================================
+  // 타입 불일치 실시간 경고 추가
+  // ================================
+  {
+    files: ["**/*.{ts,tsx}"],
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+      project: "./tsconfig.json", // tsconfig 위치
+    },
+    rules: {
+      "@typescript-eslint/explicit-function-return-type": "off", // 필요시
+      "@typescript-eslint/strict-boolean-expressions": "warn",
+      "@typescript-eslint/no-floating-promises": "warn",
+      "@typescript-eslint/no-misused-promises": "warn",
+      "@typescript-eslint/no-unsafe-assignment": "warn",
+      "@typescript-eslint/no-unsafe-call": "warn",
+      "@typescript-eslint/no-unsafe-member-access": "warn",
+      "@typescript-eslint/no-unsafe-return": "warn",
+    },
+  },
 ];
 
 export default eslintConfig;
