@@ -6,6 +6,7 @@ import UserIcon from "@/icons/user_icon.svg";
 import LoginIcon from "@/icons/login_icon.svg";
 import { useRouter } from "next/navigation";
 import ProfileViewer from "./ProfileViewer";
+import Link from "next/link";
 
 export default function AuthButton() {
   const { isAuthed, user, hasHydrated } = useAuthStore();
@@ -26,10 +27,10 @@ export default function AuthButton() {
 
   if (!isAuthed) {
     return (
-      <a href="/sign" className="flex items-center gap-1">
+      <Link href="/sign" className="flex items-center gap-1">
         <LoginIcon />
         <span className="hidden sm:inline text-[16px]">로그인</span>
-      </a>
+      </Link>
     );
   }
 

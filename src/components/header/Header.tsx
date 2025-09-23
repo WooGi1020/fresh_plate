@@ -100,7 +100,7 @@ const Header = () => {
         )}
       </div>
 
-      {pathname !== "/auth" && <AuthButton />}
+      {pathname !== "/sign" && <AuthButton />}
     </header>
   );
 };
