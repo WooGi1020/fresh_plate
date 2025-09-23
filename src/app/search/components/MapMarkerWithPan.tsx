@@ -27,7 +27,19 @@ function MapMarkerWithPan({
         position={position}
         onClick={() => {
           setSelectedId(restaurant.id);
-          map.panTo(new kakao.maps.LatLng(lat, lng));
+          const target = new kakao.maps.LatLng(lat, lng);
+          // 화면 중앙보다 살짝 아래에 보이도록 세로 오프셋 적용 (px)
+          const OFFSET_Y_PX = 50;
+          try {
+            const proj = map.getProjection();
+            const pt = proj.pointFromCoords(target);
+            pt.y -= OFFSET_Y_PX;
+            const centered = proj.coordsFromPoint(pt);
+            map.panTo(centered);
+          } catch {
+            // projection 접근 실패 시 기본 panTo
+            map.panTo(target);
+          }
         }}
         image={{
           src: "/icons/marker.png",

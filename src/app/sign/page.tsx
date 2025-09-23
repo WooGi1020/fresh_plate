@@ -1,37 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SigninForm from "./components/SigninForm";
 import { Mode } from "@/types/auth.schema";
 import SignupForm from "./components/SignupForm";
 import SlideBanner from "./components/SlideBanner";
+import useMatchMedia from "@/hooks/useMatchMedia";
 
 export default function AuthPage() {
   const [mode, setMode] = useState<Mode>("signin");
-  const [isMdUp, setIsMdUp] = useState<boolean>(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia("(min-width: 768px)");
-    const handle = (e: MediaQueryListEvent | MediaQueryList) =>
-      setIsMdUp(e.matches);
-
-    // 초기값 설정
-    handle(mql);
-
-    if ("addEventListener" in mql) {
-      mql.addEventListener("change", handle as EventListener);
-    } else {
-      (mql as any).addListener(handle);
-    }
-
-    return () => {
-      if ("removeEventListener" in mql) {
-        mql.removeEventListener("change", handle as EventListener);
-      } else {
-        (mql as any).removeListener(handle);
-      }
-    };
-  }, []);
+  const isMdUp = useMatchMedia("(min-width: 768px");
 
   return (
     <section className="w-full min-h-screen flex items-center justify-center bg-[#f0f0f0] px-4 py-10 bg-[url('/images/bg2.png')] bg-cover ">
