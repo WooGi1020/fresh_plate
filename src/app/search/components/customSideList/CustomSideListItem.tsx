@@ -7,6 +7,7 @@ import LacToIcon from "@/icons/lacto_icon.svg";
 import OvoIcon from "@/icons/ovo_icon.svg";
 import GlutenIcon from "@/icons/gluten_free_icon.svg";
 import TrustScore from "@/components/common/TrustScore";
+import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 
 const CustomSideListItem = ({
   restaurant,
@@ -20,23 +21,28 @@ const CustomSideListItem = ({
   index: number;
 }) => {
   const number = index % 4;
+  const lat = Number(restaurant.lat);
+  const lng = Number(restaurant.lng);
+
+  const handleClick = () => {
+    customOffsetMarkerPosition(map, new kakao.maps.LatLng(lat, lng));
+    setSelectedId(restaurant.id);
+  };
 
   return (
     <button
       type="button"
       className={`group w-full text-left flex gap-3 items-start
                  rounded-lg border border-neutral-200 bg-white/80
-                 hover:bg-white focus-visible:outline-none
+                focus-visible:outline-none
                  focus-visible:ring-2 focus-visible:ring-neutral-900/20
-                 shadow-sm hover:shadow-md transition-all p-3 cursor-pointer ${
-                   restaurant.recommended && "ring-2 ring-green-300/50"
-                 } ${restaurant.warning && "ring-2 ring-red-300/50"}`}
-      onClick={() => {
-        setSelectedId(restaurant.id);
-        map.panTo(
-          new kakao.maps.LatLng(Number(restaurant.lat), Number(restaurant.lng))
-        );
-      }}
+                  transition-all p-3 cursor-pointer ${
+                    restaurant.recommended &&
+                    "shadow-sm hover:shadow-md shadow-green-300/50"
+                  } ${
+        restaurant.warning && "shadow-sm hover:shadow-md shadow-red-300/50"
+      }`}
+      onClick={handleClick}
       aria-label={`${restaurant.name}${
         restaurant.address ? ` - ${restaurant.address}` : ""
       }`}
