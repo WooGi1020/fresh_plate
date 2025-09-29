@@ -11,9 +11,9 @@ import LoadingIcon from "@/icons/loading_icon.svg";
 import { useGetRestaurants } from "@/libs/query/getRestaurantQuery";
 
 export default function MapWrapper() {
+  const { data, isLoading } = useGetRestaurants();
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const { data } = useGetRestaurants();
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
@@ -56,6 +56,7 @@ export default function MapWrapper() {
         <CustomSideList
           initialData={restaurants}
           setSelectedId={setSelectedId}
+          isLoading={isLoading}
           map={map}
         />
       )}
