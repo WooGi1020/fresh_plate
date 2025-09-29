@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export default function useMatchMedia(
-  query: string,
-  defaultValue = true // 👉 PC 기준 가정
-) {
+export default function useMatchMedia(query: string, defaultValue = true) {
   const [matches, setMatches] = useState<boolean>(defaultValue);
 
   useEffect(() => {

@@ -13,6 +13,7 @@ import Modal from "@/components/common/Modal";
 import ReviewsModalContent from "./ReviewList";
 import { ReviewInfo } from "@/types/review.schema";
 import ReviewWriteModalContent from "./Review";
+import LinkIcon from "@/icons/link_icon.svg";
 
 import SlidingReviewViewer from "./SlidingReviewViewer";
 
@@ -59,7 +60,7 @@ const CustomBalloon = ({
 
   return (
     <div
-      className="w-[350px] sm:w-[420px] shadow-lg p-4 text-neutral-900 speech-bubble cursor-default opacity-90"
+      className="w-[350px] sm:w-[420px] shadow-lg text-neutral-900 speech-bubble cursor-default opacity-90"
       onWheel={(e) => {
         e.stopPropagation();
       }}
@@ -89,10 +90,11 @@ const CustomBalloon = ({
                 href={placeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
+                className="group text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
                 title={restaurant.name}
               >
                 {restaurant.name}
+                <LinkIcon className="w-3 h-3 inline-block" />
               </a>
             ) : (
               <h2
@@ -137,20 +139,11 @@ const CustomBalloon = ({
         </div>
       </div>
 
-      {/* 구분선 */}
-      <div className="flex items-center w-full gap-4 my-2">
-        <hr className="grow border-[1.5px] border-neutral-900" />
-        <p className="whitespace-nowrap text-neutral-900 font-semibold">
-          Review
-        </p>
-        <hr className="grow border-[1.5px] border-neutral-900" />
-      </div>
-
       {/* 알러지 반응 구분 (간소화 칩 + 강조 상태) */}
-      <div className="flex items-center gap-2 mb-3 w-full">
+      <div className="flex items-center justify-between gap-2 w-full md:justify-evenly mt-3">
         {(() => {
           const base =
-            "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px]";
+            "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px] max-sm:text-[11px] ";
           const neutral = "border border-neutral-300 text-neutral-700 bg-white";
           const active =
             "border border-neutral-900 text-neutral-900 bg-secondary-default shadow-inner";
@@ -160,27 +153,39 @@ const CustomBalloon = ({
                 className={`${base} ${restaurant.warning ? neutral : active}`}
               >
                 <span
-                  className="w-2 h-2 rounded-full bg-green-500"
+                  className="w-1.5 h-1.5 rounded-full bg-green-500"
                   aria-hidden
                 />
-                알러지 반응 없음
+                알러지 안전
               </span>
               <span className={`${base} ${neutral}`}>
                 <span
-                  className="w-2 h-2 rounded-full bg-amber-400"
+                  className="w-1.5 h-1.5 rounded-full bg-amber-400"
                   aria-hidden
                 />
-                알러지 반응 주의
+                알러지 주의
               </span>
               <span
                 className={`${base} ${restaurant.warning ? active : neutral}`}
               >
-                <span className="w-2 h-2 rounded-full bg-red-500" aria-hidden />
-                알러지 반응 있음
+                <span
+                  className="w-1.5 h-1.5 rounded-full bg-red-500"
+                  aria-hidden
+                />
+                알러지 위험
               </span>
             </>
           );
         })()}
+      </div>
+
+      {/* 구분선 */}
+      <div className="flex items-center w-full gap-4 my-1">
+        <hr className="grow border-[1.5px] border-neutral-900" />
+        <p className="whitespace-nowrap text-neutral-900 font-semibold">
+          Review
+        </p>
+        <hr className="grow border-[1.5px] border-neutral-900" />
       </div>
 
       {/* 최신 리뷰 1건 (스크롤 없음) */}
