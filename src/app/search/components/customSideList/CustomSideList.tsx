@@ -4,18 +4,26 @@ import CustomSideListItem from "@/app/search/components/customSideList/CustomSid
 import { Restaurant } from "@/types/restaurants.schema";
 import { useState } from "react";
 
+const SkeletonItem = () => (
+  <div className="animate-pulse space-y-2 w-full">
+    <div className="h-24 bg-neutral-300 rounded w-full" />
+  </div>
+);
+
 const CustomSideList = ({
   initialData,
   setSelectedId,
   map,
+  isLoading,
   onOpenFilter,
 }: {
   initialData: Restaurant[];
   setSelectedId: (value: number | null) => void;
   map: kakao.maps.Map;
+  isLoading: boolean;
   onOpenFilter?: () => void;
 }) => {
-  const count = initialData?.length ?? 0;
+  const count = initialData.length;
   const [expanded, setExpanded] = useState(false);
 
   const Header = (
@@ -44,27 +52,37 @@ const CustomSideList = ({
     </div>
   );
 
-  const Content = (
-    <>
-      {count === 0 ? (
-        <p className="text-center text-neutral-500 text-sm mt-10">
-          검색 결과가 없습니다.
-        </p>
-      ) : (
-        <div className="space-y-3 pt-2">
-          {initialData.map((restaurant, idx) => (
-            <CustomSideListItem
-              key={restaurant.id}
-              restaurant={restaurant}
-              setSelectedId={setSelectedId}
-              map={map}
-              index={idx}
-            />
-          ))}
-        </div>
-      )}
-    </>
-  );
+  let Content;
+
+  if (isLoading) {
+    Content = (
+      <div className="space-y-4 pt-4 w-full">
+        {Array.from({ length: 5 }).map((_, idx) => (
+          <SkeletonItem key={idx} />
+        ))}
+      </div>
+    );
+  } else if (count === 0) {
+    Content = (
+      <p className="text-center text-neutral-500 text-sm mt-10">
+        검색 결과가 없습니다.
+      </p>
+    );
+  } else {
+    Content = (
+      <div className="space-y-3 pt-2">
+        {initialData.map((restaurant, idx) => (
+          <CustomSideListItem
+            key={restaurant.id}
+            restaurant={restaurant}
+            setSelectedId={setSelectedId}
+            map={map}
+            index={idx}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <>

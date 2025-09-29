@@ -1,5 +1,5 @@
 // libs/query/getRestaurantQuery.ts
-import { queryOptions, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getRestaurants, getRestaurantsForGuest } from "../api/restaurants.api";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Restaurant, RestaurantSchema } from "@/types/restaurants.schema";
@@ -13,8 +13,8 @@ type RestaurantResponse = {
   message: string;
 };
 
+// 실제 데이터 fetching 함수
 async function fetchRestaurants(isLoggedIn: boolean): Promise<Restaurant[]> {
-  // 로그인 여부에 따라 다른 API 호출
   const json: RestaurantResponse = isLoggedIn
     ? await getRestaurants()
     : await getRestaurantsForGuest();
@@ -25,15 +25,13 @@ async function fetchRestaurants(isLoggedIn: boolean): Promise<Restaurant[]> {
   return merged.map((r) => RestaurantSchema.parse(r));
 }
 
-export const getRestaurantsQueryOptions = (isLoggedIn: boolean) => {
-  return queryOptions({
-    queryKey: ["restaurants", isLoggedIn],
-    queryFn: () => fetchRestaurants(isLoggedIn),
-  });
-};
-
 // 훅
 export function useGetRestaurants() {
-  const isLoggedIn = useAuthStore.getState().isAuthed;
-  return useQuery(getRestaurantsQueryOptions(isLoggedIn));
+  const isLoggedIn = useAuthStore((state) => state.isAuthed); // Zustand selector 사용
+
+  return useQuery<Restaurant[]>({
+    queryKey: ["restaurants", isLoggedIn],
+    queryFn: () => fetchRestaurants(isLoggedIn),
+    staleTime: 1000 * 60, // 1분 캐시 예시
+  });
 }

@@ -13,10 +13,12 @@ import ResetIcon from "@/icons/return_icon.svg";
 
 import { useSearchFilters } from "@/hooks/useSearchFilters";
 import AuthButton from "./AuthButton";
+import useMatchMedia from "@/hooks/useMatchMedia";
 
 const Header = () => {
   const pathname = usePathname();
   const [showFilters, setShowFilters] = useState(false);
+  const isPC = useMatchMedia("(min-width: 768px)", true);
   const { searchInput, setSearchInput, handleSearchKeyDown } =
     useSearchFilters();
 
@@ -66,7 +68,7 @@ const Header = () => {
             <SearchIcon width={18} height={18} />
             <input
               type="text"
-              autoFocus
+              autoFocus={isPC}
               placeholder="지금 바로 찾아보세요!"
               className="flex-1 bg-transparent outline-none text-[14px] placeholder:text-neutral-400 px-0 py-0"
               value={searchInput}
