@@ -38,7 +38,7 @@ export default function ReviewsModalContent({
       {/* 본문 */}
       <div className="min-h-[120px]">
         {initialReviews!.length > 0 && (
-          <ul className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+          <ul className="space-y-3 max-h-[50vh] overflow-y-auto pr-1 scroll-box">
             {initialReviews!
               .slice()
               .sort(

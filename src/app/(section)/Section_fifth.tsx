@@ -4,7 +4,7 @@ import Link from "next/link";
 const Section_fifth = () => {
   return (
     <div className="h-full md:min-h-screen md:max-h-screen flex items-center bg-secondary-default px-4 py-10">
-      <div className="flex flex-col xl:flex-row justify-center items-center w-full max-w-[1500px] mx-auto gap-10">
+      <div className="flex flex-col xl:flex-row justify-center items-center w-full max-w-[1500px] mx-auto gap-10 max-sm:h-screen">
         {/* 이미지 영역 */}
         <div className="w-full max-w-[600px] aspect-600/578 relative">
           <Image

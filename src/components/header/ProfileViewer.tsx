@@ -5,7 +5,7 @@ import UserIcon from "@/icons/user_icon.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-function ProfileViewer({ user }: { user: { nickname: string } }) {
+function ProfileViewer({ user }: { user: { memberId: string } }) {
   const { logout } = useAuthStore();
   const router = useRouter();
 
@@ -17,7 +17,7 @@ function ProfileViewer({ user }: { user: { nickname: string } }) {
         </div>
         <div>
           <div className="text-md font-medium">
-            {user?.nickname ?? "사용자"}
+            {user?.memberId ?? "사용자"}
           </div>
         </div>
       </div>

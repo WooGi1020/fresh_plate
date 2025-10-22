@@ -16,6 +16,7 @@ import ReviewWriteModalContent from "./Review";
 import LinkIcon from "@/icons/link_icon.svg";
 
 import SlidingReviewViewer from "./SlidingReviewViewer";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const CustomBalloon = ({
   restaurant,
@@ -31,6 +32,7 @@ const CustomBalloon = ({
   const [placeUrl, setPlaceUrl] = useState<string | null>(null);
   const [openReviewListModal, setOpenReviewListModal] = useState(false);
   const [openReviewModal, setOpenReviewModal] = useState(false);
+  const { user } = useAuthStore();
 
   const number =
     Array.from(String(restaurant.id)).reduce(
@@ -140,44 +142,47 @@ const CustomBalloon = ({
       </div>
 
       {/* 알러지 반응 구분 (간소화 칩 + 강조 상태) */}
-      <div className="flex items-center justify-between gap-2 w-full md:justify-evenly mt-3">
-        {(() => {
-          const base =
-            "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px] max-sm:text-[11px] ";
-          const neutral = "border border-neutral-300 text-neutral-700 bg-white";
-          const active =
-            "border border-neutral-900 text-neutral-900 bg-secondary-default shadow-inner";
-          return (
-            <>
-              <span
-                className={`${base} ${restaurant.warning ? neutral : active}`}
-              >
+      {user && (
+        <div className="flex items-center justify-between gap-2 w-full md:justify-evenly mt-3">
+          {(() => {
+            const base =
+              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px] max-sm:text-[11px] ";
+            const neutral =
+              "border border-neutral-300 text-neutral-700 bg-white";
+            const active =
+              "border border-neutral-900 text-neutral-900 bg-secondary-default shadow-inner";
+            return (
+              <>
                 <span
-                  className="w-1.5 h-1.5 rounded-full bg-green-500"
-                  aria-hidden
-                />
-                알러지 안전
-              </span>
-              <span className={`${base} ${neutral}`}>
+                  className={`${base} ${restaurant.warning ? neutral : active}`}
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-green-500"
+                    aria-hidden
+                  />
+                  알러지 안전
+                </span>
+                <span className={`${base} ${neutral}`}>
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-amber-400"
+                    aria-hidden
+                  />
+                  알러지 주의
+                </span>
                 <span
-                  className="w-1.5 h-1.5 rounded-full bg-amber-400"
-                  aria-hidden
-                />
-                알러지 주의
-              </span>
-              <span
-                className={`${base} ${restaurant.warning ? active : neutral}`}
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full bg-red-500"
-                  aria-hidden
-                />
-                알러지 위험
-              </span>
-            </>
-          );
-        })()}
-      </div>
+                  className={`${base} ${restaurant.warning ? active : neutral}`}
+                >
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-red-500"
+                    aria-hidden
+                  />
+                  알러지 위험
+                </span>
+              </>
+            );
+          })()}
+        </div>
+      )}
 
       {/* 구분선 */}
       <div className="flex items-center w-full gap-4 my-1">
