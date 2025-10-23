@@ -72,7 +72,6 @@ const CustomSideListItem = ({
           <h2 className="text-[15px] font-semibold text-neutral-900 truncate">
             {restaurant.name}
           </h2>
-          <TrustScore data={restaurant} size={4} />
         </div>
         <p className="mt-0.5 text-[12px] text-neutral-500 truncate">
           {restaurant.address}

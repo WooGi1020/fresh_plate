@@ -29,8 +29,10 @@ export default function ReviewsModalContent({
           {title}
         </h3>
         <div className="flex items-center gap-2 text-sm text-neutral-700">
-          <StarRating rating={averageRating ?? 0} />
-          <span>{averageRating?.toFixed(1)}</span>
+          <StarRating rating={averageRating ?? 0} size={18} />
+          <span className="relative bottom-[2.5px]">
+            {averageRating?.toFixed(1)}
+          </span>
           <span>({initialReviews!.length})</span>
         </div>
       </div>

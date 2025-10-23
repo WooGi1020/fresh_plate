@@ -10,7 +10,10 @@ const icons = [
   { icon: <LacToIcon className="w-7 h-7" />, label: "락토" },
   { icon: <OvoIcon className="w-7 h-7" />, label: "오보" },
   { icon: <AwardIcon className="w-7 h-7" />, label: "데이터 검증 여부" },
-  { icon: <AllergyIcon className="w-7 h-7" />, label: "알러지 유발 위험도" },
+  {
+    icon: <AllergyIcon className="w-7 h-7 stroke-red-500" />,
+    label: "알러지 유발 위험도",
+  },
 ];
 
 const Section_third = () => {
