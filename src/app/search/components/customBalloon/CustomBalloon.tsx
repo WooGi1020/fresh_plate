@@ -12,7 +12,7 @@ import toast from "react-hot-toast";
 import { Restaurant } from "@/types/restaurants.schema";
 
 import { useAuthStore } from "@/store/useAuthStore";
-import { useGetReviews } from "@/libs/query/getReivewQuery";
+import { useGetReviews } from "@/libs/query/getReviewQuery";
 
 import imageRenderList from "@/constants/image_render_list";
 import StarRating from "@/app/search/components/customBalloon/StarRating";

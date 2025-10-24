@@ -9,8 +9,6 @@ import {
 } from "@/app/(section)";
 import { useScrollFade } from "@/hooks/useScrollFade";
 
-export const dynamic = "force-static";
-
 export default function Home() {
   const sections = [
     Section_first,

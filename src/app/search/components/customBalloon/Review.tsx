@@ -117,7 +117,7 @@ export default function ReviewWriteModalContent({
         </label>
         <textarea
           rows={4}
-          placeholder={`여러분께 알맞는 식사였나요?.\n음식의 맛, 분위기, 친절도 등 자유롭게 작성해주세요.`}
+          placeholder={`여러분께 알맞는 식사였나요?\n음식의 맛, 분위기, 친절도 등 자유롭게 작성해주세요.`}
           className="w-full rounded-md border border-neutral-300 p-2 bg-white text-sm resize-none focus:ring-2 focus:ring-[#A3C76D] focus:outline-none"
           {...register("content")}
         />
