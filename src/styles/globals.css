@@ -114,17 +114,17 @@ body {
 .speech-bubble::after {
   content: "";
   position: absolute;
-  bottom: -20px;
+  bottom: -17px;
   left: 50%;
   opacity: 90%;
   transform: translateX(-50%);
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   background: #fffdf4;
   border-left: 3px solid #504840;
   border-bottom: 3px solid #504840;
   transform: translateX(-50%) rotate(-45deg);
-  z-index: 1;
+  z-index: -1;
 }
 
 .speech-bubble::before {
@@ -133,7 +133,7 @@ body {
   bottom: -5px;
   left: 50%;
   transform: translateX(-50%);
-  width: 35px;
+  width: 28px;
   height: 15px;
   background: #fffdf4;
   z-index: 2;
@@ -171,4 +171,32 @@ body {
   height: 0;
   width: 0;
   background: transparent;
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* delay별 클래스 (선택사항) */
+.fade-delay-0 {
+  transition-delay: 0s;
+}
+.fade-delay-1 {
+  transition-delay: 0.1s;
+}
+.fade-delay-2 {
+  transition-delay: 0.2s;
+}
+.fade-delay-3 {
+  transition-delay: 0.3s;
+}
+.fade-delay-4 {
+  transition-delay: 0.4s;
 }

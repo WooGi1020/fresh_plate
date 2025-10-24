@@ -29,8 +29,10 @@ export default function ReviewsModalContent({
           {title}
         </h3>
         <div className="flex items-center gap-2 text-sm text-neutral-700">
-          <StarRating rating={averageRating ?? 0} />
-          <span>{averageRating?.toFixed(1)}</span>
+          <StarRating rating={averageRating ?? 0} size={18} />
+          <span className="relative bottom-[2.5px]">
+            {averageRating?.toFixed(1)}
+          </span>
           <span>({initialReviews!.length})</span>
         </div>
       </div>
@@ -38,7 +40,7 @@ export default function ReviewsModalContent({
       {/* 본문 */}
       <div className="min-h-[120px]">
         {initialReviews!.length > 0 && (
-          <ul className="space-y-3 max-h-[60vh] overflow-y-auto pr-1">
+          <ul className="space-y-3 max-h-[50vh] overflow-y-auto pr-1 scroll-box">
             {initialReviews!
               .slice()
               .sort(
@@ -63,7 +65,11 @@ export default function ReviewsModalContent({
                         {rev.writerName}
                       </span>
                       <span className="text-xs text-neutral-500">
-                        {new Date(rev.createdAt).toLocaleString("ko-KR")}
+                        {new Date(rev.createdAt).toLocaleDateString("ko-KR", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">

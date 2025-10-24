@@ -69,8 +69,12 @@ export function useSearchFilters() {
   }, [pathname, router]);
 
   const handleSearchKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
+    (
+      e: React.KeyboardEvent<HTMLInputElement>,
+      ref: React.RefObject<HTMLInputElement | null>
+    ) => {
       if (e.key === "Enter") {
+        ref.current?.blur();
         e.preventDefault();
         applySearchInput();
       }

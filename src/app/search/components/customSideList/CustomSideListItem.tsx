@@ -6,7 +6,6 @@ import { Restaurant } from "@/types/restaurants.schema";
 import LacToIcon from "@/icons/lacto_icon.svg";
 import OvoIcon from "@/icons/ovo_icon.svg";
 import GlutenIcon from "@/icons/gluten_free_icon.svg";
-import TrustScore from "@/components/common/TrustScore";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 
 const CustomSideListItem = ({
@@ -33,14 +32,14 @@ const CustomSideListItem = ({
     <button
       type="button"
       className={`group w-full text-left flex gap-3 items-start
-                 rounded-lg border border-neutral-200 bg-white/80
-                focus-visible:outline-none
+                 rounded-r-lg border border-neutral-300/20 bg-white/80
+                focus-visible:outline-none relative
                  focus-visible:ring-2 focus-visible:ring-neutral-900/20
-                  transition-all p-3 cursor-pointer ${
+                  transition-all p-3 pl-4 cursor-pointer shadow-sm hover:shadow-md ${
                     restaurant.recommended &&
-                    "shadow-sm hover:shadow-md shadow-green-300/50"
+                    "shadow-md hover:shadow-lg shadow-green-400/50"
                   } ${
-        restaurant.warning && "shadow-sm hover:shadow-md shadow-red-300/50"
+        restaurant.warning && "shadow-md hover:shadow-lg shadow-red-400/50"
       }`}
       onClick={handleClick}
       aria-label={`${restaurant.name}${
@@ -48,12 +47,22 @@ const CustomSideListItem = ({
       }`}
       title={restaurant.name}
     >
+      <div
+        className={`absolute left-0 top-0 w-[5px] h-full transition-all group-hover:animate-pulse
+    ${
+      restaurant.recommended && !restaurant.warning
+        ? "bg-green-400"
+        : restaurant.warning
+        ? "bg-red-400 "
+        : "bg-neutral-200"
+    }`}
+      />
       <div className="relative w-24 h-20 overflow-hidden rounded-md ring-1 ring-neutral-200 bg-neutral-100 shrink-0">
         <Image
           src={`${imageRenderList[number]}`}
           alt="식당 이미지"
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          className="object-cover"
         />
       </div>
 
@@ -62,7 +71,6 @@ const CustomSideListItem = ({
           <h2 className="text-[15px] font-semibold text-neutral-900 truncate">
             {restaurant.name}
           </h2>
-          <TrustScore data={restaurant} size={4} />
         </div>
         <p className="mt-0.5 text-[12px] text-neutral-500 truncate">
           {restaurant.address}

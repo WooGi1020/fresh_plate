@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import SearchIcon from "@/icons/search_icon.svg";
 
@@ -21,6 +21,7 @@ const Header = () => {
   const isPC = useMatchMedia("(min-width: 768px)", true);
   const { searchInput, setSearchInput, handleSearchKeyDown } =
     useSearchFilters();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // 공통 래퍼 클래스: 크기/테두리/배경/패딩을 여기서 통일
   const searchShellClass =
@@ -69,11 +70,12 @@ const Header = () => {
             <input
               type="text"
               autoFocus={isPC}
+              ref={inputRef}
               placeholder="지금 바로 찾아보세요!"
               className="flex-1 bg-transparent outline-none text-[14px] placeholder:text-neutral-400 px-0 py-0"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              onKeyDown={handleSearchKeyDown}
+              onKeyDown={(e) => handleSearchKeyDown(e, inputRef)}
             />
             <button
               aria-label="필터 열기"
