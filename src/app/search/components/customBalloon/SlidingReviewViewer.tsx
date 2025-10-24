@@ -14,7 +14,7 @@ const SlidingReviewViewer = ({ reviews }: { reviews: ReviewInfo[] }) => {
     return () => clearInterval(timer);
   }, [reviews.length]);
 
-  if (!reviews.length) {
+  if (reviews.length === 0) {
     return (
       <p className="text-neutral-900/50 text-center py-2">
         현재 리뷰가 없습니다.

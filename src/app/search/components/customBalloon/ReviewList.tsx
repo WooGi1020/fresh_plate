@@ -65,7 +65,11 @@ export default function ReviewsModalContent({
                         {rev.writerName}
                       </span>
                       <span className="text-xs text-neutral-500">
-                        {new Date(rev.createdAt).toLocaleString("ko-KR")}
+                        {new Date(rev.createdAt).toLocaleDateString("ko-KR", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">

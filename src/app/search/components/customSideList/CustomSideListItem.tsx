@@ -6,7 +6,6 @@ import { Restaurant } from "@/types/restaurants.schema";
 import LacToIcon from "@/icons/lacto_icon.svg";
 import OvoIcon from "@/icons/ovo_icon.svg";
 import GlutenIcon from "@/icons/gluten_free_icon.svg";
-import TrustScore from "@/components/common/TrustScore";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 
 const CustomSideListItem = ({
@@ -36,7 +35,7 @@ const CustomSideListItem = ({
                  rounded-r-lg border border-neutral-300/20 bg-white/80
                 focus-visible:outline-none relative
                  focus-visible:ring-2 focus-visible:ring-neutral-900/20
-                  transition-all p-3 cursor-pointer shadow-sm hover:shadow-md ${
+                  transition-all p-3 pl-4 cursor-pointer shadow-sm hover:shadow-md ${
                     restaurant.recommended &&
                     "shadow-md hover:shadow-lg shadow-green-400/50"
                   } ${

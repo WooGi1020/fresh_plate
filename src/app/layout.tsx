@@ -27,7 +27,13 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${notoSans.variable} antialiased`}>
-        <Toaster position="top-center" reverseOrder={false} />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          containerStyle={{
+            top: "80px",
+          }}
+        />
         <Suspense fallback={<div />}>
           <Header />
         </Suspense>

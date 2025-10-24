@@ -3,7 +3,6 @@
 import { MapMarker, CustomOverlayMap, useMap } from "react-kakao-maps-sdk";
 import { Restaurant } from "@/types/restaurants.schema";
 import CustomBalloon from "./customBalloon/CustomBalloon";
-import { mockReviews } from "@/data/review_mockdata";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 
 function MapMarkerWithPan({
@@ -16,7 +15,6 @@ function MapMarkerWithPan({
   setSelectedId: (id: number | null) => void;
 }) {
   const map = useMap();
-  // 위/경도는 이미 숫자 형태라고 가정하되 문자열일 가능성 대비 Number 변환
   const lat = Number(restaurant.lat);
   const lng = Number(restaurant.lng);
   const position = { lat, lng };
@@ -52,7 +50,6 @@ function MapMarkerWithPan({
             onClose={() => {
               setSelectedId(null);
             }}
-            reviews={mockReviews}
           />
         </CustomOverlayMap>
       )}

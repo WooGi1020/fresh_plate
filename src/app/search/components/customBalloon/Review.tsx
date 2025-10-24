@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import StarRating from "./StarRating";
 import { ReviewPostRequestSchema } from "@/types/review.schema";
 import type { ReviewPostRequest } from "@/types/review.schema";
+import toast from "react-hot-toast";
+import { usePostReview } from "@/libs/mutation/usePostReview";
 
 type Props = {
   restaurantId: number;
@@ -18,6 +19,7 @@ export default function ReviewWriteModalContent({
   onClose,
 }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { mutateAsync: postReview } = usePostReview();
 
   type FormValues = ReviewPostRequest;
   const {
@@ -28,7 +30,7 @@ export default function ReviewWriteModalContent({
   } = useForm<FormValues>({
     resolver: zodResolver(ReviewPostRequestSchema),
     defaultValues: {
-      restaurantId, // 기본값 설정 (등록도 필요)
+      restaurantId,
       rating: 4,
       content: "",
       menuImageUrl: "",
@@ -40,20 +42,19 @@ export default function ReviewWriteModalContent({
   const onReviewSubmit = async (values: FormValues) => {
     setSubmitError(null);
 
-    // restaurantId가 빠질 가능성을 막기 위해 안전하게 병합
     const payload: FormValues = {
       ...values,
       restaurantId: values.restaurantId ?? restaurantId,
-      // 빈 문자열은 null로 변환 (스키마가 이를 허용한다면)
       content: values.content?.trim() ? values.content : null,
       menuImageUrl: values.menuImageUrl?.trim() ? values.menuImageUrl : null,
     };
 
     try {
-      console.log(payload);
+      await postReview(payload);
+      toast.success("리뷰가 성공적으로 등록되었습니다.");
       onClose?.();
     } catch (e: any) {
-      setSubmitError(e);
+      setSubmitError(e?.message ?? "리뷰 등록에 실패했습니다.");
     }
   };
 

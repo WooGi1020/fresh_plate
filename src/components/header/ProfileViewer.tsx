@@ -4,8 +4,13 @@ import { useAuthStore } from "@/store/useAuthStore";
 import UserIcon from "@/icons/user_icon.svg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-function ProfileViewer({ user }: { user: { memberId: string } }) {
+function ProfileViewer({
+  user,
+}: {
+  user: { memberId: string; nickname: string };
+}) {
   const { logout } = useAuthStore();
   const router = useRouter();
 
@@ -17,7 +22,7 @@ function ProfileViewer({ user }: { user: { memberId: string } }) {
         </div>
         <div>
           <div className="text-md font-medium">
-            {user?.memberId ?? "사용자"}
+            {user?.nickname ?? "사용자"}
           </div>
         </div>
       </div>
@@ -31,6 +36,7 @@ function ProfileViewer({ user }: { user: { memberId: string } }) {
         <button
           onClick={() => {
             logout();
+            toast.error("로그아웃 되었습니다.");
             router.push("/");
           }}
           className="text-sm text-red-500 hover:underline text-left cursor-pointer"
