@@ -14,6 +14,8 @@ import ResetIcon from "@/icons/return_icon.svg";
 import { useSearchFilters } from "@/hooks/useSearchFilters";
 import AuthButton from "./AuthButton";
 import useMatchMedia from "@/hooks/useMatchMedia";
+import { useMapStore } from "@/store/useMapStore";
+import coordinatesCenter from "@/constants/coordinatesCenter";
 
 const Header = () => {
   const pathname = usePathname();
@@ -22,6 +24,8 @@ const Header = () => {
   const { searchInput, setSearchInput, handleSearchKeyDown } =
     useSearchFilters();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const panTo = useMapStore((s) => s.panTo);
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
 
   // 공통 래퍼 클래스: 크기/테두리/배경/패딩을 여기서 통일
   const searchShellClass =
@@ -92,6 +96,10 @@ const Header = () => {
               href="/search"
               title="검색어 초기화"
               aria-label="초기화"
+              onClick={() => {
+                panTo(coordinatesCenter.lat, coordinatesCenter.lng);
+                setSelectedId(null);
+              }}
               className="absolute right-2 rounded-full hover:bg-gray-200 p-2 cursor-pointer outline-none"
             >
               <ResetIcon width={14} height={14} className="text-neutral-600" />

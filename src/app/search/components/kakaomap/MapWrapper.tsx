@@ -1,7 +1,7 @@
 "use client";
 
 import { Map, useKakaoLoader } from "react-kakao-maps-sdk";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import useFilteredRestaurants from "@/hooks/useFilteredRestaurants";
 import NoResultsModal from "@/app/search/components/emptyData/EmptyDataModal";
 import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
@@ -9,11 +9,15 @@ import { useSearchParams } from "next/navigation";
 import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
 import LoadingIcon from "@/icons/loading_icon.svg";
 import { useGetRestaurants } from "@/libs/query/getRestaurantQuery";
+import { useMapStore } from "@/store/useMapStore";
+import coordinatesCenter from "@/constants/coordinatesCenter";
 
 export default function MapWrapper() {
   const { data, isLoading } = useGetRestaurants();
-  const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const map = useMapStore((s) => s.map);
+  const setMap = useMapStore((s) => s.setMap);
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
+  const panTo = useMapStore((s) => s.panTo);
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
@@ -24,13 +28,14 @@ export default function MapWrapper() {
     libraries: ["services", "clusterer"],
   });
 
+  // 특정 검색 결과로 이동
   useEffect(() => {
     if (restaurants && restaurants.length > 0 && map && query !== null) {
       const first = restaurants[0];
       setSelectedId(first.id);
-      map.panTo(new kakao.maps.LatLng(Number(first.lat), Number(first.lng)));
+      panTo(Number(first.lat), Number(first.lng));
     }
-  }, [restaurants, map, query]);
+  }, [restaurants, map, query, panTo, setSelectedId]);
 
   if (loading)
     return (
@@ -45,28 +50,18 @@ export default function MapWrapper() {
 
   return (
     <Map
-      center={{ lat: 37.56693232422167, lng: 126.97866354704028 }}
+      center={coordinatesCenter}
       style={{ width: "100%", height: "100%", position: "relative" }}
       level={6}
       onClick={() => setSelectedId(null)}
       onCreate={setMap}
     >
-      {/* 리스트는 항상 고정 표시 */}
       {map && (
-        <CustomSideList
-          initialData={restaurants}
-          setSelectedId={setSelectedId}
-          isLoading={isLoading}
-          map={map}
-        />
+        <CustomSideList initialData={restaurants} isLoading={isLoading} />
       )}
 
       {restaurants.length > 0 ? (
-        <MarkerLayer
-          restaurants={restaurants}
-          selectedId={selectedId}
-          setSelectedId={setSelectedId}
-        />
+        <MarkerLayer restaurants={restaurants} />
       ) : (
         query !== null && <NoResultsModal key={query} />
       )}

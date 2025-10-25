@@ -6,21 +6,20 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { Restaurant } from "@/types/restaurants.schema";
 import CustomSideListHeader from "./CustomSideListHeader";
 import CustomSideListContent from "./CustomSideListContent";
+import { useMapStore } from "@/store/useMapStore";
 
 export default function CustomSideList({
   initialData,
-  setSelectedId,
-  map,
   isLoading,
 }: {
   initialData: Restaurant[];
-  setSelectedId: (value: number | null) => void;
-  map: kakao.maps.Map;
   isLoading: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [sortOption, setSortOption] = useState("기본");
   const user = useAuthStore((s) => s.user);
+  const map = useMapStore((s) => s.map);
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
 
   const sortedData = useMemo(() => {
     if (!initialData) return [];
@@ -73,7 +72,7 @@ export default function CustomSideList({
           data={sortedData}
           isLoading={isLoading}
           setSelectedId={setSelectedId}
-          map={map}
+          map={map!}
         />
       </div>
 
@@ -116,7 +115,7 @@ export default function CustomSideList({
               data={sortedData}
               isLoading={isLoading}
               setSelectedId={setSelectedId}
-              map={map}
+              map={map!}
             />
           </div>
         </div>
