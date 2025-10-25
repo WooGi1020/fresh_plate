@@ -32,8 +32,11 @@ apiClient.interceptors.response.use(
       try {
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/api/auth/reissue`,
+          null,
           {
-            refreshToken,
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
           }
         );
 
