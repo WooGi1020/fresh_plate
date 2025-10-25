@@ -57,7 +57,11 @@ export default function MapWrapper() {
       onCreate={setMap}
     >
       {map && (
-        <CustomSideList initialData={restaurants} isLoading={isLoading} />
+        <CustomSideList
+          initialData={restaurants}
+          isLoading={isLoading}
+          map={map}
+        />
       )}
 
       {restaurants.length > 0 ? (
