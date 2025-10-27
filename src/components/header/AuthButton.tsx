@@ -4,15 +4,19 @@ import { useState, useRef, useEffect } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import UserIcon from "@/icons/user_icon.svg";
 import LoginIcon from "@/icons/login_icon.svg";
-import { useRouter } from "next/navigation";
 import ProfileViewer from "./ProfileViewer";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function AuthButton() {
   const { isAuthed, user, hasHydrated } = useAuthStore();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {

@@ -30,7 +30,7 @@ function ProfileViewer({
       <hr className="my-2" />
 
       <div className="flex flex-col gap-3 mt-3">
-        <Link href="/mypage" className="text-sm hover:underline">
+        <Link href="/my-page" className="text-sm hover:underline">
           마이페이지
         </Link>
         <button
