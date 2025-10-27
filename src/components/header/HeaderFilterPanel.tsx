@@ -1,25 +1,30 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-
+import { useEffect, useRef, useMemo } from "react";
 import allergyFilterMap from "@/constants/allergyFilterMap";
 import { allergyKeys } from "@/utils/defaultFilters";
 import { FilterKey } from "@/types/data";
+import { useSearchFilters } from "@/hooks/useSearchFilters";
 
 import AllegyIcon from "@/icons/allegy_icon.svg";
 import FoodIcon from "@/icons/food_icon.svg";
-import { useSearchFilters } from "@/hooks/useSearchFilters";
+import clsx from "clsx";
 
 type Props = {
   onClose?: () => void;
   className?: string;
+  userPreferredFilters?: FilterKey[]; // 🔹 유저 선호 필터 우선 표시
 };
 
-export default function HeaderFilterPanel({ onClose, className }: Props) {
+export default function HeaderFilterPanel({
+  onClose,
+  className,
+  userPreferredFilters = [],
+}: Props) {
   const { filters, updateFilters, resetFilters } = useSearchFilters();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // 바깥 클릭/ESC로 닫기
+  /** ✅ ESC / 외부 클릭 닫기 */
   useEffect(() => {
     const onDown = (e: MouseEvent) => {
       if (!containerRef.current) return;
@@ -38,79 +43,109 @@ export default function HeaderFilterPanel({ onClose, className }: Props) {
     };
   }, [onClose]);
 
+  /** ✅ 유저 선호 필터를 우선적으로 정렬 */
+  const sortedAllergyKeys = useMemo(() => {
+    const preferred = allergyKeys.filter((k) =>
+      userPreferredFilters.includes(k)
+    );
+    const others = allergyKeys.filter((k) => !userPreferredFilters.includes(k));
+    return [...preferred, ...others];
+  }, [userPreferredFilters]);
+
   const renderCheckbox = (
     key: FilterKey,
     label: string,
-    colorClass?: string
+    colorClass?: string,
+    isPreferred?: boolean
   ) => (
-    <label className="flex items-center gap-2 text-[#3b3b3b]" key={key}>
+    <label
+      key={key}
+      className={clsx(
+        "flex items-center gap-2 p-2 rounded-md border transition-all cursor-pointer",
+        filters[key]
+          ? "bg-neutral-300 border-neutral-900"
+          : "border-neutral-300 hover:border-neutral-400 hover:bg-neutral-50",
+        isPreferred &&
+          "border-yellow-500/70 bg-yellow-50 hover:border-yellow-500/90 hover:bg-yellow-100" // 🔹 유저 선호 강조
+      )}
+    >
       <input
         type="checkbox"
         checked={Boolean(filters[key])}
         onChange={(e) => updateFilters(key, e.target.checked)}
-        className={colorClass ?? "accent-[#3b3b3b]"}
+        className={clsx("accent-neutral-900", colorClass)}
       />
-      {label}
+      <span className="text-sm font-medium">{label}</span>
+
+      {isPreferred && (
+        <AllegyIcon
+          width={14}
+          height={14}
+          className="text-yellow-600 ml-auto"
+        />
+      )}
     </label>
   );
 
   return (
     <div
       ref={containerRef}
-      className={`absolute left-0 top-full mt-2 w-full z-[60]
-                  rounded-lg border border-neutral-300 bg-white shadow-lg
-                  p-4 space-y-4 ${className ?? ""} animate-fade-down`}
+      className={clsx(
+        `absolute left-0 top-full mt-2 w-full z-[60] rounded-xl border border-neutral-200 
+         bg-white shadow-xl p-4 space-y-5 animate-fade-down`,
+        className
+      )}
       role="dialog"
       aria-label="검색 필터"
     >
-      <div className="flex flex-col gap-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-[#3b3b3b] font-semibold">
-            <FoodIcon width={18} height={20} />
-            <span className="text-md">재료 필터</span>
-          </div>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {renderCheckbox("lacto", "락토")}
-            {renderCheckbox("ovo", "오보")}
-            {renderCheckbox("glutenfree", "글루텐프리")}
-          </div>
+      {/* Ingredient Filter */}
+      <section>
+        <div className="flex items-center gap-2 text-[#3b3b3b] font-semibold mb-2">
+          <FoodIcon width={18} height={20} />
+          <span>비건 필터링</span>
         </div>
-
-        <hr className="border-t border-neutral-400 border-2" />
-
-        <div className="space-y-2 max-h-[35vh] overflow-y-auto pr-1">
-          <div className="flex items-center gap-2 text-red-600 font-semibold">
-            <AllegyIcon width={18} height={18} fill="#dc2626" />
-            <span className="text-md">알레르기 필터</span>
-          </div>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-            {allergyKeys.map((key) =>
-              renderCheckbox(
-                key,
-                `${allergyFilterMap[key]} 제외`,
-                "accent-red-600"
-              )
-            )}
-          </div>
+        <div className="grid grid-cols-3 gap-2">
+          {renderCheckbox("lacto", "락토")}
+          {renderCheckbox("ovo", "오보")}
+          {renderCheckbox("glutenfree", "글루텐프리")}
         </div>
+      </section>
 
-        <div className="flex justify-end gap-2 pt-1">
-          <button
-            onClick={() => {
-              resetFilters();
-              onClose?.();
-            }}
-            className="text-sm px-3 py-1.5 rounded-md border border-neutral-300 hover:bg-neutral-50"
-          >
-            초기화
-          </button>
-          <button
-            onClick={() => onClose?.()}
-            className="text-sm px-3 py-1.5 rounded-md bg-neutral-900 text-white hover:bg-neutral-800"
-          >
-            닫기
-          </button>
+      {/* Allergy Filter */}
+      <section className="pt-2 border-t border-neutral-200">
+        <div className="flex items-center gap-2 text-red-600 font-semibold mb-2">
+          <AllegyIcon width={18} height={18} fill="#dc2626" />
+          <span>알레르기 유발 재료 필터링</span>
         </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-[35vh] overflow-y-auto pr-1">
+          {sortedAllergyKeys.map((key) =>
+            renderCheckbox(
+              key,
+              `${allergyFilterMap[key]} 제외`,
+              "accent-red-600",
+              userPreferredFilters.includes(key)
+            )
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <div className="flex justify-end gap-2 pt-3 border-t border-neutral-200">
+        <button
+          onClick={() => {
+            resetFilters();
+            onClose?.();
+          }}
+          className="text-sm px-3 py-1.5 rounded-md border border-neutral-300 hover:bg-neutral-50"
+        >
+          초기화
+        </button>
+        <button
+          onClick={() => onClose?.()}
+          className="text-sm px-3 py-1.5 rounded-md bg-neutral-900 text-white hover:bg-neutral-800"
+        >
+          닫기
+        </button>
       </div>
     </div>
   );

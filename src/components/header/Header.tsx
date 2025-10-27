@@ -14,6 +14,9 @@ import ResetIcon from "@/icons/return_icon.svg";
 import { useSearchFilters } from "@/hooks/useSearchFilters";
 import AuthButton from "./AuthButton";
 import useMatchMedia from "@/hooks/useMatchMedia";
+import { useMapStore } from "@/store/useMapStore";
+import coordinatesCenter from "@/constants/coordinatesCenter";
+import userPreferredFilters from "@/constants/userPrefferedFilter";
 
 const Header = () => {
   const pathname = usePathname();
@@ -22,6 +25,12 @@ const Header = () => {
   const { searchInput, setSearchInput, handleSearchKeyDown } =
     useSearchFilters();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const panTo = useMapStore((s) => s.panTo);
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
+
+  const userPreferredLink =
+    "?" +
+    userPreferredFilters.map((f) => encodeURIComponent(f) + `=true`).join("&");
 
   // 공통 래퍼 클래스: 크기/테두리/배경/패딩을 여기서 통일
   const searchShellClass =
@@ -48,7 +57,7 @@ const Header = () => {
       <div className="flex-1 flex justify-center px-4">
         {pathname === "/" && (
           <Link
-            href="/search"
+            href={`/search${userPreferredLink}`}
             aria-label="식당 검색 페이지로 이동"
             className={`${searchShellClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/20`}
           >
@@ -92,13 +101,20 @@ const Header = () => {
               href="/search"
               title="검색어 초기화"
               aria-label="초기화"
+              onClick={() => {
+                panTo(coordinatesCenter.lat, coordinatesCenter.lng);
+                setSelectedId(null);
+              }}
               className="absolute right-2 rounded-full hover:bg-gray-200 p-2 cursor-pointer outline-none"
             >
               <ResetIcon width={14} height={14} className="text-neutral-600" />
             </Link>
 
             {showFilters && (
-              <HeaderFilterPanel onClose={() => setShowFilters(false)} />
+              <HeaderFilterPanel
+                onClose={() => setShowFilters(false)}
+                userPreferredFilters={userPreferredFilters}
+              />
             )}
           </div>
         )}
