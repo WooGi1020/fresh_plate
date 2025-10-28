@@ -1,19 +1,18 @@
 "use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
-
 import SearchIcon from "@/icons/search_icon.svg";
-
 import FilterIcon from "@/icons/filter_icon.svg";
 import HeaderFilterPanel from "./HeaderFilterPanel";
 import ResetIcon from "@/icons/return_icon.svg";
-
 import { useSearchFilters } from "@/hooks/useSearchFilters";
 import AuthButton from "./AuthButton";
 import useMatchMedia from "@/hooks/useMatchMedia";
+import { useMapStore } from "@/store/useMapStore";
+import coordinatesCenter from "@/constants/coordinatesCenter";
+import userPreferredFilters from "@/constants/userPrefferedFilter";
 
 const Header = () => {
   const pathname = usePathname();
@@ -22,13 +21,18 @@ const Header = () => {
   const { searchInput, setSearchInput, handleSearchKeyDown } =
     useSearchFilters();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const panTo = useMapStore((s) => s.panTo);
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
+
+  const userPreferredLink =
+    "?" +
+    userPreferredFilters.map((f) => encodeURIComponent(f) + `=true`).join("&");
 
   // 공통 래퍼 클래스: 크기/테두리/배경/패딩을 여기서 통일
   const searchShellClass =
     "group flex items-center gap-2 w-full max-w-[450px] min-w-[220px] " +
     "bg-white/90 border border-neutral-300 rounded-full px-4 py-2 " +
     "shadow-sm hover:shadow-md";
-
   return (
     <header
       className={`fixed inset-0 w-full h-[60px] flex justify-between items-center px-7 z-50 ${
@@ -43,12 +47,11 @@ const Header = () => {
           className="object-contain"
         />
       </Link>
-
       {/* 루트에서만 보이는 검색 유도 UI */}
       <div className="flex-1 flex justify-center px-4">
         {pathname === "/" && (
           <Link
-            href="/search"
+            href={`/search${userPreferredLink}`}
             aria-label="식당 검색 페이지로 이동"
             className={`${searchShellClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/20`}
           >
@@ -61,7 +64,6 @@ const Header = () => {
             </span>
           </Link>
         )}
-
         {pathname === "/search" && (
           <div
             className={`${searchShellClass} focus-within:ring-2 focus-within:ring-neutral-900/20 relative`}
@@ -92,21 +94,26 @@ const Header = () => {
               href="/search"
               title="검색어 초기화"
               aria-label="초기화"
+              onClick={() => {
+                panTo(coordinatesCenter.lat, coordinatesCenter.lng);
+                setSelectedId(null);
+              }}
               className="absolute right-2 rounded-full hover:bg-gray-200 p-2 cursor-pointer outline-none"
             >
               <ResetIcon width={14} height={14} className="text-neutral-600" />
             </Link>
 
             {showFilters && (
-              <HeaderFilterPanel onClose={() => setShowFilters(false)} />
+              <HeaderFilterPanel
+                onClose={() => setShowFilters(false)}
+                userPreferredFilters={userPreferredFilters}
+              />
             )}
           </div>
         )}
       </div>
-
       {pathname !== "/sign" && <AuthButton />}
     </header>
   );
 };
-
 export default Header;
