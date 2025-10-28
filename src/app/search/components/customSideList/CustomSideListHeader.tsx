@@ -12,7 +12,7 @@ const CustomSideListHeader = ({
   <div className="py-2 mb-1 flex items-center justify-between shrink-0">
     <p className="relative pl-3 text-[13px] font-semibold tracking-tight text-neutral-800 select-none">
       <span
-        className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded bg-gradient-to-b from-neutral-500 to-neutral-300"
+        className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded bg-linear-to-b from-neutral-500 to-neutral-300"
         aria-hidden
       />
       장소 목록

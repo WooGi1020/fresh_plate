@@ -75,7 +75,7 @@ export default function ReviewsModalContent({
                       </span>
                     </div>
                     {rev.content && (
-                      <p className="text-[13px] text-neutral-800 mt-1 whitespace-pre-wrap break-words">
+                      <p className="text-[13px] text-neutral-800 mt-1 whitespace-pre-wrap wrap-break-word">
                         {rev.content}
                       </p>
                     )}
@@ -83,7 +83,7 @@ export default function ReviewsModalContent({
 
                   {/* 이미지 (옵션) */}
                   {rev.menuImageUrl && (
-                    <div className="relative w-14 h-14 rounded-md overflow-hidden border border-neutral-200 flex-shrink-0">
+                    <div className="relative w-14 h-14 rounded-md overflow-hidden border border-neutral-200 shrink-0">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={rev.menuImageUrl}

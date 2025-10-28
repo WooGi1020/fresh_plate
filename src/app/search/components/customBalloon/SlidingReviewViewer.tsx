@@ -25,7 +25,7 @@ const SlidingReviewViewer = ({ reviews }: { reviews: ReviewInfo[] }) => {
   const review = reviews[index];
 
   return (
-    <div className="relative h-[80px] overflow-hidden">
+    <div className="relative h-20 overflow-hidden">
       <div
         key={review.createdAt}
         className="absolute inset-0 border-2 rounded-lg p-2 border-neutral-700/70 bg-white/80"
@@ -46,7 +46,7 @@ const SlidingReviewViewer = ({ reviews }: { reviews: ReviewInfo[] }) => {
           {/* 본문 */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="font-medium truncate max-w-[160px]">
+              <span className="font-medium truncate max-w-40">
                 {review.writerName}
               </span>
               <span className="text-xs text-neutral-500">
@@ -60,7 +60,7 @@ const SlidingReviewViewer = ({ reviews }: { reviews: ReviewInfo[] }) => {
                 {review.rating.toFixed(1)}
               </span>
             </div>
-            <p className="text-[13px] text-neutral-800 mt-1 break-words max-h-[44px] overflow-hidden truncate">
+            <p className="text-[13px] text-neutral-800 mt-1 wrap-break-word max-h-11 overflow-hidden truncate">
               {review.content || "- 내용 없음"}
             </p>
           </div>

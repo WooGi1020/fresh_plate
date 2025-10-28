@@ -46,7 +46,7 @@ function TrustScore_icon({
         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 w-max
              opacity-0 group-hover:opacity-100 transition-opacity
              bg-neutral-900 text-white text-xs px-2 py-1 rounded
-             whitespace-nowrap text-center z-[9999] pointer-events-none"
+             whitespace-nowrap text-center z-9999 pointer-events-none"
       >
         {`데이터 최신화 - ${score ?? "최신화되지 않음"}`}
       </span>

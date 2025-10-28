@@ -91,7 +91,7 @@ export default function HeaderFilterPanel({
     <div
       ref={containerRef}
       className={clsx(
-        `absolute left-0 top-full mt-2 w-full z-[60] rounded-xl border border-neutral-200 
+        `absolute left-0 top-full mt-2 w-full z-60 rounded-xl border border-neutral-200 
          bg-white shadow-xl p-4 space-y-5 animate-fade-down`,
         className
       )}
