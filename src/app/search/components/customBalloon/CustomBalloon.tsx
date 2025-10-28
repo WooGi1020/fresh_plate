@@ -59,13 +59,6 @@ const CustomBalloon = ({
     });
   }, [map, restaurant]);
 
-  /** 평균 평점 계산 */
-  const averageRating = useMemo(() => {
-    if (reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
-    return Number((sum / reviews.length).toFixed(1));
-  }, [reviews]);
-
   /** 로그인 필요 시 처리 */
   const handleWriteReview = () => {
     if (!user) {
@@ -129,9 +122,9 @@ const CustomBalloon = ({
 
           {/* 평점 */}
           <div className="flex items-center gap-2 mb-1">
-            <StarRating rating={reviews.length > 0 ? averageRating ?? 0 : 0} />
+            <StarRating rating={restaurant.avgRating!} />
             <span className="text-md text-neutral-900 mt-0.5">
-              {reviews.length > 0 ? averageRating.toFixed(1) : "-"}
+              {reviews.length > 0 ? restaurant.avgRating!.toFixed(1) : "-"}
             </span>
             <span className="text-md text-neutral-900 mt-0.5">
               ({reviews.length})
@@ -241,7 +234,7 @@ const CustomBalloon = ({
       {openReviewListModal && (
         <Modal setOpenFilter={setOpenReviewListModal}>
           <ReviewsModalContent
-            restaurantId={Number(restaurant.id)}
+            restaurant={restaurant}
             initialReviews={reviews}
             onClose={() => setOpenReviewListModal(false)}
           />
