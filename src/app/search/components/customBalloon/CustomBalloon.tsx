@@ -94,14 +94,14 @@ const CustomBalloon = ({
           />
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 space-y-1">
           <div className="flex items-center">
             {placeUrl ? (
               <a
                 href={placeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px] hover:underline"
+                className="group text-xl font-semibold truncate max-w-[180px] sm:max-w-[250px] hover:underline"
                 title={restaurant.name}
               >
                 {restaurant.name}
@@ -109,20 +109,25 @@ const CustomBalloon = ({
               </a>
             ) : (
               <h2
-                className="text-xl font-semibold mb-1 truncate max-w-[180px] sm:max-w-[250px]"
+                className="text-xl font-semibold truncate max-w-[180px] sm:max-w-[250px]"
                 title={restaurant.name}
               >
                 {restaurant.name}
               </h2>
             )}
-            <div className="mb-1">
+            <div>
               <TrustScore data={restaurant} />
             </div>
           </div>
 
+          {/* 주소 */}
+          <div className="max-w-fit truncate whitespace-pre-wrap">
+            <p className="text-sm w-full ">{restaurant.address}</p>
+          </div>
+
           {/* 평점 */}
-          <div className="flex items-center gap-2 mb-1">
-            <StarRating rating={restaurant.avgRating!} />
+          <div className="flex items-center gap-2">
+            <StarRating rating={restaurant.avgRating!} size={20} />
             <span className="text-md text-neutral-900 mt-0.5">
               {reviews.length > 0 ? restaurant.avgRating!.toFixed(1) : "-"}
             </span>
@@ -132,10 +137,10 @@ const CustomBalloon = ({
           </div>
 
           {/* 비건 플래그 */}
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-2 items-center">
             {restaurant.veganFlags.includes("글루텐프리") && (
               <div title="글루텐프리 표시">
-                <GlutenIcon width={30} height={30} />
+                <GlutenIcon width={26} height={26} />
               </div>
             )}
             {restaurant.veganFlags.includes("락토") && (

@@ -24,19 +24,23 @@ export default function ReviewsModalContent({
         <h3 className="text-base sm:text-lg font-semibold text-[#3b3b3b]">
           {title}
         </h3>
-        <div className="flex items-center gap-2 text-sm text-neutral-700">
+        <div className="flex items-center gap-2 text-neutral-700">
           <StarRating rating={restaurant.avgRating!} size={18} />
-          <span className="relative bottom-[2.5px]">
-            {restaurant.avgRating?.toFixed(1)}
+          <span className="text-sm relative bottom-0.5">
+            {restaurant.avgRating}
           </span>
-          <span>({initialReviews!.length})</span>
+          &#40;
+          <span className="text-sm -mx-1.5 relative bottom-0.5">
+            {initialReviews!.length}
+          </span>
+          &#41;
         </div>
       </div>
 
       {/* 본문 */}
       <div className="min-h-[120px]">
         {initialReviews!.length > 0 && (
-          <ul className="space-y-3 max-h-[50vh] overflow-y-auto pr-1 scroll-box">
+          <ul className="space-y-3 max-h-[60vh] overflow-y-auto pr-1 scroll-box">
             {initialReviews!
               .slice()
               .sort(
@@ -47,7 +51,7 @@ export default function ReviewsModalContent({
               .map((rev, idx) => (
                 <li
                   key={idx}
-                  className="flex gap-3 border border-neutral-200 rounded-lg p-3 bg-white"
+                  className="relative flex gap-3 border border-neutral-400/40 rounded-lg p-3 bg-white"
                 >
                   {/* 아바타 */}
                   <div className="w-10 h-10 rounded-full bg-neutral-200 flex items-center justify-center border border-neutral-300">
@@ -68,30 +72,33 @@ export default function ReviewsModalContent({
                         })}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 mt-0.5">
+                    <div className="flex items-center gap-1">
                       <StarRating rating={rev.rating} size={16} />
                       <span className="text-xs text-neutral-700">
                         {rev.rating.toFixed(1)}
                       </span>
                     </div>
+
+                    <hr className="border-neutral-900/50 my-2" />
+
                     {rev.content && (
-                      <p className="text-[13px] text-neutral-800 mt-1 whitespace-pre-wrap wrap-break-word">
-                        {rev.content}
-                      </p>
+                      <div>
+                        <p className="text-[13px] text-neutral-800 whitespace-pre-wrap wrap-break-word">
+                          {rev.content}
+                        </p>
+                        {rev.menuImageUrl && (
+                          <div className="ml-auto w-14 h-14 rounded-md overflow-hidden border border-neutral-200">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={rev.menuImageUrl}
+                              alt="리뷰 이미지"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
-
-                  {/* 이미지 (옵션) */}
-                  {rev.menuImageUrl && (
-                    <div className="relative w-14 h-14 rounded-md overflow-hidden border border-neutral-200 shrink-0">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={rev.menuImageUrl}
-                        alt="리뷰 이미지"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
                 </li>
               ))}
           </ul>
