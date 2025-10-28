@@ -36,6 +36,8 @@ function ProfileViewer({
         <button
           onClick={() => {
             logout();
+            document.cookie = "accessToken=; Path=/; Max-Age=0";
+            document.cookie = "refreshToken=; Path=/; Max-Age=0";
             toast.error("로그아웃 되었습니다.");
             router.push("/");
           }}

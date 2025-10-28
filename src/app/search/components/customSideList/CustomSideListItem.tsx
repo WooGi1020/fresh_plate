@@ -77,9 +77,10 @@ const CustomSideListItem = ({
         </p>
 
         <div className="flex items-center gap-1 mt-1">
-          <StarRating rating={3.5} size={16} />
-          <span className="text-sm text-neutral-800">3.5</span>
-          <span className="text-sm text-neutral-400">(4)</span>
+          <StarRating rating={restaurant.avgRating!} size={16} />
+          <span className="text-sm text-neutral-800">
+            {`(${restaurant.avgRating?.toFixed(1) ?? 0})`}
+          </span>
         </div>
 
         <div className="flex items-center gap-2 mt-2">

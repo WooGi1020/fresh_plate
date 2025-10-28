@@ -3,9 +3,10 @@ import StarRating from "./StarRating";
 import type { ReviewInfo } from "@/types/review.schema";
 
 import UserIcon from "@/icons/user_icon.svg";
+import { Restaurant } from "@/types/restaurants.schema";
 
 type Props = {
-  restaurantId: number;
+  restaurant: Restaurant;
   title?: string;
   initialReviews?: ReviewInfo[];
   onClose?: () => void; // 필요 시 하단 닫기 버튼에서 사용
@@ -14,13 +15,8 @@ type Props = {
 export default function ReviewsModalContent({
   title = "리뷰",
   initialReviews,
+  restaurant,
 }: Props) {
-  const averageRating = useMemo(() => {
-    if (!initialReviews!.length) return null;
-    const sum = initialReviews!.reduce((acc, r) => acc + r.rating, 0);
-    return Number((sum / initialReviews!.length).toFixed(1));
-  }, [initialReviews]);
-
   return (
     <div className="flex flex-col gap-3">
       {/* 헤더(모달 공통 타이틀 아래에 보이는 내부 타이틀) */}
@@ -29,9 +25,9 @@ export default function ReviewsModalContent({
           {title}
         </h3>
         <div className="flex items-center gap-2 text-sm text-neutral-700">
-          <StarRating rating={averageRating ?? 0} size={18} />
+          <StarRating rating={restaurant.avgRating!} size={18} />
           <span className="relative bottom-[2.5px]">
-            {averageRating?.toFixed(1)}
+            {restaurant.avgRating?.toFixed(1)}
           </span>
           <span>({initialReviews!.length})</span>
         </div>

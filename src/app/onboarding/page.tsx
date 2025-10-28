@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +17,10 @@ export default function OnboardingPage() {
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
   const totalSteps = 3;
+
+  useEffect(() => {
+    document.cookie = "onboardingAllowed=; Path=/; Max-Age=0";
+  }, []);
 
   // useForm 선언
   const methods = useForm<FormValues>({
