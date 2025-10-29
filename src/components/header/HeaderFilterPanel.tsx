@@ -61,7 +61,7 @@ export default function HeaderFilterPanel({
     <label
       key={key}
       className={clsx(
-        "flex items-center gap-2 p-2 rounded-md border transition-all cursor-pointer",
+        "flex items-center gap-2 p-2 rounded-md border transition-all cursor-pointer relative ",
         filters[key]
           ? "bg-neutral-300 border-neutral-900"
           : "border-neutral-300 hover:border-neutral-400 hover:bg-neutral-50",
@@ -81,7 +81,7 @@ export default function HeaderFilterPanel({
         <AllegyIcon
           width={14}
           height={14}
-          className="text-yellow-600 ml-auto"
+          className="text-yellow-600 ml-auto absolute right-1.5"
         />
       )}
     </label>
