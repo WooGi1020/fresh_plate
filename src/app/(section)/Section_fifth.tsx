@@ -23,7 +23,7 @@ const Section_fifth = () => {
           </p>
           <Link
             href="/search"
-            className="w-full h-[64px] sm:h-[80px] md:h-[98px] flex justify-center items-center bg-secondary-light rounded-md border-2 border-neutral-900"
+            className="w-full h-16 sm:h-20 md:h-[98px] flex justify-center items-center bg-secondary-light rounded-md border-2 border-neutral-900"
           >
             <span className="text-lg sm:text-2xl md:text-[32px] xl:text-[38px] text-[#3E7B27] font-medium">
               맞춤 식당 찾으러 가기
