@@ -3,10 +3,10 @@
 import { Map, useKakaoLoader } from "react-kakao-maps-sdk";
 import { useEffect } from "react";
 import useFilteredRestaurants from "@/hooks/useFilteredRestaurants";
-import NoResultsModal from "@/app/search/components/emptyData/EmptyDataModal";
-import MarkerLayer from "@/app/search/components/kakaomap/MarkerLayer";
+import NoResultsModal from "@/app/search/(components)/emptyData/EmptyDataModal";
+import MarkerLayer from "@/app/search/(components)/kakaomap/MarkerLayer";
 import { useSearchParams } from "next/navigation";
-import CustomSideList from "@/app/search/components/customSideList/CustomSideList";
+import CustomSideList from "@/app/search/(components)/customSideList/CustomSideList";
 import LoadingIcon from "@/icons/loading_icon.svg";
 import { useGetRestaurants } from "@/libs/query/getRestaurantQuery";
 import { useMapStore } from "@/store/useMapStore";

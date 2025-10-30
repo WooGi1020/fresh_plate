@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import MapWrapper from "@/app/search/components/kakaomap/MapWrapper";
+import MapWrapper from "@/app/search/(components)/kakaomap/MapWrapper";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {

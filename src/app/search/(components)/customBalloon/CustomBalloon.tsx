@@ -15,7 +15,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useGetReviews } from "@/libs/query/getReviewQuery";
 
 import imageRenderList from "@/constants/image_render_list";
-import StarRating from "@/app/search/components/customBalloon/StarRating";
+import StarRating from "@/app/search/(components)/customBalloon/StarRating";
 import TrustScore from "@/components/common/TrustScore";
 import Modal from "@/components/common/Modal";
 import ReviewsModalContent from "./ReviewList";

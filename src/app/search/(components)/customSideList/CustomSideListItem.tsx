@@ -1,4 +1,4 @@
-import StarRating from "@/app/search/components/customBalloon/StarRating";
+import StarRating from "@/app/search/(components)/customBalloon/StarRating";
 import imageRenderList from "@/constants/image_render_list";
 import Image from "next/image";
 import { Restaurant } from "@/types/restaurants.schema";
