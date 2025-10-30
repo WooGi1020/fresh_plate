@@ -83,7 +83,7 @@ export default function CustomSideList({
         mx-auto w-full max-w-[720px] flex flex-col
         rounded-t-xl border border-neutral-200 bg-white/95 backdrop-blur-md shadow-2xl
         ring-1 ring-black/5 transition-[height] duration-200 ease-out
-        ${expanded ? "h-[65vh]" : "h-[56px]"}`}
+        ${expanded ? "h-[65vh]" : "h-14"}`}
       >
         <button
           type="button"

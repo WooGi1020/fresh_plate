@@ -38,7 +38,7 @@ export default function RootLayout({
           <Header />
         </Suspense>
 
-        <main className="w-full h-full scroll-box">
+        <main className="w-full h-full my-container">
           <ReactQueryProviders>{children}</ReactQueryProviders>
         </main>
         <div id="modal-container"></div>

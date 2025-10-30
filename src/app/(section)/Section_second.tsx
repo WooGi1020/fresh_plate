@@ -3,7 +3,7 @@ import Image from "next/image";
 const Section_second = () => {
   return (
     <div className="min-h-screen h-full py-10 sm:py-4 flex items-center justify-center bg-secondary-default px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-[1280px] flex flex-col lg:flex-row items-center justify-center sm:gap-5">
+      <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center sm:gap-5">
         {/* 이미지 그룹 */}
         <div className="flex flex-col items-center gap-6">
           {/* 필터 이미지 */}
@@ -37,7 +37,9 @@ const Section_second = () => {
           <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal">
             &quot; 글루텐 프리 메뉴는 어디 있는 거죠? &quot;
           </h3>
-          <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal mb-2 sm:mb-4">이제는 검색만으로 걱정 끝!</h3>
+          <h3 className="text-lg sm:text-2xl lg:text-[32px] font-normal mb-2 sm:mb-4">
+            이제는 검색만으로 걱정 끝!
+          </h3>
           <h2 className="text-xl sm:text-3xl lg:text-[36px] font-semibold space-y-2 leading-relaxed flex flex-col">
             <span>걱정 없이, 당신의 기준에 딱 맞는 식당만</span>
             <span>보여드릴게요.</span>

@@ -200,3 +200,13 @@ body {
 .fade-delay-4 {
   transition-delay: 0.4s;
 }
+
+.my-container {
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.my-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
