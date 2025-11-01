@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useMemo } from "react";
-import allergyFilterMap from "@/constants/allergyFilterMap";
+import { allergyFilterMap } from "@/constants/allergyFilterMap";
 import { allergyKeys } from "@/utils/defaultFilters";
 import { FilterKey } from "@/types/data";
 import { useSearchFilters } from "@/hooks/useSearchFilters";
