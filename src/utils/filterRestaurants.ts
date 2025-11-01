@@ -1,6 +1,6 @@
 import { Restaurant } from "@/types/restaurants.schema";
 import normalize from "@/utils/normalize";
-import allergenFilterMap from "@/constants/allergyFilterMap";
+import { allergyFilterMap } from "@/constants/allergyFilterMap";
 import veganFilterMap from "@/constants/veganFilterMap";
 
 export default function filterRestaurants(
@@ -15,7 +15,7 @@ export default function filterRestaurants(
     (key) => searchParams.get(key) === "true"
   );
 
-  const activeAllergyExcludes = Object.keys(allergenFilterMap).filter(
+  const activeAllergyExcludes = Object.keys(allergyFilterMap).filter(
     (key) => searchParams.get(key) === "true"
   );
 
@@ -36,7 +36,7 @@ export default function filterRestaurants(
     });
 
     const hasExcludedAllergy = activeAllergyExcludes.some((key) => {
-      const allergen = allergenFilterMap[key as keyof typeof allergenFilterMap];
+      const allergen = allergyFilterMap[key as keyof typeof allergyFilterMap];
       return r.allergyFlags.includes(allergen);
     });
 
