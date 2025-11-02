@@ -1,7 +1,14 @@
+"use client";
+
+import { useAuthStore } from "@/store/useAuthStore";
+import userPreferredLink from "@/utils/userPreferredLink";
 import Image from "next/image";
 import Link from "next/link";
 
 const Section_fifth = () => {
+  const user = useAuthStore((s) => s.user);
+  console.log(user?.eatStyles);
+
   return (
     <div className="h-full md:min-h-screen md:max-h-screen flex items-center bg-secondary-default px-4 py-10">
       <div className="flex flex-col xl:flex-row justify-center items-center w-full max-w-[1500px] mx-auto gap-10 max-sm:h-screen">
@@ -22,7 +29,7 @@ const Section_fifth = () => {
             지금 나에게 맞는 식당을 찾아보세요!
           </p>
           <Link
-            href="/search"
+            href={`/search${userPreferredLink(user?.eatStyles || [])}`}
             className="w-full h-16 sm:h-20 md:h-[98px] flex justify-center items-center bg-secondary-light rounded-md border-2 border-neutral-900"
           >
             <span className="text-lg sm:text-2xl md:text-[32px] xl:text-[38px] text-[#3E7B27] font-medium">
