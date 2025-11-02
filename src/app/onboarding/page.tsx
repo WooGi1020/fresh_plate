@@ -12,11 +12,14 @@ import { FormValues, onboardingSchema } from "@/types/onBoard.schema";
 import { setOnboarding } from "@/libs/api/onboarding.api";
 import toast from "react-hot-toast";
 import userPreferredLink from "@/utils/userPreferredLink";
+import { useAuthStore, User } from "@/store/useAuthStore";
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
+  const setUser = useAuthStore((s) => s.setUser);
+  const user = useAuthStore((s) => s.user);
   const TOTAL_STEPS = 3;
 
   useEffect(() => {
@@ -72,6 +75,10 @@ export default function OnboardingPage() {
     setSaving(true);
     try {
       await setOnboarding(data);
+      setUser({
+        ...(user ?? {}),
+        eatStyles: [...data.diet_types, ...data.allergies],
+      } as User);
       toast.success("설정을 완료했어요!");
       router.replace(
         `/search${userPreferredLink([...dietTypes, ...allergies])}`

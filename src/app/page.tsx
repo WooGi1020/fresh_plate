@@ -34,7 +34,7 @@ export default function Home() {
           >
             <Section />
             {idx === 0 && (
-              <ArrowDownIcon className="absolute size-12 left-1/2 -translate-1/2 animate-bounce bottom-1" />
+              <ArrowDownIcon className="absolute size-12 left-1/2 -translate-1/2 animate-bounce -bottom-2" />
             )}
           </div>
         );

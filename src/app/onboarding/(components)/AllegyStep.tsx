@@ -58,39 +58,8 @@ export default function AllergyStep({ allergies, setValue }: Props) {
         })}
       </div>
 
-      <div className="mt-2">
-        <label className="text-sm text-gray-700">
-          기타 알러지 유발 재료 직접 입력
-        </label>
-        <div className="flex gap-2 mt-2">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addTag(input);
-                setInput("");
-              }
-            }}
-            placeholder="예: 메밀"
-            className="flex-1 border rounded-xl px-3 py-2 outline-none focus:ring-2 ring-[#3E5329]"
-          />
-          <button
-            type="button"
-            onClick={() => {
-              addTag(input);
-              setInput("");
-            }}
-            className="px-4 cursor-pointer py-2 rounded-xl bg-[#3E5329] text-white"
-          >
-            추가
-          </button>
-        </div>
-      </div>
-
       {!!allergies.length && (
-        <div className="flex flex-wrap gap-2 mt-3">
+        <div className="flex flex-wrap gap-2 mt-4">
           {allergies.map((tag) => (
             <span
               key={tag}
