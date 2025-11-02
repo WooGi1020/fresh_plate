@@ -4,7 +4,15 @@ import z from "zod";
 export const ReviewPostRequestSchema = z.object({
   restaurantId: z.number(),
   content: z.string().nullable().optional(),
-  menuImageUrl: z.string().nullable().optional(),
+  menus: z
+    .array(
+      z.object({
+        menu_item: z.string(),
+        ingredients: z.array(z.string()),
+      })
+    )
+    .nullable()
+    .optional(),
   rating: z.number(),
 });
 export type ReviewPostRequest = z.infer<typeof ReviewPostRequestSchema>;
