@@ -39,7 +39,7 @@ export default function MapWrapper() {
 
   if (loading)
     return (
-      <div className="w-screen h-screen flex justify-center items-center">
+      <div className="w-full h-full flex justify-center items-center">
         <LoadingIcon
           className="animate-spin fill-[#3E5329]"
           width={50}
