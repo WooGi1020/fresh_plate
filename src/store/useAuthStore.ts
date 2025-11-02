@@ -3,8 +3,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface User {
+export interface User {
   nickname: string;
+  eatStyles?: string[];
   memberId: string;
 }
 

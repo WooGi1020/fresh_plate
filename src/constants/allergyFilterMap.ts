@@ -1,4 +1,4 @@
-export const allergyFilterMap = {
+export const allergyFilterMap: Record<string, string> = {
   no_egg: "계란",
   no_milk: "우유",
   no_buckwheat: "메밀",
@@ -17,6 +17,9 @@ export const allergyFilterMap = {
   no_pinenut: "잣",
   no_peach: "복숭아",
   no_tomato: "토마토",
+  glutenfree: "glutenfree",
+  lacto: "lacto",
+  ovo: "ovo",
 } as const;
 
 export const allergyFilterMapReversed: Record<string, string> = {
@@ -38,7 +41,7 @@ export const allergyFilterMapReversed: Record<string, string> = {
   잣: "no_pinenut",
   복숭아: "no_peach",
   토마토: "no_tomato",
-  glutenfree: "glutenfree",
-  lacto: "lacto",
-  ovo: "ovo",
+  GLUTENFREE: "glutenfree",
+  LACTO: "lacto",
+  OVO: "ovo",
 } as const;
