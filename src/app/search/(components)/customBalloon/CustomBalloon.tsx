@@ -250,6 +250,7 @@ const CustomBalloon = ({
       {openReviewModal && (
         <Modal setOpenFilter={setOpenReviewModal}>
           <ReviewWriteModalContent
+            title={restaurant.name}
             restaurantId={restaurant.id}
             onClose={() => setOpenReviewModal(false)}
           />

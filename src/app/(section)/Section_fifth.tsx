@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const Section_fifth = () => {
   const user = useAuthStore((s) => s.user);
-  console.log(user?.eatStyles);
 
   return (
     <div className="h-full md:min-h-screen md:max-h-screen flex items-center bg-secondary-default px-4 py-10">

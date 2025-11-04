@@ -11,11 +11,13 @@ import { usePostReview } from "@/libs/mutation/usePostReview";
 import ImageUploader from "./ImageUploader";
 
 type Props = {
+  title: string;
   restaurantId: number;
   onClose?: () => void;
 };
 
 export default function ReviewWriteModalContent({
+  title,
   restaurantId,
   onClose,
 }: Props) {
@@ -65,13 +67,16 @@ export default function ReviewWriteModalContent({
   return (
     <FormProvider {...methods}>
       <form
-        className="flex flex-col gap-5"
+        className="flex flex-col gap-4"
         onSubmit={handleSubmit(onReviewSubmit)}
       >
         {/* 헤더 */}
-        <h3 className="text-xl font-bold text-[#3b3b3b]">리뷰 작성</h3>
+        <h3 className="text-lg font-bold text-[#3b3b3b]">
+          <span className="text-[#85A947]">{title}</span>&nbsp;&#45;&nbsp;리뷰
+          작성
+        </h3>
         <p className="text-sm text-neutral-600">
-          여러분의 소중한 후기가 저희 서비스의 질을 높여요 🌱
+          여러분의 솔직한 후기가 저희 서비스를 더욱 개선합니다. 🌱
         </p>
 
         {/* 숨은 필드 */}
@@ -124,8 +129,8 @@ export default function ReviewWriteModalContent({
           </label>
           <textarea
             rows={4}
-            placeholder={`여러분께 알맞는 식사였나요?\n음식의 맛, 분위기, 친절도 등 자유롭게 작성해주세요.`}
-            className="w-full rounded-md border border-neutral-300 p-2 bg-white text-sm resize-none focus:ring-2 focus:ring-[#A3C76D] focus:outline-none"
+            placeholder={`여러분께 알맞는 식사였나요?\n제공된 정보와 다른 점이 있었다면 말씀해주세요.`}
+            className="w-full rounded-md border border-neutral-300 p-2 bg-white text-sm resize-none focus:ring-2 focus:ring-[#A3C76D] focus:outline-none placeholder:text-neutral-500"
             {...register("content")}
           />
           {errors.content && (

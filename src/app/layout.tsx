@@ -31,7 +31,7 @@ export default function RootLayout({
           position="top-center"
           reverseOrder={false}
           containerStyle={{
-            top: "80px",
+            top: "70px",
           }}
         />
         <Suspense fallback={<div />}>
