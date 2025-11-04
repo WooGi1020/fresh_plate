@@ -2,6 +2,7 @@ import { Restaurant } from "@/types/restaurants.schema";
 import normalize from "@/utils/normalize";
 import { allergyFilterMap } from "@/constants/allergyFilterMap";
 import veganFilterMap from "@/constants/veganFilterMap";
+import { jaccardSimilarity } from "@/utils/jaccard";
 
 export default function filterRestaurants(
   data: Restaurant[],
@@ -24,11 +25,17 @@ export default function filterRestaurants(
     const address = normalize(r.address);
     const menuText = r.menus?.map((m) => normalize(m.menuItem)).join(",") ?? "";
 
+    // ✅ Jaccard 유사도 기반 검색
+    const nameScore = jaccardSimilarity(name, query);
+    const addrScore = jaccardSimilarity(address, query);
+    const menuScore = jaccardSimilarity(menuText, query);
+
     const matchesQuery =
       query === "" ||
       name.includes(query) ||
       address.includes(query) ||
-      menuText.includes(query);
+      menuText.includes(query) ||
+      Math.max(nameScore, addrScore, menuScore) >= 0.3; // 🔹유사도 기준값 (조정 가능)
 
     const hasAllVeganFlags = activeVeganFilters.every((key) => {
       const label = veganFilterMap[key as keyof typeof veganFilterMap];
