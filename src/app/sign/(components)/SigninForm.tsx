@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation";
 import { login } from "@/libs/api/auth.api";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import userPreferredLink from "@/utils/userPreferredLink";
 import { useAuthStore } from "@/store/useAuthStore";
 
 function SigninForm({
@@ -55,7 +54,7 @@ function SigninForm({
       await login(values);
       toast.success("로그인에 성공했습니다.");
       const { user } = useAuthStore.getState();
-      router.replace(`/search${userPreferredLink(user?.eatStyles || [])}`);
+      router.replace(`/search`);
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가
       if (err instanceof AxiosError) {

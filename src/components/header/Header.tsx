@@ -12,7 +12,6 @@ import AuthButton from "./AuthButton";
 import useMatchMedia from "@/hooks/useMatchMedia";
 import { useMapStore } from "@/store/useMapStore";
 import coordinatesCenter from "@/constants/coordinatesCenter";
-import userPreferredLink from "@/utils/userPreferredLink";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const Header = () => {
@@ -49,7 +48,7 @@ const Header = () => {
       <div className="flex-1 flex justify-center px-4">
         {pathname === "/" && (
           <Link
-            href={`/search${userPreferredLink(user?.eatStyles || [])}`}
+            href="/search"
             aria-label="식당 검색 페이지로 이동"
             className={`${searchShellClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/20`}
           >

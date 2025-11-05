@@ -11,7 +11,6 @@ import BlacklistStep from "./(components)/LikeStep";
 import { FormValues, onboardingSchema } from "@/types/onBoard.schema";
 import { setOnboarding } from "@/libs/api/onboarding.api";
 import toast from "react-hot-toast";
-import userPreferredLink from "@/utils/userPreferredLink";
 import { useAuthStore, User } from "@/store/useAuthStore";
 
 export default function OnboardingPage() {
@@ -80,9 +79,7 @@ export default function OnboardingPage() {
         eatStyles: [...data.diet_types, ...data.allergies],
       } as User);
       toast.success("설정을 완료했어요!");
-      router.replace(
-        `/search${userPreferredLink([...dietTypes, ...allergies])}`
-      );
+      router.replace(`/search`);
     } catch {
       toast.error("저장 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
     } finally {

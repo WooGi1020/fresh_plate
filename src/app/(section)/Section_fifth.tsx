@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuthStore } from "@/store/useAuthStore";
-import userPreferredLink from "@/utils/userPreferredLink";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,7 +27,7 @@ const Section_fifth = () => {
             지금 나에게 맞는 식당을 찾아보세요!
           </p>
           <Link
-            href={`/search${userPreferredLink(user?.eatStyles || [])}`}
+            href="/search"
             className="w-full h-16 sm:h-20 md:h-[98px] flex justify-center items-center bg-secondary-light rounded-md border-2 border-neutral-900"
           >
             <span className="text-lg sm:text-2xl md:text-[32px] xl:text-[38px] text-[#3E7B27] font-medium">
