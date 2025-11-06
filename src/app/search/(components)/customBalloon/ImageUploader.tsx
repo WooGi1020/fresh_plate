@@ -4,6 +4,7 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { useFormContext } from "react-hook-form";
 import { uploadImage } from "@/libs/api/uploadImage";
 import BookIcon from "@/icons/book_icon.svg";
+import toast from "react-hot-toast";
 
 export default function ImageUploader({
   isPending,
@@ -35,10 +36,16 @@ export default function ImageUploader({
     try {
       const res = await uploadImage(formData);
       const menus = res?.[0]?.output?.menus ?? null;
+      if (menus.length === 0) {
+        toast.success("메뉴판 이미지를 업로드해주세요 😅");
+        setUploadedImage(null);
+        setPreviewUrl(null);
+        setValue("menus", null);
+        return;
+      }
       setValue("menus", menus);
     } catch (err) {
-      console.error(err);
-      alert("이미지 업로드 중 오류가 발생했습니다.");
+      toast.error("이미지 업로드 중 오류가 발생했습니다.");
     } finally {
       setIsPending(false);
     }
@@ -49,12 +56,12 @@ export default function ImageUploader({
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("이미지 파일만 업로드할 수 있습니다.");
+      toast.error("이미지 파일만 업로드할 수 있습니다.");
       e.target.value = "";
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      alert("5MB 이하의 이미지 파일만 업로드할 수 있습니다.");
+      toast.error("5MB 이하의 이미지 파일만 업로드할 수 있습니다.");
       return;
     }
 
