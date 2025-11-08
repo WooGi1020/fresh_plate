@@ -24,6 +24,7 @@ export default function MapWrapper() {
 
   const [loading] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY!,
+    libraries: ["services", "clusterer"],
   });
 
   const [mapReady, setMapReady] = useState(false);

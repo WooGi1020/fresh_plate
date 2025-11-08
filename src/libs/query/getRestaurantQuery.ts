@@ -32,6 +32,6 @@ export function useGetRestaurants() {
   return useQuery<Restaurant[]>({
     queryKey: ["restaurants", isLoggedIn],
     queryFn: () => fetchRestaurants(isLoggedIn),
-    staleTime: 1000 * 60, // 1분 캐시 예시
+    staleTime: 1000 * 60 * 5,
   });
 }

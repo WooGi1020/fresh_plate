@@ -135,7 +135,7 @@
 /* ✅ 독립 클래스: side-fade-in */
 .side-fade-in {
   animation: side-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  animation-delay: 0.35s; /* Map transition(0.7s) 중 절반 시점에 시작 */
+  animation-delay: 0.5s; /* Map transition(0.7s) 중 절반 시점에 시작 */
   animation-fill-mode: both;
 }
 
