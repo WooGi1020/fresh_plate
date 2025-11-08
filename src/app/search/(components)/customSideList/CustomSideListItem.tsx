@@ -7,6 +7,7 @@ import LacToIcon from "@/icons/lacto_icon.svg";
 import OvoIcon from "@/icons/ovo_icon.svg";
 import GlutenIcon from "@/icons/gluten_free_icon.svg";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
+import { useExpandedStore } from "@/store/useExpandedStore";
 
 const CustomSideListItem = ({
   restaurant,
@@ -22,10 +23,12 @@ const CustomSideListItem = ({
   const number = index % 4;
   const lat = Number(restaurant.lat);
   const lng = Number(restaurant.lng);
+  const setExpanded = useExpandedStore((s) => s.setExpanded);
 
   const handleClick = () => {
     customOffsetMarkerPosition(map, new kakao.maps.LatLng(lat, lng));
     setSelectedId(restaurant.id);
+    setExpanded(false);
   };
 
   return (

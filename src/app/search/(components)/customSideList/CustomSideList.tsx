@@ -7,6 +7,8 @@ import { Restaurant } from "@/types/restaurants.schema";
 import CustomSideListHeader from "./CustomSideListHeader";
 import CustomSideListContent from "./CustomSideListContent";
 import { useMapStore } from "@/store/useMapStore";
+import { useExpandedStore } from "@/store/useExpandedStore";
+import ArrowDownIcon from "@/icons/arrow_down_icon.svg";
 
 export default function CustomSideList({
   initialData,
@@ -15,7 +17,8 @@ export default function CustomSideList({
   initialData: Restaurant[];
   map: kakao.maps.Map;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const expanded = useExpandedStore((s) => s.expanded);
+  const setExpanded = useExpandedStore((s) => s.setExpanded);
   const [sortOption, setSortOption] = useState("기본");
   const user = useAuthStore((s) => s.user);
   const setSelectedId = useMapStore((s) => s.setSelectedId);
@@ -87,41 +90,40 @@ export default function CustomSideList({
         mx-auto w-full max-w-[720px] flex flex-col
         rounded-t-xl border border-neutral-200 bg-white/95 backdrop-blur-md shadow-2xl
         ring-1 ring-black/5 transition-[height] duration-200 ease-out
-        ${expanded ? "h-[65vh]" : "h-14"}`}
+        ${expanded ? "h-[65vh]" : "h-13"}`}
       >
         <button
           type="button"
-          onClick={() => setExpanded((v) => !v)}
-          className="w-full cursor-pointer select-none group shrink-0"
+          onClick={() => setExpanded(!expanded)}
+          className="w-full py-2 cursor-pointer select-none group shrink-0 inline-flex justify-center items-center"
         >
-          <div className="pt-2 pb-1">
-            <div className="mx-auto h-1.5 w-10 rounded-full bg-neutral-300 group-hover:bg-neutral-400 transition-colors" />
-          </div>
-
-          <div
-            className={`px-4 pb-2 flex items-center justify-between transition-colors ${
-              expanded ? "bg-transparent" : "bg-white/60 backdrop-blur-sm"
+          <ArrowDownIcon
+            className={`size-10 transition-transform duration-200 ${
+              expanded ? "" : "rotate-180"
             }`}
-          >
-            <CustomSideListHeader
-              count={count}
-              sortOption={sortOption}
-              onSortChange={handleSortChange}
-              user={!!user}
-            />
-          </div>
+          />
         </button>
+
+        <div
+          className={`px-4 flex items-center justify-between transition-colors ${
+            expanded ? "bg-transparent" : "bg-white/60 backdrop-blur-sm"
+          }`}
+        >
+          <CustomSideListHeader
+            count={count}
+            sortOption={sortOption}
+            onSortChange={handleSortChange}
+            user={!!user}
+          />
+        </div>
 
         {/* ✅ Scrollable List */}
         <div className="flex-1 overflow-y-auto px-4 min-h-0">
-          <div className="mt-2 h-px bg-neutral-200" />
-          <div className="pt-2 space-y-3">
-            <CustomSideListContent
-              data={sortedData}
-              setSelectedId={setSelectedId}
-              map={map}
-            />
-          </div>
+          <CustomSideListContent
+            data={sortedData}
+            setSelectedId={setSelectedId}
+            map={map}
+          />
         </div>
       </div>
     </>

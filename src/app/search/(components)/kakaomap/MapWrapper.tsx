@@ -10,6 +10,7 @@ import CustomSideList from "@/app/search/(components)/customSideList/CustomSideL
 import { useGetRestaurants } from "@/libs/query/getRestaurantQuery";
 import { useMapStore } from "@/store/useMapStore";
 import coordinatesCenter from "@/constants/coordinatesCenter";
+import { useExpandedStore } from "@/store/useExpandedStore";
 
 export default function MapWrapper() {
   const { data, isLoading } = useGetRestaurants();
@@ -17,6 +18,8 @@ export default function MapWrapper() {
   const setMap = useMapStore((s) => s.setMap);
   const setSelectedId = useMapStore((s) => s.setSelectedId);
   const panTo = useMapStore((s) => s.panTo);
+  const expanded = useExpandedStore((s) => s.expanded);
+  const setExpanded = useExpandedStore((s) => s.setExpanded);
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
@@ -49,7 +52,12 @@ export default function MapWrapper() {
         center={coordinatesCenter}
         style={{ width: "100%", height: "100%" }}
         level={6}
-        onClick={() => setSelectedId(null)}
+        onClick={() => {
+          setSelectedId(null);
+          if (expanded) {
+            setExpanded(false);
+          }
+        }}
         onCreate={(instance) => {
           setMap(instance);
           // @ts-ignore kakao 전역
