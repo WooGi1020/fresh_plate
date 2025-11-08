@@ -1,9 +1,10 @@
 "use client";
 
-import { MapMarker, CustomOverlayMap, useMap } from "react-kakao-maps-sdk";
+import { CustomOverlayMap, useMap } from "react-kakao-maps-sdk";
 import { Restaurant } from "@/types/restaurants.schema";
 import CustomBalloon from "./customBalloon/CustomBalloon";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
+import { twMerge } from "tailwind-merge";
 
 function MapMarkerWithPan({
   restaurant,
@@ -28,15 +29,48 @@ function MapMarkerWithPan({
 
   return (
     <>
-      <MapMarker
+      {/* ✅ HTML 기반 마커 */}
+      <CustomOverlayMap
         position={position}
-        onClick={handleClick}
-        image={{
-          src: "/icons/marker.png",
-          size: { width: 40, height: 40 },
-          options: { offset: { x: 20, y: 40 } },
-        }}
-      />
+        yAnchor={1}
+        zIndex={isSelected ? 20 : 10}
+      >
+        <div
+          className="relative size-10 flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
+          onClick={handleClick}
+        >
+          {/* 실제 마커 이미지 */}
+          <img
+            src="/icons/marker.png"
+            alt="marker"
+            className="size-10 relative z-10 pointer-events-none"
+          />
+
+          <div
+            className={twMerge(
+              "absolute inset-0 pointer-events-none",
+              restaurant.warning
+                ? "bg-red-500 animate-soft-glow"
+                : restaurant.recommended
+                ? "bg-blue-500 animate-soft-pulse"
+                : "bg-transparent"
+            )}
+            style={{
+              WebkitMaskImage: "url('/icons/marker.png')",
+              maskImage: "url('/icons/marker.png')",
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+              transform: "scale(1.2)",
+            }}
+          />
+        </div>
+      </CustomOverlayMap>
+
+      {/* ✅ 선택 시 말풍선 */}
       {isSelected && (
         <CustomOverlayMap
           position={position}
@@ -46,10 +80,8 @@ function MapMarkerWithPan({
         >
           <CustomBalloon
             restaurant={restaurant}
-            map={map}
-            onClose={() => {
-              setSelectedId(null);
-            }}
+            map={map!}
+            onClose={() => setSelectedId(null)}
           />
         </CustomOverlayMap>
       )}
