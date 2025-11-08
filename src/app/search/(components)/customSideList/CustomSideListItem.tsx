@@ -37,7 +37,7 @@ const CustomSideListItem = ({
                  focus-visible:ring-2 focus-visible:ring-neutral-900/20
                   transition-all p-3 pl-4 cursor-pointer shadow-sm hover:shadow-md ${
                     restaurant.recommended &&
-                    "shadow-md hover:shadow-lg shadow-green-400/50"
+                    "shadow-md hover:shadow-lg shadow-blue-500/50"
                   } ${
         restaurant.warning && "shadow-md hover:shadow-lg shadow-red-400/50"
       }`}
@@ -48,10 +48,10 @@ const CustomSideListItem = ({
       title={restaurant.name}
     >
       <div
-        className={`absolute left-0 top-0 w-[5px] h-full transition-all group-hover:animate-pulse
+        className={`absolute left-0 top-0 w-[5px] h-full transition-all group-hover:animate-soft-glow
     ${
       restaurant.recommended && !restaurant.warning
-        ? "bg-green-400"
+        ? "bg-blue-500"
         : restaurant.warning
         ? "bg-red-400 "
         : "bg-neutral-200"

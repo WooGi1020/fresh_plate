@@ -77,7 +77,7 @@ export default function ImageUploader({
         className={`
           group relative w-full aspect-video rounded-lg overflow-hidden cursor-pointer select-none
           bg-linear-to-b from-gray-50 to-gray-100
-          border border-neutral-300 hover:border-[#A3C76D] transition-all duration-200
+          border-3 border-neutral-300 hover:border-[#A3C76D] transition-all duration-200
           flex items-center justify-center
         `}
       >
