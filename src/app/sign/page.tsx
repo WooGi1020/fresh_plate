@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import SigninForm from "./components/SigninForm";
 import { Mode } from "@/types/auth.schema";
-import SignupForm from "./components/SignupForm";
-import SlideBanner from "./components/SlideBanner";
 import useMatchMedia from "@/hooks/useMatchMedia";
+import SigninForm from "./(components)/SigninForm";
+import SignupForm from "./(components)/SignupForm";
+import SlideBanner from "./(components)/SlideBanner";
 
 export default function AuthPage() {
   const [mode, setMode] = useState<Mode>("signin");

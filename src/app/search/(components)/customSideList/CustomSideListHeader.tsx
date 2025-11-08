@@ -26,9 +26,10 @@ const CustomSideListHeader = ({
           onClick={(e) => e.stopPropagation()}
           className="text-[12px] px-2 py-[3px] rounded border border-neutral-300 bg-white text-neutral-700 cursor-pointer focus:outline-none"
         >
-          <option value="기본">기본</option>
-          <option value="추천">추천</option>
-          <option value="비추천">비추천</option>
+          <option value="기본">기본순</option>
+          <option value="추천">추천순</option>
+          <option value="별점">별점순</option>
+          <option value="최신화">리뷰 최신화순</option>
         </select>
       )}
       <span className="text-[11px] px-2 py-[3px] rounded-full bg-neutral-100 text-neutral-600 border border-neutral-200">

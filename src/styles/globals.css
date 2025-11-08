@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
+/* ---------- THEME VARIABLES ---------- */
 @theme {
+  /* 색상 */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -16,7 +18,10 @@
   --color-neutral-700: #927f71;
   --color-neutral-900: #504840;
 
-  --animate-fade-in: fade-in 0.2s ease-in-out;
+  /* ---------- 애니메이션 ---------- */
+
+  /* fade-in */
+  --animate-fade-in: fade-in 0.25s ease-in-out both;
   @keyframes fade-in {
     0% {
       transform: scale(0.95);
@@ -28,20 +33,8 @@
     }
   }
 
-  --animate-fade-down: fade-down 0.1s ease-in-out;
-  @keyframes fade-down {
-    0% {
-      transform: translateY(-10px);
-      opacity: 0.9;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
+  /* slide (일시적 알림용) */
   --animate-slide: slide 4s ease-in-out forwards;
-
   @keyframes slide {
     0% {
       opacity: 0;
@@ -60,16 +53,53 @@
       transform: translateY(-10px);
     }
   }
+
+  /* soft pulse */
+  --animate-soft-pulse: soft-pulse 2s ease-in-out infinite;
+  @keyframes soft-pulse {
+    0%,
+    100% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+
+  /* soft glow */
+  --animate-soft-glow: soft-glow 1.5s ease-in-out infinite;
+  @keyframes soft-glow {
+    0%,
+    100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.4);
+    }
+  }
+
+  --animate-side-fade-in: side-fade-in 0.45s;
+  @keyframes side-fade-in {
+    0% {
+      transform: translateX(-24px) scale(0.98);
+      opacity: 0;
+      filter: blur(6px);
+    }
+    60% {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      transform: none;
+      opacity: 1;
+    }
+  }
 }
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
+/* ---------- BASE LAYER ---------- */
 @layer base {
   *,
   ::after,
@@ -78,35 +108,42 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
-}
 
-:root {
-  --background: #eaeedb;
-  --foreground: #504840;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-}
-
-@media (prefers-color-scheme: dark) {
   :root {
     --background: #eaeedb;
     --foreground: #504840;
   }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #eaeedb;
+      --foreground: #504840;
+    }
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    color: var(--foreground);
+    background: var(--background);
+  }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
+/* ---------- COMPONENTS & UTILITIES ---------- */
+
+/* ✅ 독립 클래스: side-fade-in */
+.side-fade-in {
+  animation: side-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation-delay: 0.5s; /* Map transition(0.7s) 중 절반 시점에 시작 */
+  animation-fill-mode: both;
 }
 
+/* 말풍선 */
 .speech-bubble {
   position: relative;
-  background: #fffdf4;
-  border: 3px solid #504840;
+  background: var(--color-neutral-100);
+  border: 3px solid var(--color-neutral-900);
   border-radius: 0.4em;
   padding: 0.8rem;
 }
@@ -116,14 +153,13 @@ body {
   position: absolute;
   bottom: -17px;
   left: 50%;
-  opacity: 90%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotate(-45deg);
   width: 30px;
   height: 30px;
-  background: #fffdf4;
-  border-left: 3px solid #504840;
-  border-bottom: 3px solid #504840;
-  transform: translateX(-50%) rotate(-45deg);
+  background: var(--color-neutral-100);
+  border-left: 3px solid var(--color-neutral-900);
+  border-bottom: 3px solid var(--color-neutral-900);
+  opacity: 0.9;
   z-index: -1;
 }
 
@@ -135,56 +171,57 @@ body {
   transform: translateX(-50%);
   width: 28px;
   height: 15px;
-  background: #fffdf4;
+  background: var(--color-neutral-100);
   z-index: 2;
 }
 
+/* 스크롤바 커스텀 */
 .scroll-box {
-  scrollbar-width: thin; /* Firefox용 얇은 스크롤바 */
-  scrollbar-color: #888 transparent; /* Firefox용: thumb, track */
-  overflow: auto; /* 스크롤 활성화 */
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
 }
-
-/* WebKit 기반 브라우저용 */
 .scroll-box::-webkit-scrollbar {
-  width: 8px; /* 얇게 설정 */
+  width: 8px;
 }
-
 .scroll-box::-webkit-scrollbar-track {
-  background: transparent; /* 트랙 투명 처리 */
+  background: transparent;
 }
-
 .scroll-box::-webkit-scrollbar-thumb {
-  background-color: #888; /* thumb 색상 */
+  background-color: #888;
   border-radius: 5px;
 }
-
-.scroll-box::-webkit-scrollbar-button:single-button {
-  display: none;
-  background: transparent;
-  height: 0;
-  width: 0;
-}
-
 .scroll-box::-webkit-scrollbar-button {
   display: none;
-  height: 0;
-  width: 0;
-  background: transparent;
 }
 
+/* hover 시 스크롤 표시 */
+.my-container {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  -ms-overflow-style: auto;
+}
+.my-container::-webkit-scrollbar {
+  width: 8px;
+}
+.my-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+.my-container::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Fade-up (공용 인터랙션) */
 .fade-up {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-
 .fade-up.show {
   opacity: 1;
   transform: translateY(0);
 }
-
-/* delay별 클래스 (선택사항) */
 .fade-delay-0 {
   transition-delay: 0s;
 }

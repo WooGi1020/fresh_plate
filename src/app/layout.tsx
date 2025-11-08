@@ -31,14 +31,14 @@ export default function RootLayout({
           position="top-center"
           reverseOrder={false}
           containerStyle={{
-            top: "80px",
+            top: "70px",
           }}
         />
         <Suspense fallback={<div />}>
           <Header />
         </Suspense>
 
-        <main className="w-full h-full scroll-box">
+        <main className="w-full h-[calc(100vh-60px)] my-container">
           <ReactQueryProviders>{children}</ReactQueryProviders>
         </main>
         <div id="modal-container"></div>

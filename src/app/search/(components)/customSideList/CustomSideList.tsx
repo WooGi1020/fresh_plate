@@ -10,11 +10,9 @@ import { useMapStore } from "@/store/useMapStore";
 
 export default function CustomSideList({
   initialData,
-  isLoading,
   map,
 }: {
   initialData: Restaurant[];
-  isLoading: boolean;
   map: kakao.maps.Map;
 }) {
   const [expanded, setExpanded] = useState(false);
@@ -37,12 +35,19 @@ export default function CustomSideList({
           if (!a.warning && b.warning) return -1;
           return 0;
         });
-      case "비추천":
+      case "별점":
         return data.sort((a, b) => {
-          if (a.warning && !b.warning) return -1;
-          if (!a.warning && b.warning) return 1;
+          if (b.avgRating !== a.avgRating) {
+            return (b.avgRating ?? 0) - (a.avgRating ?? 0);
+          }
           return 0;
         });
+      // case "최신화":
+      //   return data.sort((a, b) => {
+      //     const aDate = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      //     const bDate = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      //     return bDate - aDate;
+      //   }
       default:
         return data;
     }
@@ -60,7 +65,7 @@ export default function CustomSideList({
       {/* ✅ Desktop */}
       <div
         className="hidden md:flex flex-col absolute left-4 top-1/2 -translate-y-1/2
-        h-[80vh] w-[400px] z-20 rounded-xl border border-neutral-200
+        h-[80vh] w-[400px] z-20 rounded-xl border border-neutral-200 side-fade-in
         bg-white/80 backdrop-blur-md shadow-2xl p-4 overflow-hidden opacity-95 ring-1 ring-black/5"
       >
         <CustomSideListHeader
@@ -71,7 +76,6 @@ export default function CustomSideList({
         />
         <CustomSideListContent
           data={sortedData}
-          isLoading={isLoading}
           setSelectedId={setSelectedId}
           map={map}
         />
@@ -83,7 +87,7 @@ export default function CustomSideList({
         mx-auto w-full max-w-[720px] flex flex-col
         rounded-t-xl border border-neutral-200 bg-white/95 backdrop-blur-md shadow-2xl
         ring-1 ring-black/5 transition-[height] duration-200 ease-out
-        ${expanded ? "h-[65vh]" : "h-[56px]"}`}
+        ${expanded ? "h-[65vh]" : "h-14"}`}
       >
         <button
           type="button"
@@ -114,7 +118,6 @@ export default function CustomSideList({
           <div className="pt-2 space-y-3">
             <CustomSideListContent
               data={sortedData}
-              isLoading={isLoading}
               setSelectedId={setSelectedId}
               map={map}
             />

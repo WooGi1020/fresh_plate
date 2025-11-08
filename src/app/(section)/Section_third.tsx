@@ -76,9 +76,9 @@ const TextCard = ({
   text: string;
   icon?: { icon: React.ReactNode; label: string }[];
 }) => (
-  <div className="bg-[#FFFDF4] rounded-md px-6 sm:px-10 py-5 sm:py-6 shadow-md w-full flex flex-col justify-center h-fit lg:min-h-[80px]">
+  <div className="bg-[#FFFDF4] rounded-md px-6 sm:px-10 py-5 sm:py-6 shadow-md w-full flex flex-col justify-center h-fit lg:min-h-20 lg:max-h-screen">
     <p className="text-lg lg:text-xl font-normal">{text}</p>
-    <div className="mx-auto flex gap-10 items-center">
+    <div className="mx-auto flex gap-4 sm:gap-10 items-center">
       {icon?.map((item, i) => (
         <div key={i} className="relative group cursor-pointer mt-4">
           {item.icon}

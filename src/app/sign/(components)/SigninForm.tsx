@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { login } from "@/libs/api/auth.api";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/store/useAuthStore";
 
 function SigninForm({
   mode,
@@ -52,7 +53,8 @@ function SigninForm({
       }
       await login(values);
       toast.success("로그인에 성공했습니다.");
-      router.replace("/search");
+      const { user } = useAuthStore.getState();
+      router.replace(`/search`);
     } catch (err) {
       // 오류 처리 UI가 필요하면 추가
       if (err instanceof AxiosError) {

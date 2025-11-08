@@ -10,10 +10,20 @@ const setCookie = (name: string, value: string, days = 1) => {
 
 export const login = async (data: SigninValues) => {
   const res = await apiClient.post("/api/auth/login", data);
-  const { accessToken, refreshToken, memberId, nickname } = res.data.data;
+  const {
+    accessToken,
+    refreshToken,
+    memberId,
+    nickname,
+    allergies,
+    dietTypes,
+  } = res.data.data;
   useAuthStore
     .getState()
-    .login({ nickname, memberId }, { accessToken, refreshToken });
+    .login(
+      { nickname, memberId, eatStyles: [...dietTypes, ...allergies] },
+      { accessToken, refreshToken }
+    );
 
   setCookie("accessToken", accessToken);
   setCookie("refreshToken", refreshToken);

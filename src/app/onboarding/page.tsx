@@ -5,18 +5,21 @@ import { useRouter } from "next/navigation";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import AllergyStep from "./components/AllegyStep";
-import DietStep from "./components/DietStep";
-import BlacklistStep from "./components/LikeStep";
+import AllergyStep from "./(components)/AllegyStep";
+import DietStep from "./(components)/DietStep";
+import BlacklistStep from "./(components)/LikeStep";
 import { FormValues, onboardingSchema } from "@/types/onBoard.schema";
 import { setOnboarding } from "@/libs/api/onboarding.api";
 import toast from "react-hot-toast";
+import { useAuthStore, User } from "@/store/useAuthStore";
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
-  const totalSteps = 3;
+  const setUser = useAuthStore((s) => s.setUser);
+  const user = useAuthStore((s) => s.user);
+  const TOTAL_STEPS = 3;
 
   useEffect(() => {
     document.cookie = "onboardingAllowed=; Path=/; Max-Age=0";
@@ -47,8 +50,8 @@ export default function OnboardingPage() {
   const tastePreferences = watch("taste_preferences");
 
   const progress = useMemo(
-    () => Math.round(((step + 1) / totalSteps) * 100),
-    [step, totalSteps]
+    () => Math.round(((step + 1) / TOTAL_STEPS) * 100),
+    [step, TOTAL_STEPS]
   );
 
   const goNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,7 +63,7 @@ export default function OnboardingPage() {
     }
 
     setStep((prev) => {
-      if (prev < totalSteps - 1) {
+      if (prev < TOTAL_STEPS - 1) {
         return prev + 1;
       }
       return prev;
@@ -71,8 +74,12 @@ export default function OnboardingPage() {
     setSaving(true);
     try {
       await setOnboarding(data);
+      setUser({
+        ...(user ?? {}),
+        eatStyles: [...data.diet_types, ...data.allergies],
+      } as User);
       toast.success("설정을 완료했어요!");
-      router.replace("/search");
+      router.replace(`/search`);
     } catch {
       toast.error("저장 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
     } finally {
@@ -92,7 +99,7 @@ export default function OnboardingPage() {
             <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
               <span>반가워요😊 새로운 사용자를 위한 설정 단계입니다!</span>
               <span>
-                {step + 1}/{totalSteps}
+                {step + 1}/{TOTAL_STEPS}
               </span>
             </div>
             <div className="h-2 w-full bg-gray-100 rounded">
@@ -140,7 +147,7 @@ export default function OnboardingPage() {
               >
                 나중에 설정
               </button>
-              {step < totalSteps - 1 ? (
+              {step < TOTAL_STEPS - 1 ? (
                 <button
                   type="button"
                   className="px-5 py-2 cursor-pointer rounded-xl bg-[#3E5329] text-white disabled:opacity-50"

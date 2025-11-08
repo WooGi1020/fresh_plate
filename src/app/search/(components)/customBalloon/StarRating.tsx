@@ -17,7 +17,7 @@ const StarRating = ({ rating, size = 24 }: StarRatingProps) => {
           width={size}
           height={size}
           fill="none"
-          stroke="#CBD2A9"
+          stroke="#85A947"
           strokeWidth={1.5}
         />
 
@@ -32,7 +32,7 @@ const StarRating = ({ rating, size = 24 }: StarRatingProps) => {
             left: 0,
           }}
         >
-          <FilledStarIcon width={size} height={size} fill="#CBD2A9" />
+          <FilledStarIcon width={size} height={size} fill="#85A947" />
         </div>
       </div>
     );

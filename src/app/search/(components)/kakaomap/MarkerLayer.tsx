@@ -1,4 +1,4 @@
-import MapMarkerWithPan from "@/app/search/components/MapMarkerWithPan";
+import MapMarkerWithPan from "@/app/search/(components)/MapMarkerWithPan";
 import { useMapStore } from "@/store/useMapStore";
 import { Restaurant } from "@/types/restaurants.schema";
 
