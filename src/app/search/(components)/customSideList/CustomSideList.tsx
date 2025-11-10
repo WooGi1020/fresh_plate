@@ -31,20 +31,14 @@ export default function CustomSideList({
       case "추천":
         return data.sort((a, b) => {
           const getPriority = (r: typeof a) => {
-            // 알러지 위험이 있다면 가장 낮은 우선순위
-            if (r.allergyLevel! >= 0) return 0;
+            // 알러지 위험이 있으면 최하위
+            if (r.allergyLevel! > 0) return 0;
 
-            // 추천 + 안전
-            if (r.recommended && !r.warning) return 3;
-
-            // 추천 + 주의
+            // 추천 → 최상위
             if (r.recommended) return 2;
 
-            // 일반 (추천 X, 경고 X)
-            if (!r.warning) return 1;
-
-            // 경고 있음
-            return 0;
+            // 일반 (추천 X, 알러지 X)
+            return 1;
           };
 
           return getPriority(b) - getPriority(a);
