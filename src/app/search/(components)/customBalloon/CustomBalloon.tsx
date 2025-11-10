@@ -206,7 +206,10 @@ const CustomBalloon = ({
                 </span>
                 <span
                   className={`${base} ${
-                    restaurant.allergyLevel! <= 0.4 ? active : neutral
+                    restaurant.allergyLevel! <= 0.4 &&
+                    restaurant.allergyLevel! > 0
+                      ? active
+                      : neutral
                   }`}
                 >
                   <span

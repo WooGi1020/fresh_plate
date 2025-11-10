@@ -30,17 +30,26 @@ export default function CustomSideList({
     switch (sortOption) {
       case "추천":
         return data.sort((a, b) => {
-          // 각 항목별로 우선순위 점수 계산
-          const scoreA =
-            (a.recommended && !a.warning ? 2 : a.recommended ? 1 : 0) -
-            (a.warning ? 1 : 0);
-          const scoreB =
-            (b.recommended && !b.warning ? 2 : b.recommended ? 1 : 0) -
-            (b.warning ? 1 : 0);
+          const getPriority = (r: typeof a) => {
+            // 알러지 위험이 있다면 가장 낮은 우선순위
+            if (r.allergyLevel! >= 0) return 0;
 
-          // 높은 점수가 앞으로 오도록 정렬
-          return scoreB - scoreA;
+            // 추천 + 안전
+            if (r.recommended && !r.warning) return 3;
+
+            // 추천 + 주의
+            if (r.recommended) return 2;
+
+            // 일반 (추천 X, 경고 X)
+            if (!r.warning) return 1;
+
+            // 경고 있음
+            return 0;
+          };
+
+          return getPriority(b) - getPriority(a);
         });
+
       case "별점":
         return data.sort((a, b) => {
           if (b.avgRating !== a.avgRating) {
