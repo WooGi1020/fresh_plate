@@ -45,12 +45,12 @@ export default function CustomSideList({
           }
           return 0;
         });
-      // case "최신화":
-      //   return data.sort((a, b) => {
-      //     const aDate = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
-      //     const bDate = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
-      //     return bDate - aDate;
-      //   }
+      case "최신화":
+        return data.sort((a, b) => {
+          const aDate = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+          const bDate = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+          return bDate - aDate;
+        });
       default:
         return data;
     }
