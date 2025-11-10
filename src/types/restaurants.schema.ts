@@ -22,6 +22,8 @@ export const RestaurantSchema = z.object({
   recommended: z.boolean().nullable(),
   warning: z.boolean().nullable(),
   menus: z.array(MenuSchema).default([]),
+  updatedAt: z.string().nullable(),
+  allergyLevel: z.number().nullable(),
 });
 
 export type Restaurant = z.infer<typeof RestaurantSchema>;

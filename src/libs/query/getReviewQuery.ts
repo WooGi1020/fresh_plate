@@ -10,7 +10,7 @@ export function useGetReviews(id: number) {
       const list = Array.isArray(data) ? data : (data as any)?.reviews ?? [];
       return list as ReviewInfo[];
     },
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60 * 3,
     enabled: !!id,
   });
 }

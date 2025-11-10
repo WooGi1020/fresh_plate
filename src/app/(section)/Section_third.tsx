@@ -6,13 +6,35 @@ import OvoIcon from "@/icons/ovo_icon.svg";
 import LacToIcon from "@/icons/lacto_icon.svg";
 
 const icons = [
-  { icon: <GlutenFreeIcon className="w-7 h-7" />, label: "글루텐프리" },
-  { icon: <LacToIcon className="w-7 h-7" />, label: "락토" },
-  { icon: <OvoIcon className="w-7 h-7" />, label: "오보" },
-  { icon: <AwardIcon className="w-7 h-7" />, label: "데이터 검증 여부" },
+  {
+    icon: <GlutenFreeIcon className="w-7 h-7" />,
+    title: "글루텐프리",
+    description:
+      "밀가루나 보리 등 글루텐이 포함되지 않은 식단입니다.\n음식점 상세 말풍선에 표시됩니다.",
+  },
+  {
+    icon: <LacToIcon className="w-7 h-7" />,
+    title: "락토",
+    description:
+      "유제품은 허용하지만 달걀과 육류는 제외하는 채식 형태입니다.\n음식점 상세 말풍선에 표시됩니다.",
+  },
+  {
+    icon: <OvoIcon className="w-7 h-7" />,
+    title: "오보",
+    description:
+      "달걀은 허용하지만 유제품과 육류는 제외하는 채식 형태입니다.\n음식점 상세 말풍선에 표시됩니다.",
+  },
+  {
+    icon: <AwardIcon className="w-7 h-7" />,
+    title: "데이터 검증 여부",
+    description:
+      "메뉴판 AI 추출을 통해 최신화된 시각이 표시됩니다.\n음식점 상세 말풍선 우측 상단에 표시됩니다.",
+  },
   {
     icon: <AllergyIcon className="w-7 h-7 stroke-red-500" />,
-    label: "알러지 유발 위험도",
+    title: "알러지 유발 위험도",
+    description:
+      "메뉴 재료 중 알레르기 유발 가능성이 있는 경우 표시됩니다.\n음식점 상세 말풍선 중앙에 표시됩니다.",
   },
 ];
 
@@ -43,7 +65,7 @@ const Section_third = () => {
 
         {/* 중간 섹션 */}
         <div className="flex flex-col-reverse lg:flex-row items-center gap-10">
-          {/* 텍스트 카드 4~5 */}
+          {/* 텍스트 카드 4~6 */}
           <div className="flex flex-1 flex-col gap-6 w-full">
             <TextCard text="④ 회원가입 시 간단한 온보딩으로 개인 맞춤 데이터를 설정하세요." />
             <TextCard text="⑤ 맞춤형 추천 알고리즘으로 신뢰도 높은 식당을 확인하세요." />
@@ -74,25 +96,32 @@ const TextCard = ({
   icon,
 }: {
   text: string;
-  icon?: { icon: React.ReactNode; label: string }[];
+  icon?: { icon: React.ReactNode; title: string; description: string }[];
 }) => (
   <div className="bg-[#FFFDF4] rounded-md px-6 sm:px-10 py-5 sm:py-6 shadow-md w-full flex flex-col justify-center h-fit lg:min-h-20 lg:max-h-screen">
     <p className="text-lg lg:text-xl font-normal">{text}</p>
-    <div className="mx-auto flex gap-4 sm:gap-10 items-center">
-      {icon?.map((item, i) => (
-        <div key={i} className="relative group cursor-pointer mt-4">
-          {item.icon}
-          {/* 툴팁 */}
-          <span
-            className="absolute bottom-full mb-2 w-max opacity-0 group-hover:opacity-100
-                           bg-neutral-900 text-white text-xs px-2 py-1 rounded transition-opacity
-                           whitespace-nowrap text-center"
-          >
-            {item.label}
-          </span>
-        </div>
-      ))}
-    </div>
+
+    {icon && (
+      <div className="mx-auto flex gap-4 sm:gap-10 items-center flex-wrap">
+        {icon.map((item, i) => (
+          <div key={i} className="relative group cursor-pointer mt-4">
+            {item.icon}
+            {/* 툴팁 */}
+            <div
+              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max
+                         px-3 py-2 bg-neutral-900 text-white text-xs rounded-lg shadow-md
+                         opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100
+                         transition-all duration-200 pointer-events-none z-10"
+            >
+              <p className="font-semibold text-[16px] mb-1">{item.title}</p>
+              <p className="text-[12px] text-neutral-300 whitespace-pre-wrap">
+                {item.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
   </div>
 );
 

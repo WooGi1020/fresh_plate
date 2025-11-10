@@ -38,8 +38,7 @@ const CustomBalloon = ({
   const router = useRouter();
 
   /** 리뷰 데이터 안전하게 가져오기 */
-  const { data: reviews = [] } = useGetReviews(restaurant.id);
-
+  const { data: reviews = [], isLoading } = useGetReviews(restaurant.id);
   /** 이미지 인덱스 계산 (안전하게 처리) */
   const number =
     Array.from(String(restaurant.id)).reduce(
@@ -47,17 +46,37 @@ const CustomBalloon = ({
       0
     ) % imageRenderList.length;
 
+  const avgRating = useMemo(() => {
+    if (!reviews.length) return null;
+    const total = reviews.reduce((sum, r) => sum + (r.rating ?? 0), 0);
+    return total / reviews.length;
+  }, [reviews]);
+
   /** Kakao Map Place URL 검색 */
   useEffect(() => {
-    if (!map || !restaurant?.name) return;
-    const ps = new kakao.maps.services.Places();
+    if (!restaurant?.name) return;
 
-    ps.keywordSearch(restaurant.name, (data, status) => {
-      setPlaceUrl(
-        status === kakao.maps.services.Status.OK ? data[0].place_url : null
-      );
-    });
-  }, [map, restaurant]);
+    const fetchPlace = async () => {
+      try {
+        const res = await fetch(
+          `/api/places?query=${encodeURIComponent(restaurant.name)}`
+        );
+        if (!res.ok) throw new Error("검색 실패");
+
+        const data = await res.json();
+        if (Array.isArray(data.documents) && data.documents.length > 0) {
+          setPlaceUrl(data.documents[0].place_url);
+        } else {
+          setPlaceUrl(null);
+        }
+      } catch (err) {
+        console.error(err);
+        setPlaceUrl(null);
+      }
+    };
+
+    fetchPlace();
+  }, [restaurant?.name]);
 
   /** 로그인 필요 시 처리 */
   const handleWriteReview = () => {
@@ -126,10 +145,14 @@ const CustomBalloon = ({
           </div>
 
           {/* 평점 */}
-          <div className="flex items-center gap-2">
-            <StarRating rating={restaurant.avgRating!} size={20} />
+          <div
+            className={`flex items-center gap-2 transition-opacity duration-300 ${
+              isLoading ? "opacity-60" : "opacity-100"
+            }`}
+          >
+            <StarRating rating={avgRating ?? 0} size={20} />
             <span className="text-md text-neutral-900 mt-0.5">
-              {reviews.length > 0 ? restaurant.avgRating!.toFixed(1) : "-"}
+              {avgRating ? avgRating.toFixed(1) : "-"}
             </span>
             <span className="text-md text-neutral-900 mt-0.5">
               ({reviews.length})
@@ -162,16 +185,18 @@ const CustomBalloon = ({
         <div className="flex items-center justify-between gap-2 w-full md:justify-evenly mt-3">
           {(() => {
             const base =
-              "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px] max-sm:text-[11px]";
+              "inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] max-sm:text-[11px]";
             const neutral =
               "border border-neutral-300 text-neutral-700 bg-white";
             const active =
-              "border border-neutral-900 text-neutral-900 bg-secondary-default shadow-inner";
+              "border-2 border-neutral-900 text-neutral-900 bg-secondary-default shadow-inner";
 
             return (
               <>
                 <span
-                  className={`${base} ${restaurant.warning ? neutral : active}`}
+                  className={`${base} ${
+                    restaurant.allergyLevel === 0 ? active : neutral
+                  }`}
                 >
                   <span
                     className="w-1.5 h-1.5 rounded-full bg-green-500"
@@ -179,7 +204,11 @@ const CustomBalloon = ({
                   />
                   알러지 안전
                 </span>
-                <span className={`${base} ${neutral}`}>
+                <span
+                  className={`${base} ${
+                    restaurant.allergyLevel! <= 0.4 ? active : neutral
+                  }`}
+                >
                   <span
                     className="w-1.5 h-1.5 rounded-full bg-amber-400"
                     aria-hidden
@@ -187,7 +216,9 @@ const CustomBalloon = ({
                   알러지 주의
                 </span>
                 <span
-                  className={`${base} ${restaurant.warning ? active : neutral}`}
+                  className={`${base} ${
+                    restaurant.allergyLevel! >= 0.5 ? active : neutral
+                  }`}
                 >
                   <span
                     className="w-1.5 h-1.5 rounded-full bg-red-500"
@@ -212,7 +243,13 @@ const CustomBalloon = ({
 
       {/* 리뷰 미리보기 */}
       <div className="text-sm w-full flex flex-col gap-2">
-        <SlidingReviewViewer reviews={reviews} />
+        {isLoading ? (
+          <div className="flex justify-center items-center py-2">
+            <div className="animate-spin border-4 border-neutral-300 border-t-yellow-700 rounded-full size-5" />
+          </div>
+        ) : (
+          <SlidingReviewViewer reviews={reviews} />
+        )}
 
         {/* 버튼 영역 */}
         <div className="flex justify-end gap-2">
@@ -239,7 +276,7 @@ const CustomBalloon = ({
       {openReviewListModal && (
         <Modal setOpenFilter={setOpenReviewListModal}>
           <ReviewsModalContent
-            restaurant={restaurant}
+            avgRating={avgRating ?? 0}
             initialReviews={reviews}
             onClose={() => setOpenReviewListModal(false)}
           />
