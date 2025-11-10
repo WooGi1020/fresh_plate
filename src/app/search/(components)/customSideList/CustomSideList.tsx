@@ -30,13 +30,16 @@ export default function CustomSideList({
     switch (sortOption) {
       case "추천":
         return data.sort((a, b) => {
-          const aR = a.recommended && !a.warning;
-          const bR = b.recommended && !b.warning;
-          if (aR && !bR) return -1;
-          if (!aR && bR) return 1;
-          if (a.warning && !b.warning) return 1;
-          if (!a.warning && b.warning) return -1;
-          return 0;
+          // 각 항목별로 우선순위 점수 계산
+          const scoreA =
+            (a.recommended && !a.warning ? 2 : a.recommended ? 1 : 0) -
+            (a.warning ? 1 : 0);
+          const scoreB =
+            (b.recommended && !b.warning ? 2 : b.recommended ? 1 : 0) -
+            (b.warning ? 1 : 0);
+
+          // 높은 점수가 앞으로 오도록 정렬
+          return scoreB - scoreA;
         });
       case "별점":
         return data.sort((a, b) => {
