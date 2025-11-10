@@ -54,20 +54,6 @@
     }
   }
 
-  /* soft pulse */
-  --animate-soft-pulse: soft-pulse 2s ease-in-out infinite;
-  @keyframes soft-pulse {
-    0%,
-    100% {
-      transform: scale(1.1);
-      opacity: 0.8;
-    }
-    50% {
-      transform: scale(1.2);
-      opacity: 1;
-    }
-  }
-
   /* soft glow */
   --animate-soft-glow: soft-glow 1.5s ease-in-out infinite;
   @keyframes soft-glow {
