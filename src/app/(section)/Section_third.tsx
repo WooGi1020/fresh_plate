@@ -113,7 +113,7 @@ const TextCard = ({
                          opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100
                          transition-all duration-200 pointer-events-none z-10"
             >
-              <p className="font-semibold text-[15px]">{item.title}</p>
+              <p className="font-semibold text-[16px] mb-1">{item.title}</p>
               <p className="text-[12px] text-neutral-300 whitespace-pre-wrap">
                 {item.description}
               </p>
