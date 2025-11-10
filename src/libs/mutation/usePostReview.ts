@@ -11,7 +11,7 @@ export const usePostReview = () => {
   return useMutation<ReviewPostResponse, Error, ReviewPostRequest>({
     mutationFn: postReview,
     onSuccess: (_data, variables) => {
-      queryClient.invalidateQueries({
+      queryClient.refetchQueries({
         queryKey: ["reviews", Number(variables.restaurantId)],
       });
     },

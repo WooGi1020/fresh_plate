@@ -1,21 +1,19 @@
-import { useMemo } from "react";
 import StarRating from "./StarRating";
 import type { ReviewInfo } from "@/types/review.schema";
 
 import UserIcon from "@/icons/user_icon.svg";
-import { Restaurant } from "@/types/restaurants.schema";
 
 type Props = {
-  restaurant: Restaurant;
   title?: string;
   initialReviews?: ReviewInfo[];
+  avgRating: number;
   onClose?: () => void; // 필요 시 하단 닫기 버튼에서 사용
 };
 
 export default function ReviewsModalContent({
   title = "리뷰",
   initialReviews,
-  restaurant,
+  avgRating,
 }: Props) {
   return (
     <div className="flex flex-col gap-3">
@@ -25,9 +23,9 @@ export default function ReviewsModalContent({
           {title}
         </h3>
         <div className="flex items-center gap-2 text-neutral-700">
-          <StarRating rating={restaurant.avgRating!} size={18} />
+          <StarRating rating={avgRating!} size={18} />
           <span className="text-sm relative bottom-0.5">
-            {restaurant.avgRating}
+            {avgRating!.toFixed(1)}
           </span>
           &#40;
           <span className="text-sm -mx-1.5 relative bottom-0.5">
