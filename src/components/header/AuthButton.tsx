@@ -6,13 +6,11 @@ import UserIcon from "@/icons/user_icon.svg";
 import LoginIcon from "@/icons/login_icon.svg";
 import ProfileViewer from "./ProfileViewer";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
-export default function AuthButton() {
+export default function AuthButton({ pathname }: { pathname: string }) {
   const { isAuthed, user, hasHydrated } = useAuthStore();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
 
   useEffect(() => {
     setOpen(false);
@@ -47,7 +45,7 @@ export default function AuthButton() {
         <UserIcon className="size-full fill-neutral-600" />
       </button>
 
-      {open && <ProfileViewer user={user!} />}
+      {open && <ProfileViewer user={user!} pathname={pathname!} />}
     </div>
   );
 }

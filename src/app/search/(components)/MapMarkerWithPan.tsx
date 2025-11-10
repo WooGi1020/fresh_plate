@@ -5,6 +5,8 @@ import { Restaurant } from "@/types/restaurants.schema";
 import CustomBalloon from "./customBalloon/CustomBalloon";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 import { twMerge } from "tailwind-merge";
+import { useMarkerStyleStore } from "@/store/useMarkerStyleStore";
+import { useAuthStore } from "@/store/useAuthStore";
 
 function MapMarkerWithPan({
   restaurant,
@@ -19,6 +21,7 @@ function MapMarkerWithPan({
   const lat = Number(restaurant.lat);
   const lng = Number(restaurant.lng);
   const position = { lat, lng };
+  const nickname = useAuthStore((s) => s.user?.nickname);
 
   const isSelected = selectedId === restaurant.id;
 
@@ -26,6 +29,10 @@ function MapMarkerWithPan({
     customOffsetMarkerPosition(map, new kakao.maps.LatLng(lat, lng));
     setSelectedId(restaurant.id);
   };
+
+  const disableMarkerEffect = useMarkerStyleStore((s) =>
+    s.isMarkerDisabled(nickname!)
+  );
 
   return (
     <>
@@ -36,7 +43,7 @@ function MapMarkerWithPan({
         zIndex={isSelected ? 20 : 10}
       >
         <div
-          className="relative size-10 flex items-center justify-center cursor-pointer transition-transform hover:scale-110"
+          className="relative size-10 flex items-center justify-center cursor-pointer transition-transform hover:scale-110 user-select-none"
           onClick={handleClick}
         >
           {/* 실제 마커 이미지 */}
@@ -46,27 +53,29 @@ function MapMarkerWithPan({
             className="size-10 relative z-10 pointer-events-none"
           />
 
-          <div
-            className={twMerge(
-              "absolute inset-0 pointer-events-none",
-              restaurant.warning
-                ? "bg-red-500 animate-soft-glow"
-                : restaurant.recommended
-                ? "bg-blue-500 animate-soft-pulse"
-                : "bg-transparent"
-            )}
-            style={{
-              WebkitMaskImage: "url('/icons/marker.png')",
-              maskImage: "url('/icons/marker.png')",
-              WebkitMaskSize: "contain",
-              maskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center",
-              maskPosition: "center",
-              transform: "scale(1.2)",
-            }}
-          />
+          {!disableMarkerEffect && (
+            <div
+              className={twMerge(
+                "absolute inset-0 pointer-events-none",
+                restaurant.warning
+                  ? "bg-red-500 animate-ping"
+                  : restaurant.recommended
+                  ? "bg-blue-500 animate-soft-glow"
+                  : "bg-transparent"
+              )}
+              style={{
+                WebkitMaskImage: "url('/icons/marker.png')",
+                maskImage: "url('/icons/marker.png')",
+                WebkitMaskSize: "contain",
+                maskSize: "contain",
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+                transform: "scale(1.2)",
+              }}
+            />
+          )}
         </div>
       </CustomOverlayMap>
 
