@@ -37,7 +37,7 @@ export default function ImageUploader({
       const res = await uploadImage(formData);
       const menus = res?.[0]?.output?.menus ?? null;
       if (menus.length === 0) {
-        toast.success("메뉴판 이미지를 업로드해주세요 😅");
+        toast.error("메뉴판 이미지를 업로드해주세요 😅");
         setUploadedImage(null);
         setPreviewUrl(null);
         setValue("menus", null);

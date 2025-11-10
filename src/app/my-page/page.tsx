@@ -8,7 +8,7 @@ import Image from "next/image";
 
 export default function MyPage() {
   return (
-    <section className="min-h-screen w-full flex items-center justify-center bg-[#FBF8EF] px-8 py-10 bg-[url('/images/bg2.png')] bg-cover">
+    <section className="h-[calc(100vh-64px)] w-full flex items-center justify-center bg-[#FBF8EF] px-8 py-10 bg-[url('/images/bg2.png')] bg-cover">
       <div className="grid w-full max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {sections.map((section, idx) => (
           <Card
