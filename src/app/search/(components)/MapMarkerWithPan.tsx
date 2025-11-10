@@ -57,7 +57,7 @@ function MapMarkerWithPan({
             <div
               className={twMerge(
                 "absolute inset-0 pointer-events-none",
-                restaurant.warning
+                restaurant.allergyLevel! > 0
                   ? "bg-red-500 animate-ping"
                   : restaurant.recommended
                   ? "bg-blue-500 animate-soft-glow"

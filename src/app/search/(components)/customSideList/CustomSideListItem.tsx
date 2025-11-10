@@ -35,15 +35,17 @@ const CustomSideListItem = ({
     <button
       type="button"
       className={`group w-full text-left flex gap-3 items-start
-                 rounded-r-lg border border-neutral-300/20 bg-white/80
-                focus-visible:outline-none relative
-                 focus-visible:ring-2 focus-visible:ring-neutral-900/20
-                  transition-all p-3 pl-4 cursor-pointer shadow-sm hover:shadow-md ${
-                    restaurant.recommended &&
-                    "shadow-md hover:shadow-lg shadow-blue-500/50"
-                  } ${
-        restaurant.warning && "shadow-md hover:shadow-lg shadow-red-400/50"
-      }`}
+  rounded-r-lg border border-neutral-300/20 bg-white/80
+  focus-visible:outline-none relative
+  focus-visible:ring-2 focus-visible:ring-neutral-900/20
+  transition-all p-3 pl-4 cursor-pointer shadow-sm hover:shadow-md
+  ${
+    restaurant.allergyLevel! > 0
+      ? "shadow-md hover:shadow-lg shadow-red-400/50"
+      : restaurant.recommended
+      ? "shadow-md hover:shadow-lg shadow-blue-500/50"
+      : ""
+  }`}
       onClick={handleClick}
       aria-label={`${restaurant.name}${
         restaurant.address ? ` - ${restaurant.address}` : ""
@@ -53,10 +55,10 @@ const CustomSideListItem = ({
       <div
         className={`absolute left-0 top-0 w-[5px] h-full transition-all group-hover:animate-soft-glow
     ${
-      restaurant.recommended && !restaurant.warning
+      restaurant.allergyLevel! > 0
+        ? "bg-red-400"
+        : restaurant.recommended
         ? "bg-blue-500"
-        : restaurant.warning
-        ? "bg-red-400 "
         : "bg-neutral-200"
     }`}
       />
