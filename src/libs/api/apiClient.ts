@@ -40,7 +40,7 @@ apiClient.interceptors.response.use(
           }
         );
 
-        const { accessToken: newAccess } = res.data;
+        const { accessToken: newAccess } = res.data.data;
 
         login(user!, { accessToken: newAccess, refreshToken });
 
