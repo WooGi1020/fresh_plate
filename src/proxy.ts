@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PROTECTED_ROUTES = ["/search", "/my-page", "/onboarding"];
+const PROTECTED_ROUTES = ["/my-page", "/onboarding"];
 const PUBLIC_ROUTES = ["/sign", "/"];
 
 export async function proxy(req: NextRequest) {
