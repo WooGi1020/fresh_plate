@@ -11,6 +11,7 @@ import { Restaurant } from "@/types/restaurants.schema";
 import { useMapStore } from "@/store/useMapStore";
 import coordinatesCenter from "@/constants/coordinatesCenter";
 import { useExpandedStore } from "@/store/useExpandedStore";
+import SearchLoadingUI from "../SearchLoadingUI";
 
 export default function MapWrapper({
   initialRestaurants,
@@ -84,13 +85,13 @@ export default function MapWrapper({
         )}
       </Map>
 
-      {/* 스피너 오버레이 */}
+      {/* 스피너 오버레이: loading.tsx와 동일한 컴포넌트를 사용하여 심리스한 전환 제공 */}
       <div
-        className={`absolute inset-0 z-10 grid place-items-center bg-white transition-opacity duration-700 ${
+        className={`absolute inset-0 z-50 transition-opacity duration-700 ${
           isReady ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
-        <div className="animate-spin border-4 border-neutral-300 border-t-yellow-700 rounded-full size-10" />
+        <SearchLoadingUI message="지도 컨텐츠를 준비하고 있습니다..." />
       </div>
     </div>
   );
