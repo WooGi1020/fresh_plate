@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "알레르기 필터링으로 맞춤 비건 음식점을 찾아보세요!",
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function Search() {
   const initialRestaurants = await getRestaurantsAction();
 
