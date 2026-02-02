@@ -1,22 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState, useActionState } from "react";
 import { useRouter } from "next/navigation";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormStatus } from "react-dom";
 
 import AllergyStep from "./(components)/AllegyStep";
 import DietStep from "./(components)/DietStep";
 import BlacklistStep from "./(components)/LikeStep";
-import { FormValues, onboardingSchema } from "@/types/onBoard.schema";
-import { setOnboarding } from "@/libs/api/onboarding.api";
+import { onboardingSchema } from "@/types/onBoard.schema";
+import { setOnboardingAction } from "@/libs/actions/onboarding";
 import toast from "react-hot-toast";
 import { useAuthStore, User } from "@/store/useAuthStore";
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [saving, setSaving] = useState(false);
   const setUser = useAuthStore((s) => s.setUser);
   const user = useAuthStore((s) => s.user);
   const TOTAL_STEPS = 3;
@@ -25,155 +23,153 @@ export default function OnboardingPage() {
     document.cookie = "onboardingAllowed=; Path=/; Max-Age=0";
   }, []);
 
-  // useForm 선언
-  const methods = useForm<FormValues>({
-    resolver: zodResolver(onboardingSchema),
-    defaultValues: {
-      diet_types: [],
-      allergies: [],
-      taste_preferences: [],
-    },
-    mode: "onChange",
+  // 로컬 상태로 폼 데이터 관리
+  const [formData, setFormData] = useState({
+    diet_types: [] as string[],
+    allergies: [] as string[],
+    taste_preferences: [] as string[],
   });
 
-  const {
-    handleSubmit,
-    watch,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = methods;
-
-  // 스텝 컴포넌트에 내려줄 값들
-  const dietTypes = watch("diet_types");
-  const allergies = watch("allergies");
-  const tastePreferences = watch("taste_preferences");
-
-  const progress = useMemo(
-    () => Math.round(((step + 1) / TOTAL_STEPS) * 100),
-    [step, TOTAL_STEPS]
-  );
-
-  const goNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (step === 0) {
-      const isStepValid = await trigger("diet_types");
-      if (!isStepValid) return;
-    }
-
-    setStep((prev) => {
-      if (prev < TOTAL_STEPS - 1) {
-        return prev + 1;
-      }
-      return prev;
-    });
+  const setValue = (name: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
-    setSaving(true);
-    try {
-      await setOnboarding(data);
+  const [, formAction, isPending] = useActionState(async (_prevState: any) => {
+    // 클라이언트에서 최종 검증
+    const validated = onboardingSchema.safeParse(formData);
+    if (!validated.success) {
+      toast.error(validated.error.message);
+      return { success: false };
+    }
+
+    const result = await setOnboardingAction(null, formData as any);
+    if (result.success) {
       setUser({
         ...(user ?? {}),
-        eatStyles: [...data.diet_types, ...data.allergies],
+        eatStyles: [...formData.diet_types, ...formData.allergies],
       } as User);
-      toast.success("설정을 완료했어요!");
+      toast.success("설정이 완료되었습니다!");
       router.replace(`/search`);
-    } catch {
-      toast.error("저장 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.");
-    } finally {
-      setSaving(false);
+    } else {
+      toast.error(result.error || "저장 중 오류가 발생했습니다.");
     }
+    return result;
+  }, null);
+
+  const progress = Math.round(((step + 1) / TOTAL_STEPS) * 100);
+
+  const handleNext = () => {
+    if (step === 0) {
+      if (formData.diet_types.length === 0) {
+        toast.error("식습관을 하나 이상 선택하세요.");
+        return;
+      }
+      if (
+        formData.diet_types.includes("omnivore") &&
+        formData.diet_types.length > 1
+      ) {
+        toast.error("일반식(omnivore)은 단독으로만 선택할 수 있어요.");
+        return;
+      }
+    }
+    setStep((s) => Math.min(s + 1, TOTAL_STEPS - 1));
   };
 
   return (
     <section className="min-h-screen w-full flex items-center justify-center bg-[#FBF8EF] px-4 py-10 bg-[url('/images/bg2.png')] bg-cover">
-      <FormProvider {...methods}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-3xl bg-white border rounded-3xl shadow-md p-6 md:p-8"
-        >
-          {/* Progress Bar */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-              <span>반가워요😊 새로운 사용자를 위한 설정 단계입니다!</span>
-              <span>
-                {step + 1}/{TOTAL_STEPS}
-              </span>
-            </div>
-            <div className="h-2 w-full bg-gray-100 rounded">
-              <div
-                className="h-2 bg-[#3E5329] rounded transition-all"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+      <form
+        action={formAction}
+        className="w-full max-w-3xl bg-white border rounded-3xl shadow-md p-6 md:p-8"
+      >
+        {/* Progress Bar */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-2 font-medium">
+            <span>반가워요😊 새로운 사용자를 위한 설정 단계입니다!</span>
+            <span className="text-[#3E5329] font-bold">
+              {step + 1} / {TOTAL_STEPS}
+            </span>
           </div>
+          <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+              className="bg-[#A3C76D] h-2.5 rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
 
-          {/* Step Components */}
+        <div className="min-h-[400px]">
           {step === 0 && (
             <DietStep
-              dietTypes={dietTypes}
-              setValue={setValue}
-              errors={errors}
+              selectedTypes={formData.diet_types as any}
+              setValue={setValue as any}
             />
           )}
           {step === 1 && (
-            <AllergyStep allergies={allergies} setValue={setValue} />
+            <AllergyStep
+              allergies={formData.allergies}
+              setValue={setValue as any}
+            />
           )}
           {step === 2 && (
             <BlacklistStep
-              tastePreferences={tastePreferences}
-              setValue={setValue}
+              preferences={formData.taste_preferences}
+              setValue={setValue as any}
             />
           )}
+        </div>
 
-          {/* Navigation Buttons */}
-          <div className="mt-8 flex items-center justify-between">
+        {/* Navigation Buttons */}
+        <div className="mt-8 flex items-center justify-between gap-4">
+          <button
+            type="button"
+            className="px-6 py-3 rounded-xl border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition cursor-pointer disabled:opacity-30"
+            disabled={step === 0 || isPending}
+            onClick={() => setStep((s) => s - 1)}
+          >
+            이전
+          </button>
+
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              className="px-4 py-2 rounded-xl border border-gray-200 hover:border-gray-300 cursor-pointer"
-              disabled={step === 0}
-              onClick={() => setStep((s) => Math.max(0, s - 1))}
+              className="px-4 py-2 rounded-xl cursor-pointer text-gray-600 hover:bg-gray-50 transition"
+              onClick={() => router.replace("/search")}
             >
-              이전
+              나중에 설정
             </button>
-
-            <div className="flex items-center gap-2">
+            {step < TOTAL_STEPS - 1 ? (
               <button
                 type="button"
-                className="px-4 py-2 rounded-xl cursor-pointer text-gray-600 hover:bg-gray-50"
-                onClick={() => router.replace("/search")}
+                className="px-8 py-3 rounded-xl bg-[#3E5329] text-white font-semibold hover:bg-[#344823] transition shadow-md cursor-pointer"
+                onClick={handleNext}
               >
-                나중에 설정
+                다음 단계
               </button>
-              {step < TOTAL_STEPS - 1 ? (
-                <button
-                  type="button"
-                  className="px-5 py-2 cursor-pointer rounded-xl bg-[#3E5329] text-white disabled:opacity-50"
-                  onClick={goNext}
-                  disabled={step === 0 && dietTypes.length === 0}
-                >
-                  다음
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-xl cursor-pointer bg-[#3E5329] text-white disabled:opacity-50"
-                  disabled={saving}
-                >
-                  {saving ? "저장 중..." : "시작하기"}
-                </button>
-              )}
-            </div>
+            ) : (
+              <SubmitButton />
+            )}
           </div>
+        </div>
 
-          <p className="text-xs text-gray-500 mt-4">
-            * 설정은 언제든 마이페이지에서 수정할 수 있어요. 선택한 조건은 기본
-            필터로 추천에 반영됩니다.
-          </p>
-        </form>
-      </FormProvider>
+        <p className="text-xs text-gray-500 mt-4">
+          * 설정은 언제든 마이페이지에서 수정할 수 있어요. 선택한 조건은 기본
+          필터로 추천에 반영됩니다.
+        </p>
+      </form>
     </section>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      className="px-8 py-3 rounded-xl bg-[#85A947] text-white font-semibold hover:bg-[#74963C] transition shadow-md cursor-pointer disabled:bg-gray-400"
+      disabled={pending}
+    >
+      {pending ? "저장 중..." : "설정 완료"}
+    </button>
   );
 }

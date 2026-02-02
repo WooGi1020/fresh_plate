@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useMarkerStyleStore } from "@/store/useMarkerStyleStore";
+import { logoutAction } from "@/libs/actions/auth";
 
 function ProfileViewer({
   user,
@@ -15,7 +16,6 @@ function ProfileViewer({
 }) {
   const { logout } = useAuthStore();
   const router = useRouter();
-  console.log("pathname in ProfileViewer:", pathname);
 
   const disableMarkerEffect = user
     ? useMarkerStyleStore((s) => s.isMarkerDisabled(user.nickname))
@@ -73,10 +73,9 @@ function ProfileViewer({
           마이페이지
         </Link>
         <button
-          onClick={() => {
+          onClick={async () => {
+            await logoutAction();
             logout();
-            document.cookie = "accessToken=; Path=/; Max-Age=0";
-            document.cookie = "refreshToken=; Path=/; Max-Age=0";
             toast.error("로그아웃 되었습니다.");
             router.push("/");
           }}

@@ -44,7 +44,7 @@ export default function ReviewsModalContent({
               .sort(
                 (a, b) =>
                   new Date(b.createdAt).getTime() -
-                  new Date(a.createdAt).getTime()
+                  new Date(a.createdAt).getTime(),
               )
               .map((rev, idx) => (
                 <li

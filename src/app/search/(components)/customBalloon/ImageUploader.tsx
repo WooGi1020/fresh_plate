@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type ChangeEvent } from "react";
-import { useFormContext } from "react-hook-form";
 import { uploadImage } from "@/libs/api/uploadImage";
 import BookIcon from "@/icons/book_icon.svg";
 import toast from "react-hot-toast";
@@ -9,11 +8,12 @@ import toast from "react-hot-toast";
 export default function ImageUploader({
   isPending,
   setIsPending,
+  onUpload,
 }: {
   isPending: boolean;
   setIsPending: (value: boolean) => void;
+  onUpload: (menus: any[] | null) => void;
 }) {
-  const { setValue } = useFormContext();
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -40,10 +40,10 @@ export default function ImageUploader({
         toast.error("메뉴판 이미지를 업로드해주세요 😅");
         setUploadedImage(null);
         setPreviewUrl(null);
-        setValue("menus", null);
+        onUpload(null);
         return;
       }
-      setValue("menus", menus);
+      onUpload(menus);
     } catch (err) {
       toast.error("이미지 업로드 중 오류가 발생했습니다.");
     } finally {
@@ -116,7 +116,7 @@ export default function ImageUploader({
           className="absolute top-2 right-2 bg-black/40 text-white text-sm rounded-full px-2 py-1 hover:bg-black/60 transition-all cursor-pointer"
           onClick={() => {
             setUploadedImage(null);
-            setValue("menus", null);
+            onUpload(null);
           }}
           aria-label="이미지 제거"
           title="이미지 제거"

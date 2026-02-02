@@ -1,13 +1,14 @@
-import axios from "axios";
-
 const API_URL = process.env.NEXT_PUBLIC_AI_IMAGE_VERIFICATION_URL;
 
 export const uploadImage = async (formData: FormData) => {
-  const res = await axios.post(`${API_URL}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+  const response = await fetch(`${API_URL}`, {
+    method: "POST",
+    body: formData,
   });
 
-  return res.data;
+  if (!response.ok) {
+    throw new Error(`Upload failed: ${response.statusText}`);
+  }
+
+  return response.json();
 };

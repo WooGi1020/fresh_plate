@@ -1,16 +1,17 @@
 "use client";
 
 import React from "react";
-import { useFormContext } from "react-hook-form";
 
 type AuthInputProps = {
-  name: string; // RHF 필드 이름
-  label?: string; // 라벨(옵션)
+  name: string;
+  label?: string;
   type?: "text" | "password" | "email" | "number";
   placeholder?: string;
   autoComplete?: string;
   className?: string; // 래퍼 div 클래스
   inputClassName?: string; // 인풋 추가 클래스
+  error?: string; // 에러 메시지 직접 전달
+  defaultValue?: string;
 };
 
 function AuthInput({
@@ -21,14 +22,9 @@ function AuthInput({
   autoComplete,
   className,
   inputClassName,
+  error,
+  defaultValue,
 }: AuthInputProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-
-  const errorMsg = (errors as any)?.[name]?.message as string | undefined;
-
   return (
     <div className={className}>
       {label && (
@@ -41,20 +37,21 @@ function AuthInput({
       )}
       <input
         id={name}
+        name={name}
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        aria-invalid={!!errorMsg}
-        {...register(name)}
+        defaultValue={defaultValue}
+        aria-invalid={!!error}
         className={[
           "w-full h-10 px-3 rounded-md border bg-white shadow-sm outline-none text-sm",
-          errorMsg
+          error
             ? "border-red-500 focus:ring-red-300 focus:border-red-500"
             : "border-neutral-300 focus:ring-[#3E5329]/40 focus:border-[#3E5329]",
           inputClassName ?? "",
         ].join(" ")}
       />
-      {errorMsg && <p className="mt-1 text-xs text-red-600">{errorMsg}</p>}
+      {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
     </div>
   );
 }
