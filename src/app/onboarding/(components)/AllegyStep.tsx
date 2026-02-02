@@ -1,11 +1,10 @@
 "use client";
 import { KnownAllergens } from "@/constants/knownAllegens";
 import { useState } from "react";
-import { UseFormSetValue } from "react-hook-form";
 
 interface Props {
   allergies: string[];
-  setValue: UseFormSetValue<any>;
+  setValue: (name: string, value: string[]) => void;
 }
 
 export default function AllergyStep({ allergies, setValue }: Props) {
@@ -16,22 +15,21 @@ export default function AllergyStep({ allergies, setValue }: Props) {
 
   const addTag = (value: string) => {
     const next = uniquePush(allergies, value.trim());
-    setValue("allergies", next, { shouldDirty: true });
+    setValue("allergies", next);
   };
   const removeTag = (v: string) => {
     setValue(
       "allergies",
       allergies.filter((t) => t !== v),
-      {
-        shouldDirty: true,
-      }
     );
   };
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">피해야할 재료를 알려주세요!</h2>
-      <p className=" mb-4 text-sm text-gray-600">
+      <h2 className="text-xl font-semibold text-neutral-900">
+        피해야할 재료를 알려주세요!
+      </h2>
+      <p className=" mb-4 text-sm text-gray-600 font-medium">
         식약처가 정한 국내 공식 알레르기 유발 재료 목록입니다 😊
       </p>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4 max-md:overflow-y-scroll max-md:h-48">

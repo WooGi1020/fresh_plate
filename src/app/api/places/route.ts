@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
 
 const kakaoKeys = [
   process.env.NEXT_PUBLIC_KAKAO_REST_KEY!,
@@ -24,24 +23,34 @@ export async function GET(req: Request) {
     const key = kakaoKeys[currentKeyIndex];
     console.log(key);
     try {
-      const response = await axios.get(
-        "https://dapi.kakao.com/v2/local/search/keyword.json",
+      const response = await fetch(
+        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${encodeURIComponent(
+          query,
+        )}`,
         {
-          params: { query },
+          method: "GET",
           headers: { Authorization: `KakaoAK ${key}` },
-        }
+        },
       );
-      return NextResponse.json(response.data);
-    } catch (err: any) {
+
+      if (response.ok) {
+        const data = await response.json();
+        return NextResponse.json(data);
+      }
+
       // 429 → 키 교체
-      if (err.response?.status === 429) {
+      if (response.status === 429) {
         currentKeyIndex = (currentKeyIndex + 1) % kakaoKeys.length;
         continue;
       }
+
+      const errorData = await response.json().catch(() => ({}));
       return NextResponse.json(
-        { error: err.message },
-        { status: err.response?.status || 500 }
+        { error: errorData.message || response.statusText },
+        { status: response.status },
       );
+    } catch (err: any) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
     }
   }
 

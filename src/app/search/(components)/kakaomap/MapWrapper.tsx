@@ -7,13 +7,16 @@ import NoResultsModal from "@/app/search/(components)/emptyData/EmptyDataModal";
 import MarkerLayer from "@/app/search/(components)/kakaomap/MarkerLayer";
 import { useSearchParams } from "next/navigation";
 import CustomSideList from "@/app/search/(components)/customSideList/CustomSideList";
-import { useGetRestaurants } from "@/libs/query/getRestaurantQuery";
+import { Restaurant } from "@/types/restaurants.schema";
 import { useMapStore } from "@/store/useMapStore";
 import coordinatesCenter from "@/constants/coordinatesCenter";
 import { useExpandedStore } from "@/store/useExpandedStore";
 
-export default function MapWrapper() {
-  const { data, isLoading } = useGetRestaurants();
+export default function MapWrapper({
+  initialRestaurants,
+}: {
+  initialRestaurants: Restaurant[];
+}) {
   const map = useMapStore((s) => s.map);
   const setMap = useMapStore((s) => s.setMap);
   const setSelectedId = useMapStore((s) => s.setSelectedId);
@@ -23,7 +26,7 @@ export default function MapWrapper() {
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
-  const restaurants = useFilteredRestaurants(data ?? []);
+  const restaurants = useFilteredRestaurants(initialRestaurants ?? []);
 
   const [loading] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY!,
@@ -34,8 +37,8 @@ export default function MapWrapper() {
 
   // 통합 준비 완료 상태
   const isReady = useMemo(() => {
-    return !loading && !isLoading && mapReady;
-  }, [loading, isLoading, mapReady]);
+    return !loading && mapReady;
+  }, [loading, mapReady]);
 
   // 맵이 준비되면 첫 결과로 이동
   useEffect(() => {

@@ -5,14 +5,15 @@ import CloseIcon from "@/icons/close_icon.svg";
 import LinkIcon from "@/icons/link_icon.svg";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useOptimistic } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 import { Restaurant } from "@/types/restaurants.schema";
 
 import { useAuthStore } from "@/store/useAuthStore";
-import { useGetReviews } from "@/libs/query/getReviewQuery";
+import { getReviewsAction } from "@/libs/actions/review";
+import type { ReviewInfo } from "@/types/review.schema";
 
 import imageRenderList from "@/constants/image_render_list";
 import StarRating from "@/app/search/(components)/customBalloon/StarRating";
@@ -37,20 +38,48 @@ const CustomBalloon = ({
   const { user } = useAuthStore();
   const router = useRouter();
 
-  /** 리뷰 데이터 안전하게 가져오기 */
-  const { data: reviews = [], isLoading } = useGetReviews(restaurant.id);
+  const [reviews, setReviews] = useState<ReviewInfo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 낙관적 업데이트를 위한 useOptimistic 설정
+  const [optimisticReviews, addOptimisticReview] = useOptimistic(
+    reviews,
+    (state, newReview: ReviewInfo) => [newReview, ...state],
+  );
+
+  /** 리뷰 데이터 가져오기함수 */
+  const fetchReviews = async (isSilent = false) => {
+    if (!isSilent) setIsLoading(true);
+    try {
+      const data = await getReviewsAction(restaurant.id);
+      setReviews(data);
+    } catch (error) {
+      console.error("Failed to fetch reviews:", error);
+    } finally {
+      if (!isSilent) setIsLoading(false);
+    }
+  };
+
+  /** 초기 로드 시 리뷰 데이터 페칭 */
+  useEffect(() => {
+    fetchReviews();
+  }, [restaurant.id]);
+
   /** 이미지 인덱스 계산 (안전하게 처리) */
   const number =
     Array.from(String(restaurant.id)).reduce(
       (acc, char) => acc + char.charCodeAt(0),
-      0
+      0,
     ) % imageRenderList.length;
 
   const avgRating = useMemo(() => {
-    if (!reviews.length) return null;
-    const total = reviews.reduce((sum, r) => sum + (r.rating ?? 0), 0);
-    return total / reviews.length;
-  }, [reviews]);
+    if (!optimisticReviews.length) return null;
+    const total = optimisticReviews.reduce(
+      (sum, r) => sum + (r.rating ?? 0),
+      0,
+    );
+    return total / optimisticReviews.length;
+  }, [optimisticReviews]);
 
   /** Kakao Map Place URL 검색 */
   useEffect(() => {
@@ -59,7 +88,7 @@ const CustomBalloon = ({
     const fetchPlace = async () => {
       try {
         const res = await fetch(
-          `/api/places?query=${encodeURIComponent(restaurant.name)}`
+          `/api/places?query=${encodeURIComponent(restaurant.name)}`,
         );
         if (!res.ok) throw new Error("검색 실패");
 
@@ -251,7 +280,7 @@ const CustomBalloon = ({
             <div className="animate-spin border-4 border-neutral-300 border-t-yellow-700 rounded-full size-5" />
           </div>
         ) : (
-          <SlidingReviewViewer reviews={reviews} />
+          <SlidingReviewViewer reviews={optimisticReviews} />
         )}
 
         {/* 버튼 영역 */}
@@ -263,7 +292,7 @@ const CustomBalloon = ({
           >
             리뷰 작성하기
           </button>
-          {reviews.length > 0 && (
+          {optimisticReviews.length > 0 && (
             <button
               type="button"
               onClick={() => setOpenReviewListModal(true)}
@@ -280,7 +309,7 @@ const CustomBalloon = ({
         <Modal setOpenFilter={setOpenReviewListModal}>
           <ReviewsModalContent
             avgRating={avgRating ?? 0}
-            initialReviews={reviews}
+            initialReviews={optimisticReviews}
             onClose={() => setOpenReviewListModal(false)}
           />
         </Modal>
@@ -293,6 +322,10 @@ const CustomBalloon = ({
             title={restaurant.name}
             restaurantId={restaurant.id}
             onClose={() => setOpenReviewModal(false)}
+            onSuccess={(newReview) => {
+              if (newReview) addOptimisticReview(newReview);
+              fetchReviews(true); // 조용히 서버 데이터와 동기화
+            }}
           />
         </Modal>
       )}
