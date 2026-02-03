@@ -9,17 +9,18 @@ import GlutenIcon from "@/icons/gluten_free_icon.svg";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 import { useExpandedStore } from "@/store/useExpandedStore";
 
+import { useMap } from "react-kakao-maps-sdk";
+import { useMapStore } from "@/store/useMapStore";
+
 const CustomSideListItem = ({
   restaurant,
-  setSelectedId,
-  map,
   index,
 }: {
   restaurant: Restaurant;
-  setSelectedId: (value: number | null) => void;
-  map: kakao.maps.Map;
   index: number;
 }) => {
+  const map = useMap();
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
   const number = index % 4;
   const lat = Number(restaurant.lat);
   const lng = Number(restaurant.lng);
@@ -43,8 +44,8 @@ const CustomSideListItem = ({
     restaurant.allergyLevel! > 0
       ? "shadow-md hover:shadow-lg shadow-red-400/50"
       : restaurant.recommended
-      ? "shadow-md hover:shadow-lg shadow-blue-500/50"
-      : ""
+        ? "shadow-md hover:shadow-lg shadow-blue-500/50"
+        : ""
   }`}
       onClick={handleClick}
       aria-label={`${restaurant.name}${
@@ -53,13 +54,13 @@ const CustomSideListItem = ({
       title={restaurant.name}
     >
       <div
-        className={`absolute left-0 top-0 w-[5px] h-full transition-all group-hover:animate-soft-glow
+        className={`absolute left-0 top-0 w-1.25 h-full transition-all group-hover:animate-soft-glow
     ${
       restaurant.allergyLevel! > 0
         ? "bg-red-400"
         : restaurant.recommended
-        ? "bg-blue-500"
-        : "bg-neutral-200"
+          ? "bg-blue-500"
+          : "bg-neutral-200"
     }`}
       />
       <div className="relative w-24 h-20 overflow-hidden rounded-md ring-1 ring-neutral-200 bg-neutral-100 shrink-0">

@@ -1,15 +1,7 @@
 import { Restaurant } from "@/types/restaurants.schema";
 import CustomSideListItem from "./CustomSideListItem";
 
-const CustomSideListContent = ({
-  data,
-  setSelectedId,
-  map,
-}: {
-  data: Restaurant[];
-  setSelectedId: (value: number | null) => void;
-  map: kakao.maps.Map;
-}) => {
+const CustomSideListContent = ({ data }: { data: Restaurant[] }) => {
   if (data.length === 0)
     return (
       <p className="text-center text-neutral-500 text-sm mt-10">
@@ -23,8 +15,6 @@ const CustomSideListContent = ({
         <CustomSideListItem
           key={restaurant.id}
           restaurant={restaurant}
-          setSelectedId={setSelectedId}
-          map={map}
           index={idx}
         />
       ))}
