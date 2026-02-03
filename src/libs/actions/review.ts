@@ -15,7 +15,7 @@ export async function getReviewsAction(
       `api/restaurant/${restaurantId}/reviews`,
       undefined,
       {
-        next: { tags: [`reviews-${restaurantId}`] }, // 식당별 리뷰 태그 설정
+        next: { tags: [`reviews-${restaurantId}`], revalidate: 60 }, // 식당별 리뷰 태그 설정
       },
     );
     const list = Array.isArray(data) ? data : (data?.reviews ?? []);
