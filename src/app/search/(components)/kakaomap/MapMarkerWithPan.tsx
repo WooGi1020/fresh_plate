@@ -2,26 +2,22 @@
 
 import { CustomOverlayMap, useMap } from "react-kakao-maps-sdk";
 import { Restaurant } from "@/types/restaurants.schema";
-import CustomBalloon from "./customBalloon/CustomBalloon";
+import CustomBalloon from "../customBalloon";
 import customOffsetMarkerPosition from "@/libs/map/customOffsetMarkerPosition";
 import { twMerge } from "tailwind-merge";
 import { useMarkerStyleStore } from "@/store/useMarkerStyleStore";
 import { useAuthStore } from "@/store/useAuthStore";
 
-function MapMarkerWithPan({
-  restaurant,
-  selectedId,
-  setSelectedId,
-}: {
-  restaurant: Restaurant;
-  selectedId: number | null;
-  setSelectedId: (id: number | null) => void;
-}) {
+import { useMapStore } from "@/store/useMapStore";
+
+function MapMarkerWithPan({ restaurant }: { restaurant: Restaurant }) {
   const map = useMap();
   const lat = Number(restaurant.lat);
   const lng = Number(restaurant.lng);
   const position = { lat, lng };
   const nickname = useAuthStore((s) => s.user?.nickname);
+  const selectedId = useMapStore((s) => s.selectedId);
+  const setSelectedId = useMapStore((s) => s.setSelectedId);
 
   const isSelected = selectedId === restaurant.id;
 
@@ -31,7 +27,7 @@ function MapMarkerWithPan({
   };
 
   const disableMarkerEffect = useMarkerStyleStore((s) =>
-    s.isMarkerDisabled(nickname!)
+    s.isMarkerDisabled(nickname!),
   );
 
   return (
@@ -60,8 +56,8 @@ function MapMarkerWithPan({
                 restaurant.allergyLevel! > 0
                   ? "bg-red-500 animate-ping"
                   : restaurant.recommended
-                  ? "bg-blue-500 animate-soft-glow"
-                  : "bg-transparent"
+                    ? "bg-blue-500 animate-soft-glow"
+                    : "bg-transparent",
               )}
               style={{
                 WebkitMaskImage: "url('/icons/marker.png')",
@@ -83,13 +79,12 @@ function MapMarkerWithPan({
       {isSelected && (
         <CustomOverlayMap
           position={position}
-          yAnchor={1.2}
+          yAnchor={1.1}
           clickable
           zIndex={50}
         >
           <CustomBalloon
             restaurant={restaurant}
-            map={map!}
             onClose={() => setSelectedId(null)}
           />
         </CustomOverlayMap>

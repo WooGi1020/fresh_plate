@@ -1,10 +1,9 @@
 "use client";
 
 import { Map, useKakaoLoader } from "react-kakao-maps-sdk";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, Activity } from "react";
 import useFilteredRestaurants from "@/hooks/useFilteredRestaurants";
 import NoResultsModal from "@/app/search/(components)/emptyData/EmptyDataModal";
-import MarkerLayer from "@/app/search/(components)/kakaomap/MarkerLayer";
 import { useSearchParams } from "next/navigation";
 import CustomSideList from "@/app/search/(components)/customSideList/CustomSideList";
 import { Restaurant } from "@/types/restaurants.schema";
@@ -12,6 +11,7 @@ import { useMapStore } from "@/store/useMapStore";
 import coordinatesCenter from "@/constants/coordinatesCenter";
 import { useExpandedStore } from "@/store/useExpandedStore";
 import SearchLoadingUI from "../SearchLoadingUI";
+import MapMarkerWithPan from "./MapMarkerWithPan";
 
 export default function MapWrapper({
   initialRestaurants,
@@ -22,33 +22,25 @@ export default function MapWrapper({
   const setMap = useMapStore((s) => s.setMap);
   const setSelectedId = useMapStore((s) => s.setSelectedId);
   const panTo = useMapStore((s) => s.panTo);
-  const expanded = useExpandedStore((s) => s.expanded);
   const setExpanded = useExpandedStore((s) => s.setExpanded);
 
   const searchParams = useSearchParams();
   const query = searchParams.get("q");
-  const restaurants = useFilteredRestaurants(initialRestaurants ?? []);
+  const restaurants = useFilteredRestaurants(initialRestaurants);
 
-  const [loading] = useKakaoLoader({
+  const [isLoading] = useKakaoLoader({
     appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY!,
     libraries: ["services", "clusterer"],
   });
 
-  const [mapReady, setMapReady] = useState(false);
-
-  // 통합 준비 완료 상태
-  const isReady = useMemo(() => {
-    return !loading && mapReady;
-  }, [loading, mapReady]);
-
-  // 맵이 준비되면 첫 결과로 이동
+  // 맵이 준비된 후 검색 시 첫 결과로 이동
   useEffect(() => {
-    if (isReady && restaurants.length > 0 && map && query !== null) {
+    if (map && query !== null && restaurants.length > 0) {
       const first = restaurants[0];
       setSelectedId(first.id);
       panTo(Number(first.lat), Number(first.lng));
     }
-  }, [isReady, restaurants, map, query, panTo, setSelectedId]);
+  }, [map, query, restaurants, panTo, setSelectedId]);
 
   return (
     <div className="relative w-full h-full overflow-hidden">
@@ -58,41 +50,32 @@ export default function MapWrapper({
         level={6}
         onClick={() => {
           setSelectedId(null);
-          if (expanded) {
-            setExpanded(false);
-          }
+          setExpanded(false);
         }}
         onCreate={(instance) => {
           setMap(instance);
-          // @ts-ignore kakao 전역
-          window.kakao?.maps.event.addListener(instance, "tilesloaded", () => {
-            setMapReady(true);
-          });
         }}
-        className={`absolute inset-0 transition-all duration-700 ease-out ${
-          isReady ? "opacity-100 blur-0" : "opacity-0 blur-md"
-        }`}
+        className="absolute inset-0 transition-all duration-700 ease-out"
       >
-        {isReady && (
-          <>
-            <CustomSideList initialData={restaurants} map={map!} />
-            {restaurants.length > 0 ? (
-              <MarkerLayer restaurants={restaurants} />
-            ) : (
-              query !== null && <NoResultsModal key={query} />
-            )}
-          </>
-        )}
+        <CustomSideList initialData={restaurants} />
+        {restaurants.length > 0
+          ? restaurants.map((restaurant) => {
+              return (
+                <MapMarkerWithPan key={restaurant.id} restaurant={restaurant} />
+              );
+            })
+          : query !== null && <NoResultsModal key={query} />}
       </Map>
 
-      {/* 스피너 오버레이: loading.tsx와 동일한 컴포넌트를 사용하여 심리스한 전환 제공 */}
-      <div
-        className={`absolute inset-0 z-50 transition-opacity duration-700 ${
-          isReady ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <SearchLoadingUI message="지도 컨텐츠를 준비하고 있습니다..." />
-      </div>
+      <Activity mode={isLoading ? "visible" : "hidden"}>
+        <div
+          className={`absolute inset-0 z-50 transition-opacity duration-700 ${
+            !isLoading ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+        >
+          <SearchLoadingUI message="지도 컨텐츠를 준비하고 있습니다..." />
+        </div>
+      </Activity>
     </div>
   );
 }
