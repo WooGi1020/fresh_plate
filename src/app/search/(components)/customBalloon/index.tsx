@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import { Restaurant } from "@/types/restaurants.schema";
 import { ReviewInfo } from "@/types/review.schema";
 import { useAuthStore } from "@/store/useAuthStore";
-import { getReviewsAction } from "@/libs/actions/review";
 import imageRenderList from "@/constants/image_render_list";
 
 // 아이콘 및 공통 컴포넌트
@@ -41,7 +40,10 @@ const CustomBalloon = ({
 
   // ✅ Promise 메모이제이션: 무한 루프 방지의 핵심
   const reviewsPromise = useMemo(
-    () => getReviewsAction(restaurant.id),
+    () =>
+      fetch(`/api/reviews?restaurantId=${restaurant.id}`).then((res) =>
+        res.json(),
+      ),
     [restaurant.id],
   );
 
@@ -88,7 +90,7 @@ const CustomBalloon = ({
 
   return (
     <div
-      className="w-87.5 sm:w-105 h-87.5 shadow-lg text-neutral-900 speech-bubble cursor-default opacity-90 p-4 bg-white rounded-xl relative flex flex-col"
+      className={`w-87.5 sm:w-105 ${user ? "h-87.5" : "h-77"} shadow-lg text-neutral-900 speech-bubble cursor-default opacity-90 p-4 bg-white rounded-xl relative flex flex-col`}
       onWheel={(e) => e.stopPropagation()}
       onTouchMove={(e) => e.stopPropagation()}
     >
