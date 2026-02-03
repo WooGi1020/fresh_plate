@@ -32,11 +32,11 @@ const Header = () => {
     "shadow-sm hover:shadow-md";
   return (
     <header
-      className={`sticky inset-0 w-full h-[60px] flex justify-between items-center px-7 z-50 ${
+      className={`sticky inset-0 w-full h-15 flex justify-between items-center px-7 z-50 ${
         pathname == "/" ? "bg-[#FFFFFF]" : "bg-[#EAEEDB]"
       } shadow-md`}
     >
-      <Link href="/" className="relative w-[66px] h-[45px]">
+      <Link href="/" className="relative w-16.5 h-11.25">
         <Image
           src="/images/home/small_logo.png"
           alt="홈 로고 링크 이미지"
